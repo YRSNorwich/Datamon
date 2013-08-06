@@ -4,12 +4,24 @@ function main() {
     // create an new instance of a pixi stage
     var stage = new PIXI.Stage(0x66FF99);
 
-
     var WIDTH = 400;
     var HEIGHT = 600;
 
-    var TILE_WIDTH = 20;
-    var TILE_HEIGHT = 20;
+    var TILE_WIDTH = 40;
+    var TILE_HEIGHT = 40;
+
+    var tiles = new Array();
+
+    // The Length should be however wide the map is
+    tiles.length = 100;
+
+    // Hack a 2D array
+    for(var i = 0; i < tiles.length; i++) {
+        tiles[i] = new Array();
+        
+        // Should be the height of the map
+        tiles[i].length = 100;
+    }
 
     // create a renderer instance
     var renderer = PIXI.autoDetectRenderer(WIDTH, HEIGHT);
@@ -76,11 +88,34 @@ function main() {
             lat: 0
         };
 
+        var position;
+        
         navigator.geolocation.getCurrentPosition(function(position) {
             // convert lon/lat into OS eastern northern coord
-            var position = OsGridRef.latLongToOsGrid(position.coords);
+            position = OsGridRef.latLongToOsGrid(position.coords);
             console.log(position);
         });
+
+        for(var i = 0; i < tiles.length; i++) {
+            for(var j = 0; j < tiles[i].length; j++) {
+                if((i % 2) == 0) {
+                    // Load bunny texture
+                    var texture = PIXI.Texture.fromImage("/imgs/nic.png");
+
+                    // create a new Sprite using the texture
+                    var tile = new PIXI.Sprite(texture);
+
+                    // center the sprites anchor point
+                    tile.anchor.x = 0.5;
+                    tile.anchor.y = 0.5;
+
+                    tile.position.x = i*TILE_WIDTH;
+                    tile.position.y = j*TILE_HEIGHT;
+
+                    stage.addChild(tile);
+                }
+            }
+        }
     }
 }
 
