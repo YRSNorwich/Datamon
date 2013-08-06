@@ -6,7 +6,7 @@ function route(handle, pathname, response, request) {
     if (typeof handle[pathname] === 'function') {
 	handle[pathname](response, request);
     } else {
-	var filename = path.join(process.cwd(), "../../", pathname);
+	var filename = path.join(process.cwd(), "../", pathname);
 	path.exists(filename, function(exists) {
 	    if(!exists) {
 		response.writeHead(404, {"Content-Type": "text/plain"});

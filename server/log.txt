@@ -187,3 +187,223 @@ Request for /favicon.ico received.
 About to route a request for /favicon.ico
 Request for /favicon.ico received.
 About to route a request for /favicon.ico
+Server has started.
+Request for / received.
+About to route a request for /
+Request handler 'start' was called.
+Request for /test/lib/qunit-1.11.0.css received.
+About to route a request for /test/lib/qunit-1.11.0.css
+Request for /test/lib/qunit-1.11.0.js received.
+About to route a request for /test/lib/qunit-1.11.0.js
+Request for /bin/pixi.dev.js received.
+About to route a request for /bin/pixi.dev.js
+Request for /test/lib/require.js received.
+About to route a request for /test/lib/require.js
+Request for /test/main.js received.
+About to route a request for /test/main.js
+Server has started.
+Request for / received.
+About to route a request for /
+Request handler 'start' was called.
+Request for /test/lib/qunit-1.11.0.css received.
+About to route a request for /test/lib/qunit-1.11.0.css
+Request for /test/lib/qunit-1.11.0.js received.
+About to route a request for /test/lib/qunit-1.11.0.js
+Request for /bin/pixi.dev.js received.
+About to route a request for /bin/pixi.dev.js
+Request for /test/lib/require.js received.
+About to route a request for /test/lib/require.js
+Request for /test/main.js received.
+About to route a request for /test/main.js
+Server has started.
+Request for / received.
+About to route a request for /
+Request handler 'start' was called.
+Request for /lib/require.js received.
+About to route a request for /lib/require.js
+Request for /test/lib/qunit-1.11.0.css received.
+About to route a request for /test/lib/qunit-1.11.0.css
+Request for /test/lib/qunit-1.11.0.js received.
+About to route a request for /test/lib/qunit-1.11.0.js
+Request for /bin/pixi.dev.js received.
+About to route a request for /bin/pixi.dev.js
+Request for /main.js received.
+About to route a request for /main.js
+Request for /test/bunny.png received.
+About to route a request for /test/bunny.png
+Request for /testsuite.js received.
+About to route a request for /testsuite.js
+Request for /test/unit/Pixi.js received.
+About to route a request for /test/unit/Pixi.js
+Request for /test/unit/Point.js received.
+About to route a request for /test/unit/Point.js
+Request for /test/unit/Rectangle.js received.
+About to route a request for /test/unit/Rectangle.js
+Request for /test/unit/DisplayObject.js received.
+About to route a request for /test/unit/DisplayObject.js
+Request for /test/unit/DisplayObjectContainer.js received.
+About to route a request for /test/unit/DisplayObjectContainer.js
+Request for /test/unit/Sprite.js received.
+About to route a request for /test/unit/Sprite.js
+Request for /test/unit/MovieClip.js received.
+About to route a request for /test/unit/MovieClip.js
+Request for /test/unit/InteractionManager.js received.
+About to route a request for /test/unit/InteractionManager.js
+Request for /test/unit/Stage.js received.
+About to route a request for /test/unit/Stage.js
+Request for /test/unit/utils/Utils.js received.
+About to route a request for /test/unit/utils/Utils.js
+Request for /test/unit/utils/EventTarget.js received.
+About to route a request for /test/unit/utils/EventTarget.js
+Request for /test/unit/utils/Matrix.js received.
+About to route a request for /test/unit/utils/Matrix.js
+Request for /test/unit/utils/Detector.js received.
+About to route a request for /test/unit/utils/Detector.js
+Request for /test/unit/renderers/WebGLShaders.js received.
+About to route a request for /test/unit/renderers/WebGLShaders.js
+Request for /test/unit/renderers/WebGLRenderer.js received.
+About to route a request for /test/unit/renderers/WebGLRenderer.js
+Request for /test/unit/renderers/WebGLBatch.js received.
+About to route a request for /test/unit/renderers/WebGLBatch.js
+Request for /test/unit/renderers/CanvasRenderer.js received.
+About to route a request for /test/unit/renderers/CanvasRenderer.js
+Request for /test/unit/extras/Strip.js received.
+About to route a request for /test/unit/extras/Strip.js
+Request for /test/unit/extras/Rope.js received.
+About to route a request for /test/unit/extras/Rope.js
+Request for /test/unit/textures/BaseTexture.js received.
+About to route a request for /test/unit/textures/BaseTexture.js
+Request for /test/unit/textures/Texture.js received.
+About to route a request for /test/unit/textures/Texture.js
+Request for /test/unit/loaders/SpriteSheetLoader.js received.
+About to route a request for /test/unit/loaders/SpriteSheetLoader.js
+Request for /test/unit/loaders/AssetLoader.js received.
+About to route a request for /test/unit/loaders/AssetLoader.js
+Request for / received.
+About to route a request for /
+Request handler 'start' was called.
+Request for /lib/qunit-1.11.0.css received.
+About to route a request for /lib/qunit-1.11.0.css
+Request for /lib/qunit-1.11.0.js received.
+About to route a request for /lib/qunit-1.11.0.js
+Request for /bin/pixi.dev.js received.
+About to route a request for /bin/pixi.dev.js
+Request for /lib/require.js received.
+About to route a request for /lib/require.js
+Request for /main.js received.
+About to route a request for /main.js
+Request for /test/bunny.png received.
+About to route a request for /test/bunny.png
+Request for /testsuite.js received.
+About to route a request for /testsuite.js
+Request for /test/unit/Pixi.js received.
+About to route a request for /test/unit/Pixi.js
+Request for /test/unit/Point.js received.
+About to route a request for /test/unit/Point.js
+Request for /test/unit/Rectangle.js received.
+About to route a request for /test/unit/Rectangle.js
+Request for /test/unit/DisplayObject.js received.
+About to route a request for /test/unit/DisplayObject.js
+Request for /test/unit/DisplayObjectContainer.js received.
+About to route a request for /test/unit/DisplayObjectContainer.js
+Request for /test/unit/Sprite.js received.
+About to route a request for /test/unit/Sprite.js
+Request for /test/unit/MovieClip.js received.
+About to route a request for /test/unit/MovieClip.js
+Request for /test/unit/InteractionManager.js received.
+About to route a request for /test/unit/InteractionManager.js
+Request for /test/unit/Stage.js received.
+About to route a request for /test/unit/Stage.js
+Request for /test/unit/utils/Utils.js received.
+About to route a request for /test/unit/utils/Utils.js
+Request for /test/unit/utils/EventTarget.js received.
+About to route a request for /test/unit/utils/EventTarget.js
+Request for /test/unit/utils/Matrix.js received.
+About to route a request for /test/unit/utils/Matrix.js
+Request for /test/unit/utils/Detector.js received.
+About to route a request for /test/unit/utils/Detector.js
+Request for /test/unit/renderers/WebGLShaders.js received.
+About to route a request for /test/unit/renderers/WebGLShaders.js
+Request for /test/unit/renderers/WebGLRenderer.js received.
+About to route a request for /test/unit/renderers/WebGLRenderer.js
+Request for /test/unit/renderers/WebGLBatch.js received.
+About to route a request for /test/unit/renderers/WebGLBatch.js
+Request for /test/unit/renderers/CanvasRenderer.js received.
+About to route a request for /test/unit/renderers/CanvasRenderer.js
+Request for /test/unit/extras/Strip.js received.
+About to route a request for /test/unit/extras/Strip.js
+Request for /test/unit/extras/Rope.js received.
+About to route a request for /test/unit/extras/Rope.js
+Request for /test/unit/textures/BaseTexture.js received.
+About to route a request for /test/unit/textures/BaseTexture.js
+Request for /test/unit/textures/Texture.js received.
+About to route a request for /test/unit/textures/Texture.js
+Request for /test/unit/loaders/SpriteSheetLoader.js received.
+About to route a request for /test/unit/loaders/SpriteSheetLoader.js
+Request for /test/unit/loaders/AssetLoader.js received.
+About to route a request for /test/unit/loaders/AssetLoader.js
+Request for / received.
+About to route a request for /
+Request handler 'start' was called.
+Request for /lib/qunit-1.11.0.css received.
+About to route a request for /lib/qunit-1.11.0.css
+Request for /lib/qunit-1.11.0.js received.
+About to route a request for /lib/qunit-1.11.0.js
+Request for /bin/pixi.dev.js received.
+About to route a request for /bin/pixi.dev.js
+Request for /lib/require.js received.
+About to route a request for /lib/require.js
+Request for /main.js received.
+About to route a request for /main.js
+Request for /bunny.png received.
+About to route a request for /bunny.png
+Request for /testsuite.js received.
+About to route a request for /testsuite.js
+Request for /favicon.ico received.
+About to route a request for /favicon.ico
+Request for /test/unit/Pixi.js received.
+About to route a request for /test/unit/Pixi.js
+Request for /test/unit/Point.js received.
+About to route a request for /test/unit/Point.js
+Request for /test/unit/Rectangle.js received.
+About to route a request for /test/unit/Rectangle.js
+Request for /test/unit/DisplayObject.js received.
+About to route a request for /test/unit/DisplayObject.js
+Request for /test/unit/DisplayObjectContainer.js received.
+About to route a request for /test/unit/DisplayObjectContainer.js
+Request for /test/unit/Sprite.js received.
+About to route a request for /test/unit/Sprite.js
+Request for /test/unit/MovieClip.js received.
+About to route a request for /test/unit/MovieClip.js
+Request for /test/unit/InteractionManager.js received.
+About to route a request for /test/unit/InteractionManager.js
+Request for /test/unit/Stage.js received.
+About to route a request for /test/unit/Stage.js
+Request for /test/unit/utils/Utils.js received.
+About to route a request for /test/unit/utils/Utils.js
+Request for /test/unit/utils/EventTarget.js received.
+About to route a request for /test/unit/utils/EventTarget.js
+Request for /test/unit/utils/Matrix.js received.
+About to route a request for /test/unit/utils/Matrix.js
+Request for /test/unit/utils/Detector.js received.
+About to route a request for /test/unit/utils/Detector.js
+Request for /test/unit/renderers/WebGLShaders.js received.
+About to route a request for /test/unit/renderers/WebGLShaders.js
+Request for /test/unit/renderers/WebGLRenderer.js received.
+About to route a request for /test/unit/renderers/WebGLRenderer.js
+Request for /test/unit/renderers/WebGLBatch.js received.
+About to route a request for /test/unit/renderers/WebGLBatch.js
+Request for /test/unit/renderers/CanvasRenderer.js received.
+About to route a request for /test/unit/renderers/CanvasRenderer.js
+Request for /test/unit/extras/Strip.js received.
+About to route a request for /test/unit/extras/Strip.js
+Request for /test/unit/extras/Rope.js received.
+About to route a request for /test/unit/extras/Rope.js
+Request for /test/unit/textures/BaseTexture.js received.
+About to route a request for /test/unit/textures/BaseTexture.js
+Request for /test/unit/textures/Texture.js received.
+About to route a request for /test/unit/textures/Texture.js
+Request for /test/unit/loaders/SpriteSheetLoader.js received.
+About to route a request for /test/unit/loaders/SpriteSheetLoader.js
+Request for /test/unit/loaders/AssetLoader.js received.
+About to route a request for /test/unit/loaders/AssetLoader.js
