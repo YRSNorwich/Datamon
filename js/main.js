@@ -55,7 +55,7 @@ function main() {
     //Centre dude!
     dude.position.x = WIDTH / 2;
     dude.position.y = HEIGHT / 2;
-    
+    //go go gadget.
     stage.addChild(dude);
     
     function animate() {
@@ -106,6 +106,20 @@ function main() {
             // convert lon/lat into OS eastern northern coord
             position = OsGridRef.latLongToOsGrid(position.coords);
             console.log(position);
+        });
+      
+      $.get('res/britain.txt', function(data) {
+            //var fileDom = $(data);
+
+            var lines = data.split(",");
+            var land = new Array();//black earth!
+            var sea = new Array();//blue water!
+            $.each(lines, function(n, elem) {
+             //   $('#myContainer').append('<div>' + elem + '</div>');
+                if(elem == 1) {
+                  land.push(elem);
+                }
+           });
         });
 
         for(var i = 0; i < tiles.length; i++) {
