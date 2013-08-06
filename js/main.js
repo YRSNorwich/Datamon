@@ -1,5 +1,9 @@
 $(document).ready(main);
-
+var level = [
+               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+               [1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
+            ];
+var blockArray = [];
 function main() {
     //A timer for use in animation
     var timer = new FrameTimer();
@@ -88,11 +92,29 @@ function main() {
     //Centre dude!
     dude.position.x = WIDTH / 2;
     dude.position.y = HEIGHT / 2;
-    loadTiles();
-
+    //loadTiles();
+    readLevel();
     //go go gadget.
     stage.addChild(dude);
-    
+  
+ function readLevel() { 	
+    for (var i = 0; i < level.length; i++) {
+        blockArray[i] = []; // Create the second level for this index
+        for (var j = 0; j < level[i].length; j++) {
+           
+            var nicTex = PIXI.Texture.fromImage("/imgs/bunny.png");    
+            blockArray[i][j] = new PIXI.Sprite(nicTex);
+            blockArray[i][j].anchor.x = 0.5;
+            blockArray[i][j].anchor.y = 0.5;
+            blockArray[i][j].position.x = i*TILE_WIDTH;
+            blockArray[i][j].position.y = j*TILE_HEIGHT;
+            stage.addChild(blockArray[i][j]);
+            //(i * blockSize, j * blockSize, level[i][j], false, false, tempImg);
+
+            //throw('blockArray['+i+']'+j+'] = ' + level[i][j]);
+        }
+    }
+}
     function draw() {
         requestAnimFrame(draw);
     
@@ -130,20 +152,20 @@ function main() {
     //enityscreenloc = (entloc - camgameloc) + camscreenloc
     //tilescreenloc = (tilegameloc - playergameloc) + playerScreenloc
     function cameraMove(dir) {
-        for(var i = 0; i < tiles.length; i++) {
-            for(var j = 0; j < tiles[i].length; j++) {
+        for(var i = 0; i < blockArray.length; i++) {
+            for(var j = 0; j < blockArray[i].length; j++) {
                 switch(dir) {
                     case "left":
-                        tiles[i][j].position.x += MOVE_SPEED;
+                        blockArray[i][j].position.x += MOVE_SPEED;
                         break;
                     case "right":
-                        tiles[i][j].position.x -= MOVE_SPEED;
+                        blockArray[i][j].position.x -= MOVE_SPEED;
                         break;
                     case "up":
-                        tiles[i][j].position.y -= MOVE_SPEED;
+                        blockArray[i][j].position.y -= MOVE_SPEED;
                         break;
                     case "down":
-                        tiles[i][j].position.y += MOVE_SPEED;
+                        blockArray[i][j].position.y += MOVE_SPEED;
                         break;
                     default:
                         break;
@@ -223,22 +245,8 @@ function main() {
             // convert lon/lat into OS eastern northern coord
             position = OsGridRef.latLongToOsGrid(position.coords);
         });
-      
-      $.get('res/britain.txt', function(data) {
-            //var fileDom = $(data);
-
-            var lines = data.split(",");
-            var land = new Array();//black earth!
-            var sea = new Array();//blue water!
-            $.each(lines, function(n, elem) {
-             //   $('#myContainer').append('<div>' + elem + '</div>');
-                if(elem == 1) {
-                  land.push(elem);
-                }
-           });
-        });
-
-
+     
+/*
       var nicTex = PIXI.Texture.fromImage("/imgs/nic.png");    
       var bunnyTex = PIXI.Texture.fromImage("/imgs/bunny.png");
       for(var i = 0; i < tiles.length; i++) {
@@ -258,12 +266,15 @@ function main() {
               tiles[i][j].position.x = i*TILE_WIDTH;
               tiles[i][j].position.y = j*TILE_HEIGHT;
 
-              stage.addChild(tiles[i][j]);
+              //stage.addChild(tiles[i][j]);
           }
       }
-    }
-}
+   
 
+*/
+
+ }
+}
 function Point(x, y) {
     this.x = x;
     this.y = y;
