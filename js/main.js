@@ -1,6 +1,14 @@
 $(document).ready(main);
 var level = [
                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+               [1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
+               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+               [1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
+               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+               [1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
+               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+               [1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
+               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                [1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
             ];
 var blockArray = [];
@@ -12,7 +20,7 @@ function main() {
     // create an new instance of a pixi stage
     var stage = new PIXI.Stage(0x66FF99);
 
-    var WIDTH = 400;
+    var WIDTH = 600;
     var HEIGHT = 600;
 
     var TILE_WIDTH = 64;
@@ -34,6 +42,7 @@ function main() {
     }
 
     // create a renderer instance
+   
     var renderer = PIXI.autoDetectRenderer(WIDTH, HEIGHT);
 
     // add the renderer view element to the DOM
@@ -120,7 +129,7 @@ function main() {
 }
     function draw() {
         requestAnimFrame(draw);
-    
+    	
         // Keydrown shizzle
         kd.tick();
 
@@ -131,12 +140,29 @@ function main() {
 
         // signal end of frame to timer.
         timer.tick();
+   	
     }
+
+     
+              
+
+       
+    	window.onresize = function(event) {
+    		
+    	}
+        
+     
+              
+              
+                
+   
+    
+      
 
     function update() {
         // Set boundries of screen position (100 pixels from edge)
-        if(dude.position.x > 300) {
-            dude.position.x = 300;
+        if(dude.position.x > 500) {
+            dude.position.x = 500;
             cameraMove("right");
         } else if (dude.position.x < 100) {
             dude.position.x = 100;
@@ -282,3 +308,16 @@ function Point(x, y) {
     this.x = x;
     this.y = y;
 }
+var moveIt = function () {
+    var halfObjectHeight = ($('#canvainer').height() / 2);
+    var halfObjectWidth = ($('#canvainer').width() / 2);
+    $('#canvainer').css({
+        'margin-left': -halfObjectWidth + "px",
+        'margin-top': -halfObjectHeight + "px"
+    });
+}; 
+window.setInterval(function(){
+    moveIt();
+}, 0);
+$(window).resize(moveIt);
+moveIt();
