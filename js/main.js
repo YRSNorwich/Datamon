@@ -34,33 +34,32 @@ function main() {
     function animate() {
         requestAnimFrame(animate);
 
-        kd.run(function () {
-              kd.tick();
-        });
-
-        // just for fun, lets rotate mr rabbit a little
-        bunny.rotation += 0.1;
-
-        console.log("bunny pos: " + bunny.position.x + ", " + bunny.position.y);
-
         // render the stage   
         renderer.render(stage);
     }
     
     kd.UP.down(function() {
-        bunny.position.y -= 0.05;
+        bunny.position.y -= 5;
     });
 
     kd.DOWN.down(function() {
-        bunny.position.y += 0.05;
+        bunny.position.y += 5;
     });
 
     kd.LEFT.down(function() {
-        bunny.position.x -= 0.05;
+        bunny.position.x -= 5;
     });
 
     kd.RIGHT.down(function() {
-        bunny.position.x += 0.05;
+        bunny.position.x += 5;
+    });
+
+    kd.SPACE.down(function() {
+        bunny.rotation += 0.1;
+    });
+    
+    kd.run(function () {
+        kd.tick();
     });
 }
 
