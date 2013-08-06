@@ -4,6 +4,7 @@ function main() {
     // create an new instance of a pixi stage
     var stage = new PIXI.Stage(0x66FF99);
 
+
     var WIDTH = 400;
     var HEIGHT = 600;
 
@@ -18,7 +19,9 @@ function main() {
 
     requestAnimFrame( animate );
 
-    // create a texture from an image path
+    loadTiles();
+
+    // Load bunny texture
     var texture = PIXI.Texture.fromImage("/imgs/bunny.png");
     
     // create a new Sprite using the texture
@@ -27,8 +30,11 @@ function main() {
     // center the sprites anchor point
     bunny.anchor.x = 0.5;
     bunny.anchor.y = 0.5;
-
-
+    
+    //Centre bunny!
+    bunny.position.x = WIDTH / 2;
+    bunny.position.y = HEIGHT / 2;
+    
     stage.addChild(bunny);
     
     function animate() {
@@ -37,6 +43,11 @@ function main() {
         // render the stage   
         renderer.render(stage);
     }
+    
+    // Keydrown shizzle
+    kd.run(function () {
+        kd.tick();
+    });
     
     kd.UP.down(function() {
         bunny.position.y -= 5;
@@ -57,9 +68,19 @@ function main() {
     kd.SPACE.down(function() {
         bunny.rotation += 0.1;
     });
-    
-    kd.run(function () {
-        kd.tick();
-    });
+
+    function loadTiles() {
+        // Get Current location
+        currentLocation = {
+            lon: 0,
+            lat: 0
+        };
+
+        navigator.geolocation.getCurrentPosition(function(position) {
+            // convert lon/lat into OS eastern northern coord
+            var position = OsGridRef.latLongToOsGrid(position.coords);
+            console.log(position);
+        });
+    }
 }
 
