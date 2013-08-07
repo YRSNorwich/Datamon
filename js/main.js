@@ -33,7 +33,10 @@ function main() {
     var renderer = PIXI.autoDetectRenderer(WIDTH, HEIGHT);
 
     // add the renderer view element to the DOM
-    document.body.appendChild(renderer.view);
+    $('#canvainer').append(renderer.view);
+
+    // centre the canvas
+    $('canvas').css("display", "inline");
 
     requestAnimFrame(draw);
 
