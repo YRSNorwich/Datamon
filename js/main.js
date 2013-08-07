@@ -31,8 +31,7 @@ function main() {
 
     var dudeTexFront = PIXI.Texture.fromImage("/imgs/mainDude/frontView.png");
     var dude = new PIXI.Sprite(dudeTexFront);
-    var npcdude = new PIXI.Sprite(dudeTexFront);
-    AddNpc();
+
     // Load textures. Numbered ones are animation.
     var dudeTexRear = PIXI.Texture.fromImage("/imgs/mainDude/rearView.png");
     var dudeTexRear1 = PIXI.Texture.fromImage("/imgs/mainDude/rearView1.png");
@@ -154,20 +153,6 @@ function main() {
         }
     }
 
-function AddNpc() {
-
-// center the sprites anchor point
-    npcdude.anchor.x = 0;
-    npcdude.anchor.y = 0;
-    
-    //Centre dude!
-    npcdude.position.x = WIDTH / 3;
-    npcdude.position.y = HEIGHT / 3;
-    stage.addChild(npcdude);
-}
- npcdude.onMouseDown = function(mouseData){
-                        console.log("Hi");
-                   }
     function draw() {
         requestAnimFrame(draw);
         // Keydrown shizzle
