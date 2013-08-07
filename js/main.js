@@ -1,6 +1,10 @@
 $(document).ready(main);
 
 function main() {
+    //A timer for use in animation
+    var timer = new FrameTimer();
+    timer.tick();
+
     // create an new instance of a pixi stage
     var stage = new PIXI.Stage(0x66FF99);
 
@@ -29,9 +33,12 @@ function main() {
     // add the renderer view element to the DOM
     document.body.appendChild(renderer.view);
 
-    requestAnimFrame( animate );
+    requestAnimFrame(draw);
 
     loadTiles();
+
+    var dudeTexFront = PIXI.Texture.fromImage("/imgs/mainDude/frontView.png");
+    var dude = new PIXI.Sprite(dudeTexFront);
 
     // Load textures. Numbered ones are animation.
     var dudeTexRear = PIXI.Texture.fromImage("/imgs/mainDude/rearView.png");
@@ -45,9 +52,33 @@ function main() {
     var dudeTexRight1 = PIXI.Texture.fromImage("/imgs/mainDude/sideViewRight1.png");
     var dudeTexRight2 = PIXI.Texture.fromImage("/imgs/mainDude/sideViewRight2.png");
     
-    // create a new Sprite using the texture
-    var dude = new PIXI.Sprite(dudeTexFront);
+    // Add animations to sprite sets
+    var dudeUpSet = [
+        dudeTexRear1,
+        dudeTexRear2
+    ];
+    
+    var dudeDownSet = [
+        dudeTexFront1,
+        dudeTexFront2
+    ];
+    
+    var dudeLeftSet = [
+        dudeTexLeft1,
+        dudeTexLeft2
+    ];
+    
+    var dudeRightSet = [
+        dudeTexRight1,
+        dudeTexRight2
+    ];
 
+    // Load needed animations (spriteSet, duration)
+    var dudeUpAnimation = new Animation(dudeUpSet, 0.2);
+    var dudeDownAnimation = new Animation(dudeDownSet, 0.2);
+    var dudeLeftAnimation = new Animation(dudeLeftSet, 0.2);
+    var dudeRightAnimation = new Animation(dudeRightSet, 0.2);
+    
     // center the sprites anchor point
     dude.anchor.x = 0.5;
     dude.anchor.y = 0.5;
@@ -55,38 +86,75 @@ function main() {
     //Centre dude!
     dude.position.x = WIDTH / 2;
     dude.position.y = HEIGHT / 2;
-    
+
     stage.addChild(dude);
     
-    function animate() {
-        requestAnimFrame(animate);
+    function draw() {
+        requestAnimFrame(draw);
     
         // Keydrown shizzle
         kd.tick();
 
+
         // render the stage   
         renderer.render(stage);
+
+        // signal end of frame to timer.
+        timer.tick();
+    }
+
+    // Sort out sprite animation 
+    function animate(thing, animation, delta) {
+        animation.duration -= delta;
+
+        if(animation.duration <= 0) {
+            animation.resetDuration();
+            animation.frame++;
+            if(animation.frame >= animation.frames.length) {
+                animation.frame = 0;
+            } 
+        }
+        
+        thing.setTexture(animation.frames[animation.frame]);
     }
     
-    
     kd.UP.down(function() {
+        animate(dude, dudeUpAnimation, timer.getSeconds());
+        dude.position.y -= 5;
+    });
+    
+    kd.UP.up(function() {
         dude.setTexture(dudeTexRear);
         dude.position.y -= 5;
     });
 
     kd.DOWN.down(function() {
+        animate(dude, dudeDownAnimation, timer.getSeconds());
+        dude.position.y += 5;
+    });
+    
+    kd.DOWN.up(function() {
         dude.setTexture(dudeTexFront);
         dude.position.y += 5;
     });
 
     kd.LEFT.down(function() {
+        animate(dude, dudeLeftAnimation, timer.getSeconds());
+        dude.position.x -= 5;
+    });
+    
+    kd.LEFT.up(function() {
         dude.setTexture(dudeTexLeft1);
         dude.position.x -= 5;
     });
 
     kd.RIGHT.down(function() {
-        dude.setTexture(dudeTexRight1);
+        animate(dude, dudeRightAnimation, timer.getSeconds());
         dude.position.x += 5;
+    });
+    
+    kd.RIGHT.up(function() {
+        dude.setTexture(dudeTexRight1);
     });
 
     kd.SPACE.down(function() {
