@@ -7,8 +7,8 @@ function main() {
     var WIDTH = 400;
     var HEIGHT = 600;
 
-    var TILE_WIDTH = 40;
-    var TILE_HEIGHT = 40;
+    var TILE_WIDTH = 64;
+    var TILE_HEIGHT = 64;
 
     var tiles = new Array();
 
@@ -33,52 +33,64 @@ function main() {
 
     loadTiles();
 
-    // Load bunny texture
-    var texture = PIXI.Texture.fromImage("/imgs/bunny.png");
+    // Load textures. Numbered ones are animation.
+    var dudeTexRear = PIXI.Texture.fromImage("/imgs/mainDude/rearView.png");
+    var dudeTexRear1 = PIXI.Texture.fromImage("/imgs/mainDude/rearView1.png");
+    var dudeTexRear2 = PIXI.Texture.fromImage("/imgs/mainDude/rearView2.png");
+    var dudeTexFront = PIXI.Texture.fromImage("/imgs/mainDude/frontView.png");
+    var dudeTexFront1 = PIXI.Texture.fromImage("/imgs/mainDude/frontView1.png");
+    var dudeTexFront2 = PIXI.Texture.fromImage("/imgs/mainDude/frontView2.png");
+    var dudeTexLeft1 = PIXI.Texture.fromImage("/imgs/mainDude/sideViewLeft1.png");
+    var dudeTexLeft2 = PIXI.Texture.fromImage("/imgs/mainDude/sideViewLeft2.png");
+    var dudeTexRight1 = PIXI.Texture.fromImage("/imgs/mainDude/sideViewRight1.png");
+    var dudeTexRight2 = PIXI.Texture.fromImage("/imgs/mainDude/sideViewRight2.png");
     
     // create a new Sprite using the texture
-    var bunny = new PIXI.Sprite(texture);
+    var dude = new PIXI.Sprite(dudeTexFront);
 
     // center the sprites anchor point
-    bunny.anchor.x = 0.5;
-    bunny.anchor.y = 0.5;
+    dude.anchor.x = 0.5;
+    dude.anchor.y = 0.5;
     
-    //Centre bunny!
-    bunny.position.x = WIDTH / 2;
-    bunny.position.y = HEIGHT / 2;
+    //Centre dude!
+    dude.position.x = WIDTH / 2;
+    dude.position.y = HEIGHT / 2;
     
-    stage.addChild(bunny);
+    stage.addChild(dude);
     
     function animate() {
         requestAnimFrame(animate);
+    
+        // Keydrown shizzle
+        kd.tick();
 
         // render the stage   
         renderer.render(stage);
     }
     
-    // Keydrown shizzle
-    kd.run(function () {
-        kd.tick();
-    });
     
     kd.UP.down(function() {
-        bunny.position.y -= 5;
+        dude.setTexture(dudeTexRear);
+        dude.position.y -= 5;
     });
 
     kd.DOWN.down(function() {
-        bunny.position.y += 5;
+        dude.setTexture(dudeTexFront);
+        dude.position.y += 5;
     });
 
     kd.LEFT.down(function() {
-        bunny.position.x -= 5;
+        dude.setTexture(dudeTexLeft1);
+        dude.position.x -= 5;
     });
 
     kd.RIGHT.down(function() {
-        bunny.position.x += 5;
+        dude.setTexture(dudeTexRight1);
+        dude.position.x += 5;
     });
 
     kd.SPACE.down(function() {
-        bunny.rotation += 0.1;
+        dude.rotation += 0.1;
     });
 
     function loadTiles() {
@@ -99,7 +111,7 @@ function main() {
         for(var i = 0; i < tiles.length; i++) {
             for(var j = 0; j < tiles[i].length; j++) {
                 if((i % 2) == 0) {
-                    // Load bunny texture
+                    // Load background texture
                     var texture = PIXI.Texture.fromImage("/imgs/nic.png");
 
                     // create a new Sprite using the texture
