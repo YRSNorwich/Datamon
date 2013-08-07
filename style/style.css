@@ -5,15 +5,17 @@ html, body {
     height: 100%;
     width: 100%;
     overflow-y:hidden;
+    overflow-x:hidden;
     background:#404040;
 }
-h1{
+/*h1{
 	font-family: 'Squada One', cursive;
 	text-align: center;
 	color: white;
-	font-size: 70px;
+
+	font-size: 50px;
 	text-shadow: -1px -2px rgba(0, 0, 0, 5);
-}
+}*/
 #canvainer {
     
     height:auto;

@@ -7,8 +7,8 @@ function main() {
     // create an new instance of a pixi stage
     var stage = new PIXI.Stage(0x66FF99);
 
-    var WIDTH = 600;
-    var HEIGHT = 600;
+    var WIDTH = 800;
+    var HEIGHT = 500;
 
     var TILE_WIDTH = 64;
     var TILE_HEIGHT = 64;
@@ -31,7 +31,8 @@ function main() {
 
     var dudeTexFront = PIXI.Texture.fromImage("/imgs/mainDude/frontView.png");
     var dude = new PIXI.Sprite(dudeTexFront);
-
+    var npcdude = new PIXI.Sprite(dudeTexFront);
+    AddNpc();
     // Load textures. Numbered ones are animation.
     var dudeTexRear = PIXI.Texture.fromImage("/imgs/mainDude/rearView.png");
     var dudeTexRear1 = PIXI.Texture.fromImage("/imgs/mainDude/rearView1.png");
@@ -153,6 +154,20 @@ function main() {
         }
     }
 
+function AddNpc() {
+
+// center the sprites anchor point
+    npcdude.anchor.x = 0;
+    npcdude.anchor.y = 0;
+    
+    //Centre dude!
+    npcdude.position.x = WIDTH / 3;
+    npcdude.position.y = HEIGHT / 3;
+    stage.addChild(npcdude);
+}
+ npcdude.onMouseDown = function(mouseData){
+                        console.log("Hi");
+                   }
     function draw() {
         requestAnimFrame(draw);
         // Keydrown shizzle
@@ -167,23 +182,20 @@ function main() {
         timer.tick();
    	
     }
-
-    window.onresize = function(event) {
-    }
      
 
     function update() {
         // Set boundries of screen position (100 pixels from edge)
-        if(dude.position.x > 500) {
-            dude.position.x = 500;
+        if(dude.position.x > 700) {
+            dude.position.x = 700;
             cameraMove("right");
         } else if (dude.position.x < 100) {
             dude.position.x = 100;
             cameraMove("left");
         }
 
-        if(dude.position.y > 500) {
-            dude.position.y = 500;
+        if(dude.position.y > 400) {
+            dude.position.y = 400;
             cameraMove("up");
         } else if(dude.position.y < 100) {
             dude.position.y = 100;
