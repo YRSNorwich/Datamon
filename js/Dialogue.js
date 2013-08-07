@@ -1,3 +1,3 @@
 function Dialogue() {
-    this.lines = lines[];
+    this.lines = lines;
 }

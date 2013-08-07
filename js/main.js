@@ -286,26 +286,7 @@ function main() {
         });
 
 
-        for(var i = 0; i < tiles.length; i++) {
-            for(var j = 0; j < tiles[i].length; j++) {
-                var texture;
-                if((i % 2) === 0) {
-                    tiles[i][j] = new PIXI.Sprite(nicTex);
-                } else {
-                    tiles[i][j] = new PIXI.Sprite(bunnyTex);
-                }
-                // create a new Sprite using the texture
-
-                // center the sprites anchor point
-                tiles[i][j].anchor.x = 0.5;
-                tiles[i][j].anchor.y = 0.5;
-
-                tiles[i][j].position.x = i*TILE_WIDTH;
-                tiles[i][j].position.y = j*TILE_HEIGHT;
-
-                stage.addChild(tiles[i][j]);
-            }
-        }
+     
 
 
 

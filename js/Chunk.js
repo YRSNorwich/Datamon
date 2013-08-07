@@ -9,7 +9,7 @@ function Chunk(x, y) {
     this.tileMap = get2DArray(this.sizew, this.sizeh);
     this.draw = false;
     var nicTex = PIXI.Texture.fromImage("/imgs/nic.png");
-    var bunnyTex = PIXI.Texture.fromImage("/imgs/bunny.png");
+    var bunnyTex = PIXI.Texture.fromImage("/imgs/water.png");
 
     this.loadTiles = function(array, blockpos) {
         for(var x = 0; x < this.sizew; x++) {
