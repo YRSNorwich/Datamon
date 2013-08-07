@@ -1,4 +1,4 @@
-function convert(file)
+function convert(file, callback)
 {
     var rawFile = new XMLHttpRequest();
     rawFile.open("GET", file, true);
@@ -9,7 +9,7 @@ function convert(file)
             if(rawFile.status === 200 || rawFile.status == 0)
             {
                 var allText = rawFile.responseText;
-                return allText;
+                callback(allText);
             }
         }
     }

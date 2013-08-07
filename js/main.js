@@ -1,9 +1,5 @@
 $(document).ready(main);
-var level = [
-               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-               [1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
-            ];
-var blockArray = [];
+
 function main() {
     //A timer for use in animation
     var timer = new FrameTimer();
@@ -22,17 +18,6 @@ function main() {
 
     var tiles = new Array();
 
-    // The Length should be however wide the map is
-    tiles.length = 100;
-
-    // Hack a 2D array
-    for(var i = 0; i < tiles.length; i++) {
-        tiles[i] = new Array();
-        
-        // Should be the height of the map
-        tiles[i].length = 100;
-    }
-
     // create a renderer instance
     var renderer = PIXI.autoDetectRenderer(WIDTH, HEIGHT);
 
@@ -43,8 +28,6 @@ function main() {
     $('canvas').css("display", "inline");
 
     requestAnimFrame(draw);
-
-
 
     var dudeTexFront = PIXI.Texture.fromImage("/imgs/mainDude/frontView.png");
     var dude = new PIXI.Sprite(dudeTexFront);
@@ -60,6 +43,8 @@ function main() {
     var dudeTexLeft2 = PIXI.Texture.fromImage("/imgs/mainDude/sideViewLeft2.png");
     var dudeTexRight1 = PIXI.Texture.fromImage("/imgs/mainDude/sideViewRight1.png");
     var dudeTexRight2 = PIXI.Texture.fromImage("/imgs/mainDude/sideViewRight2.png");
+    var nicTex = PIXI.Texture.fromImage("/imgs/nic.png");    
+    var bunnyTex = PIXI.Texture.fromImage("/imgs/bunny.png");
     
     // Add animations to sprite sets
     var dudeUpSet = [
@@ -95,32 +80,92 @@ function main() {
     //Centre dude!
     dude.position.x = WIDTH / 2;
     dude.position.y = HEIGHT / 2;
-    //loadTiles();
-    readLevel();
-    //go go gadget.
-    stage.addChild(dude);
-  
- function readLevel() { 	
-    for (var i = 0; i < level.length; i++) {
-        blockArray[i] = []; // Create the second level for this index
-        for (var j = 0; j < level[i].length; j++) {
-           
-            var nicTex = PIXI.Texture.fromImage("/imgs/bunny.png");    
-            blockArray[i][j] = new PIXI.Sprite(nicTex);
-            blockArray[i][j].anchor.x = 0.5;
-            blockArray[i][j].anchor.y = 0.5;
-            blockArray[i][j].position.x = i*TILE_WIDTH;
-            blockArray[i][j].position.y = j*TILE_HEIGHT;
-            stage.addChild(blockArray[i][j]);
-            //(i * blockSize, j * blockSize, level[i][j], false, false, tempImg);
+    
+    //reads a file and converts into array, then sets up the tiles
+    convert("/res/test.txt", function(myLevel) {
+        //split into array
+        level = myLevel.split('');
 
-            //throw('blockArray['+i+']'+j+'] = ' + level[i][j]);
+        var mapWidth;
+        var mapHeight = 0;
+
+        //find width
+        for(var i = 0; i < level.length; i++) {
+            if(level[i] === '\n') {
+                mapWidth = i;
+                //Then count out all newlines for height, and splice them out before breaking.
+                for(var j = 0; j < level.length; j++) {
+                    if(level[j] === '\n') {
+                        mapHeight++;
+                        level.splice(j, 1);
+                    } 
+                }
+                break;
+            }
+        }
+
+        for(var i = 0; i < level.length; i++) {
+            level[i] = parseInt(level[i]);
+        }
+
+        //finally convert to 2D array
+        var tempLevel = new Array();
+        tempLevel.length = mapWidth;
+
+        for(var i = 0; i < tempLevel.length; i++) {
+            tempLevel[i] = new Array();
+            tempLevel[i].length = mapHeight;
+        }
+
+        for(var i = 0; i < level.length; i++) {
+            tempLevel[i % 10][Math.floor(i / 10)] = level[i];
+        }
+
+        level = tempLevel;
+
+
+        //Set up the tiles
+        tiles.length = mapWidth;
+        for(var i = 0; i < tiles.length; i++) {
+            tiles[i] = new Array();
+            tiles[i].length = mapHeight;
+        }
+        
+        readLevel();
+
+        //go go gadget.
+        stage.addChild(dude);
+    });
+  
+
+    function readLevel() {
+        for (var i = 0; i < level.length; i++) {
+            for (var j = 0; j < level[i].length; j++) {
+                if(level[i][j] === 1) {
+                    tiles[i][j] = new PIXI.Sprite(nicTex);
+                    tiles[i][j].anchor.x = 0.5;
+                    tiles[i][j].anchor.y = 0.5;
+                    tiles[i][j].position.x = i*TILE_WIDTH;
+                    tiles[i][j].position.y = j*TILE_HEIGHT;
+                    stage.addChild(tiles[i][j]);
+                } else {
+                    tiles[i][j] = new PIXI.Sprite(bunnyTex);
+                    tiles[i][j].anchor.x = 0.5;
+                    tiles[i][j].anchor.y = 0.5;
+                    tiles[i][j].position.x = i*TILE_WIDTH;
+                    tiles[i][j].position.y = j*TILE_HEIGHT;
+                    stage.addChild(tiles[i][j]);
+                }
+                //(i * blockSize, j * blockSize, level[i][j], false, false, tempImg);
+
+                //throw('tiles['+i+']'+j+'] = ' + level[i][j]);
+            }
         }
     }
-}
+
     function draw() {
         requestAnimFrame(draw);
-    
+
         // Keydrown shizzle
         kd.tick();
 
@@ -155,20 +200,20 @@ function main() {
     //enityscreenloc = (entloc - camgameloc) + camscreenloc
     //tilescreenloc = (tilegameloc - playergameloc) + playerScreenloc
     function cameraMove(dir) {
-        for(var i = 0; i < blockArray.length; i++) {
-            for(var j = 0; j < blockArray[i].length; j++) {
+        for(var i = 0; i < tiles.length; i++) {
+            for(var j = 0; j < tiles[i].length; j++) {
                 switch(dir) {
                     case "left":
-                        blockArray[i][j].position.x += MOVE_SPEED;
+                        tiles[i][j].position.x += MOVE_SPEED;
                         break;
                     case "right":
-                        blockArray[i][j].position.x -= MOVE_SPEED;
+                        tiles[i][j].position.x -= MOVE_SPEED;
                         break;
                     case "up":
-                        blockArray[i][j].position.y -= MOVE_SPEED;
+                        tiles[i][j].position.y -= MOVE_SPEED;
                         break;
                     case "down":
-                        blockArray[i][j].position.y += MOVE_SPEED;
+                        tiles[i][j].position.y += MOVE_SPEED;
                         break;
                     default:
                         break;
@@ -188,15 +233,15 @@ function main() {
                 animation.frame = 0;
             } 
         }
-        
+
         thing.setTexture(animation.frames[animation.frame]);
     }
-    
+
     kd.UP.down(function() {
         animate(dude, dudeUpAnimation, timer.getSeconds());
         dude.position.y -= 5;
     });
-    
+
     kd.UP.up(function() {
         dude.setTexture(dudeTexRear);
         dude.position.y -= 5;
@@ -206,7 +251,7 @@ function main() {
         animate(dude, dudeDownAnimation, timer.getSeconds());
         dude.position.y += 5;
     });
-    
+
     kd.DOWN.up(function() {
         dude.setTexture(dudeTexFront);
         dude.position.y += 5;
@@ -216,7 +261,7 @@ function main() {
         animate(dude, dudeLeftAnimation, timer.getSeconds());
         dude.position.x -= 5;
     });
-    
+
     kd.LEFT.up(function() {
         dude.setTexture(dudeTexLeft1);
         dude.position.x -= 5;
@@ -226,7 +271,7 @@ function main() {
         animate(dude, dudeRightAnimation, timer.getSeconds());
         dude.position.x += 5;
     });
-    
+
     kd.RIGHT.up(function() {
         dude.setTexture(dudeTexRight1);
     });
@@ -243,40 +288,38 @@ function main() {
         };
 
         var position;
-        
+
         navigator.geolocation.getCurrentPosition(function(position) {
             // convert lon/lat into OS eastern northern coord
             position = OsGridRef.latLongToOsGrid(position.coords);
         });
-     
-/*
-      var nicTex = PIXI.Texture.fromImage("/imgs/nic.png");    
-      var bunnyTex = PIXI.Texture.fromImage("/imgs/bunny.png");
-      for(var i = 0; i < tiles.length; i++) {
-          for(var j = 0; j < tiles[i].length; j++) {
-              var texture;
-              if((i % 2) === 0) {
-                  tiles[i][j] = new PIXI.Sprite(nicTex);
-              } else {
-                  tiles[i][j] = new PIXI.Sprite(bunnyTex);
-              }
-              // create a new Sprite using the texture
 
-              // center the sprites anchor point
-              tiles[i][j].anchor.x = 0.5;
-              tiles[i][j].anchor.y = 0.5;
 
-              tiles[i][j].position.x = i*TILE_WIDTH;
-              tiles[i][j].position.y = j*TILE_HEIGHT;
+        for(var i = 0; i < tiles.length; i++) {
+            for(var j = 0; j < tiles[i].length; j++) {
+                var texture;
+                if((i % 2) === 0) {
+                    tiles[i][j] = new PIXI.Sprite(nicTex);
+                } else {
+                    tiles[i][j] = new PIXI.Sprite(bunnyTex);
+                }
+                // create a new Sprite using the texture
 
-              //stage.addChild(tiles[i][j]);
-          }
-      }
-   
+                // center the sprites anchor point
+                tiles[i][j].anchor.x = 0.5;
+                tiles[i][j].anchor.y = 0.5;
 
-*/
+                tiles[i][j].position.x = i*TILE_WIDTH;
+                tiles[i][j].position.y = j*TILE_HEIGHT;
 
- }
+                stage.addChild(tiles[i][j]);
+            }
+        }
+
+
+
+
+    }
 }
 function Point(x, y) {
     this.x = x;
