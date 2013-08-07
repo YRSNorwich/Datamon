@@ -14,6 +14,8 @@ function main() {
     var TILE_WIDTH = 64;
     var TILE_HEIGHT = 64;
 
+    var MOVE_SPEED = 5;
+
     var tiles = new Array();
 
     // The Length should be however wide the map is
@@ -35,7 +37,7 @@ function main() {
 
     requestAnimFrame(draw);
 
-    loadTiles();
+
 
     var dudeTexFront = PIXI.Texture.fromImage("/imgs/mainDude/frontView.png");
     var dude = new PIXI.Sprite(dudeTexFront);
@@ -86,6 +88,7 @@ function main() {
     //Centre dude!
     dude.position.x = WIDTH / 2;
     dude.position.y = HEIGHT / 2;
+    loadTiles();
 
     //go go gadget.
     stage.addChild(dude);
@@ -96,12 +99,57 @@ function main() {
         // Keydrown shizzle
         kd.tick();
 
+        update();
 
         // render the stage   
         renderer.render(stage);
 
         // signal end of frame to timer.
         timer.tick();
+    }
+
+    function update() {
+        // Set boundries of screen position (100 pixels from edge)
+        if(dude.position.x > 300) {
+            dude.position.x = 300;
+            cameraMove("right");
+        } else if (dude.position.x < 100) {
+            dude.position.x = 100;
+            cameraMove("left");
+        }
+
+        if(dude.position.y > 500) {
+            dude.position.y = 500;
+            cameraMove("up");
+        } else if(dude.position.y < 100) {
+            dude.position.y = 100;
+            cameraMove("down");
+        }
+    }
+
+    //enityscreenloc = (entloc - camgameloc) + camscreenloc
+    //tilescreenloc = (tilegameloc - playergameloc) + playerScreenloc
+    function cameraMove(dir) {
+        for(var i = 0; i < tiles.length; i++) {
+            for(var j = 0; j < tiles[i].length; j++) {
+                switch(dir) {
+                    case "left":
+                        tiles[i][j].position.x += MOVE_SPEED;
+                        break;
+                    case "right":
+                        tiles[i][j].position.x -= MOVE_SPEED;
+                        break;
+                    case "up":
+                        tiles[i][j].position.y -= MOVE_SPEED;
+                        break;
+                    case "down":
+                        tiles[i][j].position.y += MOVE_SPEED;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
     }
 
     // Sort out sprite animation 
@@ -174,7 +222,6 @@ function main() {
         navigator.geolocation.getCurrentPosition(function(position) {
             // convert lon/lat into OS eastern northern coord
             position = OsGridRef.latLongToOsGrid(position.coords);
-            console.log(position);
         });
       
       $.get('res/britain.txt', function(data) {
@@ -191,26 +238,33 @@ function main() {
            });
         });
 
-        for(var i = 0; i < tiles.length; i++) {
-            for(var j = 0; j < tiles[i].length; j++) {
-                if((i % 2) == 0) {
-                    // Load background texture
-                    var texture = PIXI.Texture.fromImage("/imgs/nic.png");
 
-                    // create a new Sprite using the texture
-                    var tile = new PIXI.Sprite(texture);
+      var nicTex = PIXI.Texture.fromImage("/imgs/nic.png");    
+      var bunnyTex = PIXI.Texture.fromImage("/imgs/bunny.png");
+      for(var i = 0; i < tiles.length; i++) {
+          for(var j = 0; j < tiles[i].length; j++) {
+              var texture;
+              if((i % 2) === 0) {
+                  tiles[i][j] = new PIXI.Sprite(nicTex);
+              } else {
+                  tiles[i][j] = new PIXI.Sprite(bunnyTex);
+              }
+              // create a new Sprite using the texture
 
-                    // center the sprites anchor point
-                    tile.anchor.x = 0.5;
-                    tile.anchor.y = 0.5;
+              // center the sprites anchor point
+              tiles[i][j].anchor.x = 0.5;
+              tiles[i][j].anchor.y = 0.5;
 
-                    tile.position.x = i*TILE_WIDTH;
-                    tile.position.y = j*TILE_HEIGHT;
+              tiles[i][j].position.x = i*TILE_WIDTH;
+              tiles[i][j].position.y = j*TILE_HEIGHT;
 
-                    stage.addChild(tile);
-                }
-            }
-        }
+              stage.addChild(tiles[i][j]);
+          }
+      }
     }
 }
 
+function Point(x, y) {
+    this.x = x;
+    this.y = y;
+}
