@@ -1,6 +1,6 @@
-* Make minimap use dumped file
+* Fix minimap centering and add player marker
 * Make page prettier
-* Use other tiles
 * Add weather
-* Add NPCs
-* Use new java generator
+* Add NPCs with AI based on crime data
+* Fix car so it rotates based on direction travelling
+* Fix 'river' glitch
