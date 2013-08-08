@@ -28,8 +28,33 @@ function main() {
     var HEIGHT = 500;
     var tiles;
     var chunks;
+  //Really hacky code to get the minimap coords.
+var canvas = document.getElementById('minimap');
+canvas.addEventListener('click', function(e) {
+    var x;
+    var y;
 
+if (e.pageX || e.pageY) { 
+  x = e.pageX;
+  y = e.pageY;
+}
+else { 
+  x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft; 
+  y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop; 
+} 
+x -= canvas.offsetLeft;
+y -= canvas.offsetTop;
+    
+    var mapPos = new Point(dude.gamePosition.x / 64, dude.gamePosition.y / 64);
+    var dudePos = new Point(dude.gamePosition.x,dude.gamePosition.y)
+    var clickpos = new Point(x,y);
+    teleport(dude,minimap2game(mapPos,dudePos,clickpos));
+    
+   //console.log("actual game pos:"+" "+mapPos.x+" "+mapPos.y);
+    //console.log("canvas has been clicked at:" + " " + x + " " + y);
 
+   
+ }, false);
     // create a renderer instance
     var renderer = PIXI.autoDetectRenderer(WIDTH, HEIGHT);
 
@@ -176,9 +201,9 @@ function main() {
         renderer.render(stage);
 
         // render the minimap stage
-        var mapPos = new Point(Math.floor(dude.gamePosition.x / 64), (dude.gamePosition.y / 64));
+        var mapPos = new Point(Math.floor(dude.gamePosition.x / 64), dude.gamePosition.y / 64);
         minimap.render(mapPos);
-        console.log(mapPos);
+        //console.log(mapPos);
 
         // signal end of frame to timer.
         timer.tick();
