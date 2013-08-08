@@ -134,7 +134,7 @@ function main() {
                 if(!(chunks[i][j].draw) && collides(chunks[i][j], dude)) {
                     console.log("NEW COLLISION: " + i + ", " + j);
                     chunks[i][j].draw = true;
-                    chunks[i][j].drawTiles(stage);
+                    chunks[i][j].drawTiles(stage, dude);
                     console.log("spawning chunk @" + chunks[i][j].position);
                 } else if(chunks[i][j].draw) {
                     //chunks[i][j].draw = false;

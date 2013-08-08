@@ -22,22 +22,22 @@ function Chunk(x, y) {
         this.tiles.push(tile);
     }
 
-    this.drawTiles = function(stage) {
+    this.drawTiles = function(stage, dude) {
         for(var i = 0; i < this.tiles.length; i++) {
             for(var j = 0; j < this.tiles[i].length; j++) {
                 if(this.tiles[i][j] === 1) {
                     this.tiles[i][j] = new PIXI.Sprite(nicTex);
                     this.tiles[i][j].anchor.x = 0.5;
                     this.tiles[i][j].anchor.y = 0.5;
-                    this.tiles[i][j].position.x = /*this.gamePosition.x + */i*TILE_WIDTH;
-                    this.tiles[i][j].position.y = /*this.gamePosition.y + */j*TILE_HEIGHT;
+                    this.tiles[i][j].position.x = dude.position.x + i*TILE_WIDTH - (dude.gamePosition.x - this.gamePositionx);
+                    this.tiles[i][j].position.y = dude.position.y + j*TILE_HEIGHT - (dude.gamePosition.y - this.gamePosition.y);
                     stage.addChild(tiles[i][j]);
                 } else {
                     this.tiles[i][j] = new PIXI.Sprite(bunnyTex);
                     this.tiles[i][j].anchor.x = 0.5;
                     this.tiles[i][j].anchor.y = 0.5;
-                    this.tiles[i][j].position.x = i*TILE_WIDTH;
-                    this.tiles[i][j].position.y = j*TILE_HEIGHT;
+                    this.tiles[i][j].position.x = dude.position.x + i*TILE_WIDTH - (dude.gamePosition.x - this.gamePosition.x);
+                    this.tiles[i][j].position.y = dude.position.y + j*TILE_HEIGHT - (dude.gamePosition.y - this.gamePosition.y);
                     stage.addChild(this.tiles[i][j]);
                 }
             }
