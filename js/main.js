@@ -48,10 +48,10 @@ y -= canvas.offsetTop;
     var mapPos = new Point(dude.gamePosition.x / 64, dude.gamePosition.y / 64);
     var dudePos = new Point(dude.gamePosition.x,dude.gamePosition.y)
     var clickpos = new Point(x,y);
-    teleport(dude,minimap2game(mapPos,dudePos,clickpos));
-    
+    //teleport(dude,minimap2game(mapPos,dudePos,clickpos));
+
    //console.log("actual game pos:"+" "+mapPos.x+" "+mapPos.y);
-    //console.log("canvas has been clicked at:" + " " + x + " " + y);
+    console.log("canvas has been clicked at:" + " " + x + " " + y);
 
    
  }, false);
