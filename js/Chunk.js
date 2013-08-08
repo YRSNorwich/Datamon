@@ -8,6 +8,8 @@ function Chunk(x, y) {
     this.tiles = get2DArray(this.sizew, this.sizeh);
     this.tileMap = get2DArray(this.sizew, this.sizeh);
     this.draw = false;
+    this.boundingBoxes = new Array();
+
     var nicTex = PIXI.Texture.fromImage("/imgs/nic.png");
     var bunnyTex = PIXI.Texture.fromImage("/imgs/bunny.png");
 

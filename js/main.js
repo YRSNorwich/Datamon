@@ -5,12 +5,13 @@ function main() {
     timer.tick();
 
     // create an new instance of a pixi stage
-    var stage = new PIXI.Stage(0x66FF99);
+    var stage = new PIXI.Stage(0x0077FF);
 
     var WIDTH = 800;
     var HEIGHT = 500;
     var tiles;
     var chunks;
+
 
     // create a renderer instance
     var renderer = PIXI.autoDetectRenderer(WIDTH, HEIGHT);
@@ -36,8 +37,6 @@ function main() {
     var dudeTexLeft2 = PIXI.Texture.fromImage("/imgs/mainDude/sideViewLeft2.png");
     var dudeTexRight1 = PIXI.Texture.fromImage("/imgs/mainDude/sideViewRight1.png");
     var dudeTexRight2 = PIXI.Texture.fromImage("/imgs/mainDude/sideViewRight2.png");
-    var nicTex = PIXI.Texture.fromImage("/imgs/nic.png");    
-    var bunnyTex = PIXI.Texture.fromImage("/imgs/bunny.png");
     
     // Add animations to sprite sets
     var dudeUpSet = [
@@ -69,11 +68,13 @@ function main() {
     // center the sprites anchor point
     dude.anchor.x = 0.5;
     dude.anchor.y = 0.5;
+
+    var camera = new BoundingBox(dude.position.x, dude.position.y, WIDTH, HEIGHT);
     
     //Centre dude!
     dude.position.x = WIDTH / 2;
     dude.position.y = HEIGHT / 2;
-    dude.gamePosition = new Point(dude.position.x, 1100*64);
+    dude.gamePosition = new Point(10*64, 1150*64);
     
     //reads a file and converts into array, then sets up the tiles
     convert("/res/britain.txt", function(myLevel) {
@@ -122,27 +123,29 @@ function main() {
             }
         }
 
-        loadLevel();
+        updateLevel();
     
         requestAnimFrame(draw);
     });
   
 
-    function loadLevel() {
+    function updateLevel() {
+        // Make a new camera object with a slightly bigger view, to hack seeing a chunk appear
+        var tempCamera = new BoundingBox((camera.gamePosition.x - 50), (camera.gamePosition.y - 50), (camera.width + 100), (camera.height + 100));
+        console.log(tempCamera);
         for(var i = 0; i < chunks.length; i++) {
             for(var j = 0; j < chunks[i].length; j++) {
-                if(!(chunks[i][j].draw) && collides(chunks[i][j], dude)) {
-                    console.log("NEW COLLISION: " + i + ", " + j);
+                if(!(chunks[i][j].draw) && collides(chunks[i][j], tempCamera)) {
                     chunks[i][j].draw = true;
                     chunks[i][j].drawTiles(stage, dude);
-                    console.log("spawning chunk @" + chunks[i][j].position);
-                } else if ((chunks[i][j].draw) && !(collides(chunks[i][j], dude))) {
+                } else if ((chunks[i][j].draw) && !(collides(chunks[i][j], tempCamera))) {
                     chunks[i][j].draw = false;
                     chunks[i][j].unload(stage);
                 }
             }
         }
         stage.addChild(dude);
+        console.log(camera.height);
     }
 
     function draw() {
@@ -157,16 +160,11 @@ function main() {
 
         // signal end of frame to timer.
         timer.tick();
-   	
+
     }
      
 
     function update() {
-        //Set the 'gamePosition' of the dude, so collision actually works
-        loadLevel();
-        //go go gadget.
-        //stage.removeChild(dude);
-
         // Set boundries of screen position (100 pixels from edge)
         if(dude.position.x > 700) {
             dude.position.x = 700;
@@ -183,6 +181,15 @@ function main() {
             dude.position.y = 100;
             cameraMove("down");
         }
+
+        // Set the camera's position in the game world
+        camera.gamePosition.x = dude.gamePosition.x - dude.position.x;
+        camera.gamePosition.y = dude.gamePosition.y - dude.position.y;
+        
+        updateLevel();
+        
+        //go go gadget.
+        //stage.removeChild(dude);
     }
 
     //enityscreenloc = (entloc - camgameloc) + camscreenloc
