@@ -723,6 +723,9 @@ PIXI.Sprite = function(texture)
 	}
 	
 	this.renderable = true;
+
+        // MILO: Gameposition for helping with camera/chunk collision
+        this.gamePosition;
 	
 	// thi next bit is here for the docs...
 	

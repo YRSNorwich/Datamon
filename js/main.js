@@ -7,18 +7,11 @@ function main() {
     // create an new instance of a pixi stage
     var stage = new PIXI.Stage(0x66FF99);
 
-    var WIDTH = 600;
-    var HEIGHT = 600;
+    var tiles;
+    var chunks;
 
-    var TILE_WIDTH = 64;
-    var TILE_HEIGHT = 64;
-
-    var MOVE_SPEED = 5;
-
-    var tiles = new Array();
 
     // create a renderer instance
-   
     var renderer = PIXI.autoDetectRenderer(WIDTH, HEIGHT);
 
     // add the renderer view element to the DOM
@@ -27,7 +20,6 @@ function main() {
     // centre the canvas
     $('canvas').css("display", "inline");
 
-    requestAnimFrame(draw);
 
     var dudeTexFront = PIXI.Texture.fromImage("/imgs/mainDude/frontView.png");
     var dude = new PIXI.Sprite(dudeTexFront);
@@ -80,9 +72,10 @@ function main() {
     //Centre dude!
     dude.position.x = WIDTH / 2;
     dude.position.y = HEIGHT / 2;
+    dude.gamePosition = new Point(dude.position.x, dude.position.y);
     
     //reads a file and converts into array, then sets up the tiles
-    convert("/res/test.txt", function(myLevel) {
+    convert("/res/britain.txt", function(myLevel) {
         //split into array
         level = myLevel.split('');
 
@@ -117,40 +110,38 @@ function main() {
 
         level = tempLevel;
 
+        // Set up the tiles/chunks
+        // Set all the position
+        chunks = get2DArray((mapWidth / CHUNK_X), (mapHeight / CHUNK_Y));
+        for(var i = 0; i < chunks.length; i++) {
+            for(var j = 0; j < chunks[i].length; j++) {
+                chunks[i][j] = new Chunk(i*CHUNK_WIDTH, j*CHUNK_HEIGHT);
+                chunks[i][j].loadTiles(level, CHUNK_X*i, CHUNK_Y*j);
+            }
+        }
 
-        //Set up the tiles
         tiles = get2DArray(mapWidth, mapHeight);
-        
-        readLevel();
 
-        //go go gadget.
-        stage.addChild(dude);
+        loadLevel();
+    
+        requestAnimFrame(draw);
     });
   
 
-    function readLevel() {
-        for (var i = 0; i < level.length; i++) {
-            for (var j = 0; j < level[i].length; j++) {
-                if(level[i][j] === 1) {
-                    tiles[i][j] = new PIXI.Sprite(nicTex);
-                    tiles[i][j].anchor.x = 0.5;
-                    tiles[i][j].anchor.y = 0.5;
-                    tiles[i][j].position.x = i*TILE_WIDTH;
-                    tiles[i][j].position.y = j*TILE_HEIGHT;
-                    stage.addChild(tiles[i][j]);
-                } else {
-                    tiles[i][j] = new PIXI.Sprite(bunnyTex);
-                    tiles[i][j].anchor.x = 0.5;
-                    tiles[i][j].anchor.y = 0.5;
-                    tiles[i][j].position.x = i*TILE_WIDTH;
-                    tiles[i][j].position.y = j*TILE_HEIGHT;
-                    stage.addChild(tiles[i][j]);
+    function loadLevel() {
+        for(var i = 0; i < chunks.length; i++) {
+            for(var j = 0; j < chunks[i].length; j++) {
+                if(!(chunks[i][j].draw) && collides(chunks[i][j], dude)) {
+                    console.log("NEW COLLISION: " + i + ", " + j);
+                    chunks[i][j].draw = true;
+                    chunks[i][j].drawTiles(stage);
+                    console.log("spawning chunk @" + chunks[i][j].position);
+                } else if(chunks[i][j].draw) {
+                    //chunks[i][j].draw = false;
                 }
-                //(i * blockSize, j * blockSize, level[i][j], false, false, tempImg);
-
-                //throw('tiles['+i+']'+j+'] = ' + level[i][j]);
             }
         }
+        stage.addChild(dude);
     }
 
     function draw() {
@@ -173,6 +164,11 @@ function main() {
      
 
     function update() {
+        //Set the 'gamePosition' of the dude, so collision actually works
+        loadLevel();
+        //go go gadget.
+        //stage.removeChild(dude);
+
         // Set boundries of screen position (100 pixels from edge)
         if(dude.position.x > 500) {
             dude.position.x = 500;
@@ -194,23 +190,25 @@ function main() {
     //enityscreenloc = (entloc - camgameloc) + camscreenloc
     //tilescreenloc = (tilegameloc - playergameloc) + playerScreenloc
     function cameraMove(dir) {
-        for(var i = 0; i < tiles.length; i++) {
-            for(var j = 0; j < tiles[i].length; j++) {
-                switch(dir) {
-                    case "left":
-                        tiles[i][j].position.x += MOVE_SPEED;
-                        break;
-                    case "right":
-                        tiles[i][j].position.x -= MOVE_SPEED;
-                        break;
-                    case "up":
-                        tiles[i][j].position.y -= MOVE_SPEED;
-                        break;
-                    case "down":
-                        tiles[i][j].position.y += MOVE_SPEED;
-                        break;
-                    default:
-                        break;
+        for(var i = 0; i < chunks.length; i++) {
+            for(var j = 0; j < chunks[i].length; j++) {
+                if(chunks[i][j].draw) {
+                    switch(dir) {
+                        case "left":
+                            chunks[i][j].move(MOVE_SPEED, 0);
+                            break;
+                        case "right":
+                            chunks[i][j].move(-MOVE_SPEED, 0);
+                            break;
+                        case "up":
+                            chunks[i][j].move(0, -MOVE_SPEED);
+                            break;
+                        case "down":
+                            chunks[i][j].move(0, MOVE_SPEED);
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
         }
@@ -233,37 +231,38 @@ function main() {
 
     kd.UP.down(function() {
         animate(dude, dudeUpAnimation, timer.getSeconds());
-        dude.position.y -= 5;
+        dude.position.y -= MOVE_SPEED;
+        dude.gamePosition.y -= MOVE_SPEED;
     });
 
     kd.UP.up(function() {
         dude.setTexture(dudeTexRear);
-        dude.position.y -= 5;
     });
 
     kd.DOWN.down(function() {
         animate(dude, dudeDownAnimation, timer.getSeconds());
-        dude.position.y += 5;
+        dude.position.y += MOVE_SPEED;
+        dude.gamePosition.y += MOVE_SPEED;
     });
 
     kd.DOWN.up(function() {
         dude.setTexture(dudeTexFront);
-        dude.position.y += 5;
     });
 
     kd.LEFT.down(function() {
         animate(dude, dudeLeftAnimation, timer.getSeconds());
-        dude.position.x -= 5;
+        dude.position.x -= MOVE_SPEED;
+        dude.gamePosition.x -= MOVE_SPEED;
     });
 
     kd.LEFT.up(function() {
         dude.setTexture(dudeTexLeft1);
-        dude.position.x -= 5;
     });
 
     kd.RIGHT.down(function() {
         animate(dude, dudeRightAnimation, timer.getSeconds());
-        dude.position.x += 5;
+        dude.position.x += MOVE_SPEED;
+        dude.gamePosition.x += MOVE_SPEED;
     });
 
     kd.RIGHT.up(function() {
@@ -314,21 +313,6 @@ function main() {
 
 
     }
-}
-function Point(x, y) {
-    this.x = x;
-    this.y = y;
-}
-
-function get2DArray(x, y) {
-    var array = new Array();
-    array.length = x;
-    for(var i = 0; i < array.length; i++) {
-        array[i] = new Array();
-        array[i].length = y;
-    }
-
-    return array;
 }
 
 var moveIt = function () {
