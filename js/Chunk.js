@@ -4,7 +4,7 @@ function Chunk(x, y) {
     this.width = CHUNK_WIDTH;
     this.height = CHUNK_HEIGHT;
     this.sizew = 14;
-    this.sizeh = 24;
+    this.sizeh = 20;
     this.tiles = get2DArray(this.sizew, this.sizeh);
     this.tileMap = get2DArray(this.sizew, this.sizeh);
     this.draw = false;
@@ -21,7 +21,8 @@ function Chunk(x, y) {
         }
     }
 
-    this.drawTiles = function(stage, dude) {
+    this.drawTiles = function(stage, dude, camera) {
+        //console.log("beg: " + this.gamePosition.x);
         for(var i = 0; i < this.tiles.length; i++) {
             for(var j = 0; j < this.tiles[i].length; j++) {
                 if(this.tileMap[i][j] === 1) {
@@ -33,10 +34,11 @@ function Chunk(x, y) {
                 this.tiles[i][j].anchor.x = 0.5;
                 this.tiles[i][j].anchor.y = 0.5;
                 this.tiles[i][j].position.x = dude.position.x + i*TILE_WIDTH - (dude.gamePosition.x - this.gamePosition.x);
-                this.tiles[i][j].position.y = dude.position.y + j*TILE_HEIGHT - (dude.gamePosition.y - this.gamePosition.y);
+                this.tiles[i][j].position.y = dude.position.y + j*TILE_HEIGHT - ((dude.gamePosition.y) - this.gamePosition.y);
                 stage.addChild(this.tiles[i][j]);
             }
         }
+        //console.log("end: " +  this.gamePosition.x);
     }
 
     this.move = function(dx, dy) {

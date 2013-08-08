@@ -1,4 +1,16 @@
-$(document).ready(main);
+$(document).ready(init);
+
+var currentLocation;
+
+function init() {
+    // Get Current location
+    navigator.geolocation.getCurrentPosition(function(position) {
+        // convert lon/lat into OS eastern northern coord
+        position = OsGridRef.latLongToOsGrid(position.coords);
+        currentLocation = new Point(Math.floor(position.easting / 1000), 1100 - Math.floor(position.northing / 1000));
+        main();
+    });
+}
 function main() {
     //A timer for use in animation
     var timer = new FrameTimer();
@@ -70,11 +82,11 @@ function main() {
     dude.anchor.y = 0.5;
 
     var camera = new BoundingBox(dude.position.x, dude.position.y, WIDTH, HEIGHT);
-    
+    dude.gamePosition = new Point(TILE_WIDTH*currentLocation.x, TILE_HEIGHT*currentLocation.y);
     //Centre dude!
     dude.position.x = WIDTH / 2;
     dude.position.y = HEIGHT / 2;
-    dude.gamePosition = new Point(10*64, 1150*64);
+
     
     //reads a file and converts into array, then sets up the tiles
     convert("/res/britain.txt", function(myLevel) {
@@ -123,6 +135,7 @@ function main() {
             }
         }
 
+        console.log("1");
         updateLevel();
     
         requestAnimFrame(draw);
@@ -132,12 +145,12 @@ function main() {
     function updateLevel() {
         // Make a new camera object with a slightly bigger view, to hack seeing a chunk appear
         var tempCamera = new BoundingBox((camera.gamePosition.x - 50), (camera.gamePosition.y - 50), (camera.width + 100), (camera.height + 100));
-        console.log(tempCamera);
         for(var i = 0; i < chunks.length; i++) {
             for(var j = 0; j < chunks[i].length; j++) {
                 if(!(chunks[i][j].draw) && collides(chunks[i][j], tempCamera)) {
                     chunks[i][j].draw = true;
-                    chunks[i][j].drawTiles(stage, dude);
+                    chunks[i][j].drawTiles(stage, dude, camera);
+                    console.log("Just drew chunk " + "[" + i + ", " + j + "]");
                 } else if ((chunks[i][j].draw) && !(collides(chunks[i][j], tempCamera))) {
                     chunks[i][j].draw = false;
                     chunks[i][j].unload(stage);
@@ -145,7 +158,6 @@ function main() {
             }
         }
         stage.addChild(dude);
-        console.log(camera.height);
     }
 
     function draw() {
@@ -278,27 +290,6 @@ function main() {
         dude.rotation += 0.1;
     });
 
-    function loadTiles() {
-        // Get Current location
-        currentLocation = {
-            lon: 0,
-            lat: 0
-        };
-
-        var position;
-
-        navigator.geolocation.getCurrentPosition(function(position) {
-            // convert lon/lat into OS eastern northern coord
-            position = OsGridRef.latLongToOsGrid(position.coords);
-        });
-
-
-     
-
-
-
-
-    }
 }
 
 var moveIt = function () {
