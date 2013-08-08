@@ -81,7 +81,7 @@ function main() {
         level = myLevel.split('');
 
         var mapWidth;
-        var mapHeight = 0;
+        var mapHeight = 1;
 
         //find width
         for(var i = 0; i < level.length; i++) {
