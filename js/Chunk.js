@@ -11,7 +11,7 @@ function Chunk(x, y) {
     this.boundingBoxes = new Array();
 
     var nicTex = PIXI.Texture.fromImage("/imgs/nic.png");
-    var bunnyTex = PIXI.Texture.fromImage("/imgs/bunny.png");
+    var bunnyTex = PIXI.Texture.fromImage("/imgs/water.png");
 
     this.loadTiles = function(array, blockpos) {
         for(var x = 0; x < this.sizew; x++) {
