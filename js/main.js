@@ -109,27 +109,17 @@ function main() {
         }
 
         //finally convert to 2D array
-        var tempLevel = new Array();
-        tempLevel.length = mapWidth;
-
-        for(var i = 0; i < tempLevel.length; i++) {
-            tempLevel[i] = new Array();
-            tempLevel[i].length = mapHeight;
-        }
+        var tempLevel = get2DArray(mapWidth, mapHeight);
 
         for(var i = 0; i < level.length; i++) {
-            tempLevel[i % 10][Math.floor(i / 10)] = level[i];
+            tempLevel[i % mapWidth][Math.floor(i / mapWidth)] = level[i];
         }
 
         level = tempLevel;
 
 
         //Set up the tiles
-        tiles.length = mapWidth;
-        for(var i = 0; i < tiles.length; i++) {
-            tiles[i] = new Array();
-            tiles[i].length = mapHeight;
-        }
+        tiles = get2DArray(mapWidth, mapHeight);
         
         readLevel();
 
@@ -179,7 +169,6 @@ function main() {
     }
 
     window.onresize = function(event) {
-    		
     }
      
 
@@ -330,6 +319,18 @@ function Point(x, y) {
     this.x = x;
     this.y = y;
 }
+
+function get2DArray(x, y) {
+    var array = new Array();
+    array.length = x;
+    for(var i = 0; i < array.length; i++) {
+        array[i] = new Array();
+        array[i].length = y;
+    }
+
+    return array;
+}
+
 var moveIt = function () {
     var halfObjectHeight = ($('#canvainer').height() / 2);
     var halfObjectWidth = ($('#canvainer').width() / 2);
