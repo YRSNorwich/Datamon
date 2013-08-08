@@ -73,7 +73,7 @@ function main() {
     //Centre dude!
     dude.position.x = WIDTH / 2;
     dude.position.y = HEIGHT / 2;
-    dude.gamePosition = new Point(dude.position.x, dude.position.y);
+    dude.gamePosition = new Point(dude.position.x, 1100*64);
     
     //reads a file and converts into array, then sets up the tiles
     convert("/res/britain.txt", function(myLevel) {
@@ -117,11 +117,10 @@ function main() {
         for(var i = 0; i < chunks.length; i++) {
             for(var j = 0; j < chunks[i].length; j++) {
                 chunks[i][j] = new Chunk(i*CHUNK_WIDTH, j*CHUNK_HEIGHT);
-                chunks[i][j].loadTiles(level, CHUNK_X*i, CHUNK_Y*j);
+                var pos = new Point(CHUNK_X*i, CHUNK_Y*j);
+                chunks[i][j].loadTiles(level, pos);
             }
         }
-
-        tiles = get2DArray(mapWidth, mapHeight);
 
         loadLevel();
     
@@ -137,8 +136,9 @@ function main() {
                     chunks[i][j].draw = true;
                     chunks[i][j].drawTiles(stage, dude);
                     console.log("spawning chunk @" + chunks[i][j].position);
-                } else if(chunks[i][j].draw) {
-                    //chunks[i][j].draw = false;
+                } else if ((chunks[i][j].draw) && !(collides(chunks[i][j], dude))) {
+                    chunks[i][j].draw = false;
+                    chunks[i][j].unload(stage);
                 }
             }
         }
