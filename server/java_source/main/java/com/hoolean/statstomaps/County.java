@@ -58,6 +58,12 @@ public class County implements Serializable {
 	public short populationDensity = 0;
 	
 	/**
+	 * Amount of crime incidents that have happened in the county divided by the population density
+	 */
+	public double crimeIncidents = 0;
+	
+	
+	/**
 	 * Latitude of the center of the county
 	 */
 	public final double lat;
