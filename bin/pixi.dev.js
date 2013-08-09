@@ -726,6 +726,11 @@ PIXI.Sprite = function(texture)
 
         // MILO: Gameposition for helping with camera/chunk collision
         this.gamePosition;
+        
+        // MILO: FOR STORING TILE ID, BECAUSE HACK
+        this.countyId;
+        this.county;
+        this.tileType;
 	
 	// thi next bit is here for the docs...
 	
@@ -2769,8 +2774,8 @@ PIXI.WebGLRenderer.updateTexture = function(texture)
 	 	gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
 	 	
 		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.source);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
 		
 		// reguler...
 		
@@ -6576,26 +6581,45 @@ PIXI.BaseTexture = function(source)
 		{
 			
 			var scope = this;
-			this.source.onload = function(){
-				
-				scope.hasLoaded = true;
-				scope.width = scope.source.width;
-				scope.height = scope.source.height;
-			
-				// add it to somewhere...
-				PIXI.texturesToUpdate.push(scope);
-				scope.dispatchEvent( { type: 'loaded', content: scope } );
-			}
-			//	this.image.src = imageUrl;
+                        if(this.source.src.indexOf("terrain") != -1) {
+                            this.source.onload = function(){
+                                scope.hasLoaded = true;
+                                scope.width = 512;
+                                scope.height = 512;
+
+                                // add it to somewhere...
+                                PIXI.texturesToUpdate.push(scope);
+                                scope.dispatchEvent( { type: 'loaded', content: scope } );
+                            }
+                        } else {
+                            this.source.onload = function(){
+                                scope.hasLoaded = true;
+                                scope.width = scope.source.width;
+                                scope.height = scope.source.height;
+
+                                // add it to somewhere...
+                                PIXI.texturesToUpdate.push(scope);
+                                scope.dispatchEvent( { type: 'loaded', content: scope } );
+                            }
+                        }
+                        //	this.image.src = imageUrl;
 		}
 	}
 	else
 	{
+            if(this.source.src.indexOf("terrain") != -1) {
+		this.hasLoaded = true;
+		this.width = 512;
+		this.height = 512;
+			
+		PIXI.texturesToUpdate.push(this);
+            } else {
 		this.hasLoaded = true;
 		this.width = this.source.width;
 		this.height = this.source.height;
 			
 		PIXI.texturesToUpdate.push(this);
+            }
 	}
 	
 	this._powerOf2 = false;

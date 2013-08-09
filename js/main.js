@@ -24,12 +24,35 @@ function main() {
     // create an new instance of a pixi stage
     var stage = new PIXI.Stage(0x0077FF);
 
-    var WIDTH = 800;
-    var HEIGHT = 500;
     var tiles;
     var chunks;
+    //Really hacky code to get the minimap coords.
+    var canvas = document.getElementById('minimap');
+    canvas.addEventListener('click', function(e) {
+        var x;
+        var y;
+
+        if (e.pageX || e.pageY) { 
+            x = e.pageX;
+            y = e.pageY;
+        }
+        else { 
+            x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft; 
+            y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop; 
+        } 
+    x -= canvas.offsetLeft;
+    y -= canvas.offsetTop;
+
+    var mapPos = new Point(dude.gamePosition.x / TILE_WIDTH, dude.gamePosition.y / TILE_HEIGHT);
+    var dudePos = new Point(dude.gamePosition.x, dude.gamePosition.y)
+        var clickpos = new Point(x,y);
+    //teleport(dude,minimap2game(mapPos,dudePos,clickpos));
+
+    //console.log("actual game pos:"+" "+mapPos.x+" "+mapPos.y);
+    console.log("canvas has been clicked at:" + " " + x + " " + y);
 
 
+    }, false);
     // create a renderer instance
     var renderer = PIXI.autoDetectRenderer(WIDTH, HEIGHT);
 
@@ -43,56 +66,46 @@ function main() {
     var dudeTexFront = PIXI.Texture.fromImage("/imgs/mainDude/frontView.png");
     var dude = new PIXI.Sprite(dudeTexFront);
 
-    // Load textures. Numbered ones are animation.
-    var dudeTexRear = PIXI.Texture.fromImage("/imgs/mainDude/rearView.png");
-    var dudeTexRear1 = PIXI.Texture.fromImage("/imgs/mainDude/rearView1.png");
-    var dudeTexRear2 = PIXI.Texture.fromImage("/imgs/mainDude/rearView2.png");
-    var dudeTexFront = PIXI.Texture.fromImage("/imgs/mainDude/frontView.png");
-    var dudeTexFront1 = PIXI.Texture.fromImage("/imgs/mainDude/frontView1.png");
-    var dudeTexFront2 = PIXI.Texture.fromImage("/imgs/mainDude/frontView2.png");
-    var dudeTexLeft1 = PIXI.Texture.fromImage("/imgs/mainDude/sideViewLeft1.png");
-    var dudeTexLeft2 = PIXI.Texture.fromImage("/imgs/mainDude/sideViewLeft2.png");
-    var dudeTexRight1 = PIXI.Texture.fromImage("/imgs/mainDude/sideViewRight1.png");
-    var dudeTexRight2 = PIXI.Texture.fromImage("/imgs/mainDude/sideViewRight2.png");
-    
+
     // Add animations to sprite sets
     var dudeUpSet = [
         dudeTexRear1,
         dudeTexRear2
-    ];
-    
+            ];
+
     var dudeDownSet = [
         dudeTexFront1,
         dudeTexFront2
-    ];
-    
+            ];
+
     var dudeLeftSet = [
         dudeTexLeft1,
         dudeTexLeft2
-    ];
-    
+            ];
+
     var dudeRightSet = [
         dudeTexRight1,
         dudeTexRight2
-    ];
+            ];
 
     // Load needed animations (spriteSet, duration)
     var dudeUpAnimation = new Animation(dudeUpSet, 0.2);
     var dudeDownAnimation = new Animation(dudeDownSet, 0.2);
     var dudeLeftAnimation = new Animation(dudeLeftSet, 0.2);
     var dudeRightAnimation = new Animation(dudeRightSet, 0.2);
-    
+
     // center the sprites anchor point
     dude.anchor.x = 0.5;
     dude.anchor.y = 0.5;
 
     var camera = new BoundingBox(dude.position.x, dude.position.y, WIDTH, HEIGHT);
     dude.gamePosition = new Point(TILE_WIDTH*currentLocation.x, TILE_HEIGHT*currentLocation.y);
-    
+    //dude.gamePosition = new Point(TILE_WIDTH*512, TILE_HEIGHT*919);
+
     //Centre dude!
     dude.position.x = WIDTH / 2;
     dude.position.y = HEIGHT / 2;
-    
+
     //reads a file and converts into array, then sets up the tiles
     convert("/res/britain.txt", function(myLevel) {
         //split into array
@@ -140,12 +153,11 @@ function main() {
             }
         }
 
-        console.log("1");
         updateLevel();
-    
+
         requestAnimFrame(draw);
     });
-  
+
 
     function updateLevel() {
         // Make a new camera object with a slightly bigger view, to hack seeing a chunk appear
@@ -154,8 +166,9 @@ function main() {
             for(var j = 0; j < chunks[i].length; j++) {
                 if(!(chunks[i][j].draw) && collides(chunks[i][j], tempCamera)) {
                     chunks[i][j].draw = true;
-                    chunks[i][j].drawTiles(stage, dude, camera);
-                    console.log("Just drew chunk " + "[" + i + ", " + j + "]");
+                    chunks[i][j].drawTiles(stage, dude);
+                    fetchChunkData(new Point(i*CHUNK_X, j*CHUNK_Y), loadChunkData);
+                    //console.log("Just drew chunk " + "[" + i + ", " + j + "]");
                 } else if ((chunks[i][j].draw) && !(collides(chunks[i][j], tempCamera))) {
                     chunks[i][j].draw = false;
                     chunks[i][j].unload(stage);
@@ -176,28 +189,28 @@ function main() {
         renderer.render(stage);
 
         // render the minimap stage
-        var mapPos = new Point(Math.floor(dude.gamePosition.x / 64), (dude.gamePosition.y / 64));
+        var mapPos = new Point(Math.floor(dude.gamePosition.x / TILE_WIDTH), dude.gamePosition.y / TILE_HEIGHT);
         minimap.render(mapPos);
-        console.log(mapPos);
+        //console.log(mapPos);
 
         // signal end of frame to timer.
         timer.tick();
 
     }
-     
+
 
     function update() {
         // Set boundries of screen position (100 pixels from edge)
-        if(dude.position.x > 700) {
-            dude.position.x = 700;
+        if(dude.position.x > (WIDTH - 100)) {
+            dude.position.x = (WIDTH - 100);
             cameraMove("right");
         } else if (dude.position.x < 100) {
             dude.position.x = 100;
             cameraMove("left");
         }
 
-        if(dude.position.y > 400) {
-            dude.position.y = 400;
+        if(dude.position.y > (HEIGHT - 100)) {
+            dude.position.y = (HEIGHT - 100);
             cameraMove("up");
         } else if(dude.position.y < 100) {
             dude.position.y = 100;
@@ -207,9 +220,9 @@ function main() {
         // Set the camera's position in the game world
         camera.gamePosition.x = dude.gamePosition.x - dude.position.x;
         camera.gamePosition.y = dude.gamePosition.y - dude.position.y;
-        
+
         updateLevel();
-        
+
         //go go gadget.
         //stage.removeChild(dude);
     }
@@ -256,8 +269,79 @@ function main() {
         thing.setTexture(animation.frames[animation.frame]);
     }
 
+    function populateChunk(chunk) {
+        $.ajax({
+            url: "/getCountyData",
+        data: {"id" : chunk},
+        dataType: "json",
+        success: function(data) {
+            console.log(data);
+        }
+        });
+    }
+
+    function fetchChunkData(chunkCoords, callback) {
+        $.ajax({
+            url: "/getChunk",
+        data: {"coord1" : chunkCoords.x,
+            "coord2" : chunkCoords.y},
+        dataType: "json",
+        success: function(data) {
+            var pos = new Point(chunkCoords.x, chunkCoords.y);
+            callback(pos, data);
+        }
+        });
+    }
+
+    function loadChunkData(pos, data) {
+        pos.x /= CHUNK_X;
+        pos.y /= CHUNK_Y;
+        for(var i = 0; i < chunks[pos.x][pos.y].tiles.length; i++) {
+            for(var j = 0; j < chunks[pos.x][pos.y].tiles[i].length; j++) {
+                chunks[pos.x][pos.y].tiles[i][j].countyId = data.chunk[i][j][1];
+                switch(data.chunk[i][j][0]) {
+                    case 0:
+                        //sea
+                        chunks[pos.x][pos.y].tiles[i][j].setTexture(waterTex);
+                        break;
+                    case 1:
+                        //land
+                        chunks[pos.x][pos.y].tiles[i][j].setTexture(landTex);
+                        break;
+                    case 2:
+                        //farm
+                        chunks[pos.x][pos.y].tiles[i][j].setTexture(farmTex);
+                        break;
+                    case 3:
+                        //village
+                        chunks[pos.x][pos.y].tiles[i][j].setTexture(villageTex);
+                        break;
+                    case 4:
+                        //town
+                        chunks[pos.x][pos.y].tiles[i][j].setTexture(townTex);
+                        break;
+                    case 5:
+                        //city
+                        chunks[pos.x][pos.y].tiles[i][j].setTexture(cityTex);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+    
+    Number.prototype.toRad = function() {
+        return this * Math.PI / 180;
+    }
+    
+    var dudeInCar = false;
     kd.UP.down(function() {
-        animate(dude, dudeUpAnimation, timer.getSeconds());
+        if(dudeInCar) {
+            dude.rotation = 0;
+        } else {
+            animate(dude, dudeUpAnimation, timer.getSeconds());
+        }
         dude.position.y -= MOVE_SPEED;
         dude.gamePosition.y -= MOVE_SPEED;
     });
@@ -267,7 +351,11 @@ function main() {
     });
 
     kd.DOWN.down(function() {
-        animate(dude, dudeDownAnimation, timer.getSeconds());
+        if(dudeInCar) {
+            dude.rotation = (180).toRad();
+        } else {
+            animate(dude, dudeDownAnimation, timer.getSeconds());
+        }
         dude.position.y += MOVE_SPEED;
         dude.gamePosition.y += MOVE_SPEED;
     });
@@ -277,7 +365,11 @@ function main() {
     });
 
     kd.LEFT.down(function() {
-        animate(dude, dudeLeftAnimation, timer.getSeconds());
+        if(dudeInCar) {
+            dude.rotation = (270).toRad();
+        } else {
+            animate(dude, dudeLeftAnimation, timer.getSeconds());
+        }
         dude.position.x -= MOVE_SPEED;
         dude.gamePosition.x -= MOVE_SPEED;
     });
@@ -287,7 +379,11 @@ function main() {
     });
 
     kd.RIGHT.down(function() {
-        animate(dude, dudeRightAnimation, timer.getSeconds());
+        if(dudeInCar) {
+            dude.rotation = (90).toRad();
+        } else {
+            animate(dude, dudeRightAnimation, timer.getSeconds());
+        }
         dude.position.x += MOVE_SPEED;
         dude.gamePosition.x += MOVE_SPEED;
     });
@@ -300,6 +396,19 @@ function main() {
         dude.rotation += 0.1;
     });
 
+    kd.Z.down(function() {
+        MOVE_SPEED = 50;
+        dude.setTexture(dudeTexCar);
+        dudeInCar = true;
+    });
+
+    kd.Z.up(function() {
+        MOVE_SPEED = 5;
+        dudeInCar = false;
+        dude.rotation = 0;
+        dude.setTexture(dudeTexRear);
+    });
+
 }
 
 var moveIt = function () {
@@ -310,6 +419,7 @@ var moveIt = function () {
         'margin-top': -halfObjectHeight + "px"
     });
 }; 
+
 window.setInterval(function(){
     moveIt();
 }, 0);

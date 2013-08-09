@@ -29,11 +29,21 @@ import org.json.JSONObject;
 
 public class StatsToMaps {
 
+	/**
+	 * The path where all File I/O is done
+	 */
+	public static File path;
+	
+	/**
+	 * Whether or not to dump an image showing displaying the city data in a visual form
+	 */
+	private static boolean dumpImage = false;
+	
 	private static final String FORECAST_IO_API_TEMPLATE = "https://api.forecast.io/forecast/1247025787501563ed8e2444d8e35987/%s,%s";
-	private static final boolean DUMP_IMAGE = false;
+	private static final String POLICE_UK_API_TEMPLATE = "http://data.police.uk/api/crimes-street/all-crime?lat=%s&lng=%s";
 	private static final int CHUNK_WIDTH = 14;
 	private static final int CHUNK_HEIGHT = 20;
-
+	
 	private final Date date = new Date();
 
 	private long lastTime;
@@ -42,8 +52,42 @@ public class StatsToMaps {
 
 	private Tile[][] tileMap;
 
+	/**
+	 * The method that is called when the JAR file is executed.
+	 * @param args that StatsToMaps should know to function correctly. In this case the path for creating files in is required.
+	 * @throws Exception if something goes wrong - hopefully not :P
+	 */
 	public static void main(String[] args) throws Exception {
 
+		if(args.length > 0) {
+			
+			path = new File(args[0]);
+			if(!path.isDirectory()) {
+				
+				System.out.println("Path specified is not a directory.");
+				System.exit(1);
+				
+			}
+			if(!path.exists()) {
+				
+				System.out.println("Path specified does not exist.");
+				System.exit(1);
+				
+			}
+			
+			if(args.length > 1) {
+				
+				dumpImage = args[1].equalsIgnoreCase("dumpimage");
+				
+			}
+			
+		}else {
+			
+			System.out.println("Please specify a path to create directories in.");
+			System.exit(1);
+			
+		}
+		
 		new StatsToMaps().start();
 
 	}
@@ -66,7 +110,7 @@ public class StatsToMaps {
 
 		verbDone("Convert");
 
-		verbStarted("Populat", "weather");
+		verbStarted("Populat", "weather and crime");
 
 		populateAndLoadCounties();
 
@@ -84,7 +128,7 @@ public class StatsToMaps {
 
 		verbDone("Sett");
 
-		if (DUMP_IMAGE) {
+		if (dumpImage) {
 
 			verbStarted("Dump", "image");
 
@@ -173,8 +217,6 @@ public class StatsToMaps {
 	/**
 	 * Collects weather data and applies to tileMap.
 	 * 
-	 * @param tileMap
-	 *            to apply weather data to
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 * @throws ClassNotFoundException
@@ -187,12 +229,11 @@ public class StatsToMaps {
 	InterruptedException {
 
 		String dateString = new SimpleDateFormat("dd_MM_yy").format(date);
-		File dateFile = new File("weather_data/weather_" + dateString + ".txt");
+		File dateFile = new File(path, "weather_data/weather_" + dateString + ".txt");
 		counties = null;
 		if (dateFile.exists()) {
 
-			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(
-					dateFile));
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(dateFile));
 			Object obj = ois.readObject();
 			ois.close();
 			if (obj instanceof ArrayList) {
@@ -215,7 +256,7 @@ public class StatsToMaps {
 			counties = new ArrayList<County>();
 
 			Scanner scanner = new Scanner(getClass().getResourceAsStream(
-					"counties.txt"));
+					"/counties.txt"));
 
 			System.out.print(" Gathering Data...");
 
@@ -228,19 +269,22 @@ public class StatsToMaps {
 				double lat = Double.parseDouble(lineParts[1]);
 				double lng = Double.parseDouble(lineParts[2]);
 				short populationDensity = Short.parseShort(lineParts[3]);
+				
+				System.out.print(" Loading "+countyName+"...");
 
-				System.out.println(countyName);
-
-				JSONObject json = new JSONObject(Util.downloadFile(String
+				//weather IO
+				JSONObject weatherJson = new JSONObject(Util.downloadFile(String
 						.format(FORECAST_IO_API_TEMPLATE, lat, lng)))
 				.getJSONObject("currently");
 				County county = new County(countyName, lat, lng, i);
-				county.cloudCover = json.getDouble("cloudCover");
-				county.temperature = json.getDouble("temperature");
-				county.visibility = json.getDouble("visibility");
-				county.windSpeed = json.getDouble("windSpeed");
+				county.cloudCover = weatherJson.getDouble("cloudCover");
+				county.temperature = weatherJson.getDouble("temperature");
+				county.visibility = weatherJson.getDouble("visibility");
+				county.windSpeed = weatherJson.getDouble("windSpeed");
 				county.populationDensity = populationDensity;
-
+				
+				JSONArray crimeJson  = new JSONArray(Util.downloadFile(String.format(POLICE_UK_API_TEMPLATE, lat, lng)));
+				county.crimeIncidents = Double.valueOf(crimeJson.length()) / county.populationDensity;
 				counties.add(county);
 
 				i++;
@@ -248,7 +292,7 @@ public class StatsToMaps {
 			}
 
 			File parentDir;
-			if (!(parentDir = new File("weather_data/")).exists()) {
+			if (!(parentDir = new File(path, "weather_data/")).exists()) {
 
 				parentDir.mkdirs();
 
@@ -268,14 +312,9 @@ public class StatsToMaps {
 		for (County county : counties) {
 
 			try {
-				// LatLng loc = new LatLng(data.lat, data.lng);
-				// loc.toOSGB36();
-				// OSRef ref = loc.toOSRef();
-				// tileMap[(int)
-				// (ref.getEasting()/1000)][tileMap[0].length-(int)
-				// (ref.getNorthing()/1000)].county = county;
-				int[] coords = Util.latitudeToGrid(county.lat, county.lng,
-						tileMap);
+				
+				int[] coords = Util.latitudeToGrid(county.lat, county.lng, tileMap);
+				
 				tileMap[coords[0]][coords[1]].county = county;
 			} catch (Exception e) {
 
@@ -356,13 +395,21 @@ public class StatsToMaps {
 			Generation.generateCity(tileMap, point, populationRating);
 			if (populationRating == 0) {
 
-				for (int i = 0; i < 10; i++) {
+				for (int i = 0; i < 15; i++) {
 
 					Point randPoint = new Point(point.x
 							+ (Util.random.nextInt(60) - 30), point.y
 							+ Util.random.nextInt(60) - 30);
 					Generation.generateVillage(tileMap, randPoint);
 
+				}
+				for(int i = 0; i < 7; i++) {
+					
+					Point randPoint = new Point(point.x
+							+ (Util.random.nextInt(60) - 30), point.y
+							+ Util.random.nextInt(60) - 30);
+					Generation.generateTown(tileMap, randPoint);
+					
 				}
 				for (int i = 0; i < 10; i++) {
 
@@ -375,7 +422,7 @@ public class StatsToMaps {
 
 			} else if (populationRating == 1) {
 
-				for (int i = 0; i < 20; i++) {
+				for (int i = 0; i < 30; i++) {
 
 					Point randPoint = new Point(point.x
 							+ (Util.random.nextInt(60) - 30), point.y
@@ -395,7 +442,7 @@ public class StatsToMaps {
 
 			} else if (populationRating == 2) {
 
-				for (int i = 0; i < 10; i++) {
+				for (int i = 0; i < 20; i++) {
 
 					Point randPoint = new Point(point.x
 							+ (Util.random.nextInt(60) - 30), point.y
@@ -415,7 +462,7 @@ public class StatsToMaps {
 
 			} else if (populationRating == 3) {
 
-				for (int i = 0; i < 5; i++) {
+				for (int i = 0; i < 10; i++) {
 
 					Point randPoint = new Point(point.x
 							+ (Util.random.nextInt(60) - 30), point.y
@@ -424,7 +471,7 @@ public class StatsToMaps {
 
 				}
 
-				for (int i = 0; i < 12; i++) {
+				for (int i = 0; i < 3; i++) {
 
 					Point randPoint = new Point(point.x
 							+ (Util.random.nextInt(60) - 30), point.y
@@ -455,14 +502,16 @@ public class StatsToMaps {
 				byte tileType = tileMap[x][y].type;
 				if (tileType == Tile.TYPE_SEA) {
 
-					g.setColor(Color.BLUE);
+					g.setColor(Color.CYAN);
+
+				} else if(tileType == Tile.TYPE_LAND_UNPOPULATED) {
+
+					g.setColor(Color.GREEN);
 
 				} else {
-
-					g.setColor(new Color((tileType - 1) * (255 / 4),
-							(tileType - 1) * (255 / 4), (tileType - 1)
-							* (255 / 4)));
-
+					
+					g.setColor(Color.YELLOW);
+					
 				}
 				g.fillRect(x, y, 1, 1);
 
@@ -470,10 +519,17 @@ public class StatsToMaps {
 
 		}
 		g.dispose();
-		ImageIO.write(image, "PNG", new File("/Users/Harry/Desktop/img.png"));
+		ImageIO.write(image, "PNG", new File(path, "dumped_map_image.png"));
 
 	}
 
+	/**
+	 * Exports all data so the client can access it to the path specified as an argument to the main class.
+	 * @throws JSONException if JSON creation goes wrong
+	 * @throws IOException if file I/O messes up
+	 * @throws IllegalArgumentException is the wrong arguments are pushed into a method
+	 * @throws IllegalAccessException if the field of County can't be accessed
+	 */
 	public void export() throws JSONException, IOException, IllegalArgumentException, IllegalAccessException {
 
 		ArrayList<Tile[][]> chunks = new ArrayList<Tile[][]>();
@@ -500,7 +556,7 @@ public class StatsToMaps {
 
 		}
 
-		File dataDirectory = new File("exported_data/");
+		File dataDirectory = new File(path, "exported_data/");
 		if(dataDirectory.exists()) {
 
 			dataDirectory.delete();
@@ -540,7 +596,6 @@ public class StatsToMaps {
 
 				if(!Modifier.isPrivate(field.getModifiers())) {
 
-					System.out.println(field.getName()+" is not private!");
 					countyJson.put(field.getName(), field.get(county));
 
 				}

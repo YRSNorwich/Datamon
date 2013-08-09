@@ -38,7 +38,7 @@ public class Util {
 	 */
 	public static String getResource(String path) {
 		
-		return read(Util.class.getResourceAsStream(path));
+		return read(Util.class.getResourceAsStream("/"+path));
 		
 	}
 	
