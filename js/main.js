@@ -330,10 +330,16 @@ function main() {
             }
         }
     }
-
+    
+    Number.prototype.toRad = function() {
+        return this * Math.PI / 180;
+    }
+    
     var dudeInCar = false;
     kd.UP.down(function() {
-        if(!dudeInCar) {
+        if(dudeInCar) {
+            dude.rotation = 0;
+        } else {
             animate(dude, dudeUpAnimation, timer.getSeconds());
         }
         dude.position.y -= MOVE_SPEED;
@@ -345,7 +351,9 @@ function main() {
     });
 
     kd.DOWN.down(function() {
-        if(!dudeInCar) {
+        if(dudeInCar) {
+            dude.rotation = (180).toRad();
+        } else {
             animate(dude, dudeDownAnimation, timer.getSeconds());
         }
         dude.position.y += MOVE_SPEED;
@@ -357,7 +365,9 @@ function main() {
     });
 
     kd.LEFT.down(function() {
-        if(!dudeInCar) {
+        if(dudeInCar) {
+            dude.rotation = (270).toRad();
+        } else {
             animate(dude, dudeLeftAnimation, timer.getSeconds());
         }
         dude.position.x -= MOVE_SPEED;
@@ -369,7 +379,9 @@ function main() {
     });
 
     kd.RIGHT.down(function() {
-        if(!dudeInCar) {
+        if(dudeInCar) {
+            dude.rotation = (90).toRad();
+        } else {
             animate(dude, dudeRightAnimation, timer.getSeconds());
         }
         dude.position.x += MOVE_SPEED;
@@ -393,6 +405,7 @@ function main() {
     kd.Z.up(function() {
         MOVE_SPEED = 5;
         dudeInCar = false;
+        dude.rotation = 0;
         dude.setTexture(dudeTexRear);
     });
 
