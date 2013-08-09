@@ -45,7 +45,7 @@ else {
 x -= canvas.offsetLeft;
 y -= canvas.offsetTop;
     
-    var mapPos = new Point(dude.gamePosition.x / 64, dude.gamePosition.y / 64);
+    var mapPos = new Point(dude.gamePosition.x / TILE_WIDTH, dude.gamePosition.y / TILE_HEIGHT);
     var dudePos = new Point(dude.gamePosition.x, dude.gamePosition.y)
     var clickpos = new Point(x,y);
     //teleport(dude,minimap2game(mapPos,dudePos,clickpos));
@@ -101,8 +101,8 @@ y -= canvas.offsetTop;
     dude.anchor.y = 0.5;
 
     var camera = new BoundingBox(dude.position.x, dude.position.y, WIDTH, HEIGHT);
-    //dude.gamePosition = new Point(TILE_WIDTH*currentLocation.x, TILE_HEIGHT*currentLocation.y);
-    dude.gamePosition = new Point(TILE_WIDTH*512, TILE_HEIGHT*919);
+    dude.gamePosition = new Point(TILE_WIDTH*currentLocation.x, TILE_HEIGHT*currentLocation.y);
+    //dude.gamePosition = new Point(TILE_WIDTH*512, TILE_HEIGHT*919);
     
     //Centre dude!
     dude.position.x = WIDTH / 2;
@@ -191,7 +191,7 @@ y -= canvas.offsetTop;
         renderer.render(stage);
 
         // render the minimap stage
-        var mapPos = new Point(Math.floor(dude.gamePosition.x / 64), dude.gamePosition.y / 64);
+        var mapPos = new Point(Math.floor(dude.gamePosition.x / TILE_WIDTH), dude.gamePosition.y / TILE_HEIGHT);
         minimap.render(mapPos);
         //console.log(mapPos);
 
@@ -386,6 +386,10 @@ var moveIt = function () {
         'margin-left': -halfObjectWidth + "px",
         'margin-top': -halfObjectHeight + "px"
     });
+    //reset camera
+    HEIGHT = $('#canvainer').height();
+    WIDTH = $('#canvainer').width();
+    camera = new BoundingBox(dude.position.x, dude.position.y, WIDTH, HEIGHT);
 }; 
 window.setInterval(function(){
     moveIt();

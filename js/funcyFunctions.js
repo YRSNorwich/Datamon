@@ -1,8 +1,8 @@
 var WIDTH = 600;
 var HEIGHT = 600;
 
-var TILE_WIDTH = 64;
-var TILE_HEIGHT = 64;
+var TILE_WIDTH = 512;
+var TILE_HEIGHT = 512;
 var CHUNK_X = 14;
 var CHUNK_Y = 20;
 var CHUNK_WIDTH = CHUNK_X*TILE_WIDTH;
@@ -26,6 +26,11 @@ var landTex = PIXI.Texture.fromImage("/imgs/terrain/grass.png");
 var townTex = PIXI.Texture.fromImage("/imgs/terrain/town.png");
 var waterTex = PIXI.Texture.fromImage("/imgs/water.png");
 var cityTex = PIXI.Texture.fromImage("/imgs/terrain/city.png");
+cityTex.frame = new PIXI.Rectangle(0,0,128,128);
+cityTex.baseTexture.width = 128;
+cityTex.baseTexture.height = 128;
+console.log(cityTex.baseTexture);
+
 var farmTex = PIXI.Texture.fromImage("/imgs/terrain/farm.png");
 
 function convert(file, callback)
@@ -71,7 +76,7 @@ function minimap2game(coords,dudepos,clickPos){
       //var mapPos = new Point(Math.floor(dude.gamePosition.x / 64), dude.gamePosition.y / 64);
       var base = new Point((coords.x), (coords.y));
      
-      var finalpos = new Point((((base.x)*64)/clickPos.x)+150,(((base.y)*64)/clickPos.y)+100);
+      var finalpos = new Point((((base.x)*TILE_WIDTH)/clickPos.x)+150,(((base.y)*TILE_HEIGHT)/clickPos.y)+100);
       //console.log(dudepos);
       //console.log(base);
       //console.log(clickPos);
