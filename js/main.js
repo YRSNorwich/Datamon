@@ -2,6 +2,7 @@ $(document).ready(init);
 
 var currentLocation;
 var minimap;
+var countyData;
 
 function init() {
     // Get Current location
@@ -13,7 +14,16 @@ function init() {
         // Get up minimap!
         minimap = new Minimap();
         minimap.init();
-        main();
+
+        // Fetch the county data from the server
+        $.ajax({
+            url: "/getCountyData",
+            dataType: "json",
+            success: function(data) {
+                countyData = data;
+                main();
+            }
+        });
     });
 }
 function main() {
@@ -269,16 +279,6 @@ function main() {
         thing.setTexture(animation.frames[animation.frame]);
     }
 
-    function populateChunk(chunk) {
-        $.ajax({
-            url: "/getCountyData",
-        data: {"id" : chunk},
-        dataType: "json",
-        success: function(data) {
-            console.log(data);
-        }
-        });
-    }
 
     function fetchChunkData(chunkCoords, callback) {
         $.ajax({
@@ -327,6 +327,13 @@ function main() {
                     default:
                         break;
                 }
+                
+                // Get the county names from the county id using jQuery pagan magic.
+                $.map(countyData, function(value, key) { 
+                    if(chunks[pos.x][pos.y].tiles[i][j].countyId === value.id) {
+                        chunks[pos.x][pos.y].tiles[i][j].county = value;
+                    }
+                });
             }
         }
     }
