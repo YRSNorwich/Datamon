@@ -21,8 +21,7 @@ function Chunk(x, y) {
         }
     }
 
-    this.drawTiles = function(stage, dude, camera) {
-        //console.log("beg: " + this.gamePosition.x);
+    this.drawTiles = function(stage, dude) {
         for(var i = 0; i < this.tiles.length; i++) {
             for(var j = 0; j < this.tiles[i].length; j++) {
                 if(this.tileMap[i][j] === 1) {
@@ -41,6 +40,14 @@ function Chunk(x, y) {
         //console.log("end: " +  this.gamePosition.x);
     }
 
+    this.loadTileData = function(chunkData) {
+        for(var x = 0; x < this.sizew; x++) {
+            for(var y = 0; y < this.sizeh; y++) {
+                this.tiles[x][y].countyId = chunkData[x][y][1];
+            }
+        }
+    }
+
     this.move = function(dx, dy) {
         for(var i = 0; i < this.tiles.length; i++) {
             for(var j = 0; j < this.tiles[i].length; j++) {
@@ -53,7 +60,7 @@ function Chunk(x, y) {
     this.unload = function(stage) {
         for(var i = 0; i < this.tiles.length; i++) {
             for(var j = 0; j < this.tiles[i].length; j++) {
-                stage.removeChild(this.tiles[i][j]);
+                //stage.removeChild(this.tiles[i][j]);
             }
         }
     }

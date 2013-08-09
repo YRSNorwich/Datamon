@@ -54,6 +54,7 @@ function main() {
     var dudeTexLeft2 = PIXI.Texture.fromImage("/imgs/mainDude/sideViewLeft2.png");
     var dudeTexRight1 = PIXI.Texture.fromImage("/imgs/mainDude/sideViewRight1.png");
     var dudeTexRight2 = PIXI.Texture.fromImage("/imgs/mainDude/sideViewRight2.png");
+    var dudeTexRaft = PIXI.Texture.fromImage("/imgs/mainDude/raft.png");
     
     // Add animations to sprite sets
     var dudeUpSet = [
@@ -140,7 +141,6 @@ function main() {
             }
         }
 
-        console.log("1");
         updateLevel();
     
         requestAnimFrame(draw);
@@ -154,8 +154,9 @@ function main() {
             for(var j = 0; j < chunks[i].length; j++) {
                 if(!(chunks[i][j].draw) && collides(chunks[i][j], tempCamera)) {
                     chunks[i][j].draw = true;
-                    chunks[i][j].drawTiles(stage, dude, camera);
-                    console.log("Just drew chunk " + "[" + i + ", " + j + "]");
+                    chunks[i][j].drawTiles(stage, dude);
+                    fetchChunkData(new Point(i*CHUNK_X, j*CHUNK_Y), loadChunkData);
+                    //console.log("Just drew chunk " + "[" + i + ", " + j + "]");
                 } else if ((chunks[i][j].draw) && !(collides(chunks[i][j], tempCamera))) {
                     chunks[i][j].draw = false;
                     chunks[i][j].unload(stage);
@@ -178,7 +179,7 @@ function main() {
         // render the minimap stage
         var mapPos = new Point(Math.floor(dude.gamePosition.x / 64), (dude.gamePosition.y / 64));
         minimap.render(mapPos);
-        console.log(mapPos);
+        //console.log(mapPos);
 
         // signal end of frame to timer.
         timer.tick();
@@ -254,6 +255,41 @@ function main() {
         }
 
         thing.setTexture(animation.frames[animation.frame]);
+    }
+
+    function populateChunk(chunk) {
+        $.ajax({
+            url: "/getCountyData",
+            data: {"id" : chunk},
+            dataType: "json",
+            success: function(data) {
+                console.log(data);
+            }
+        });
+    }
+
+    function fetchChunkData(chunkCoords, callback) {
+        $.ajax({
+            url: "/getChunk",
+            data: {"coord1" : chunkCoords.x,
+                   "coord2" : chunkCoords.y},
+            dataType: "json",
+            success: function(data) {
+                var pos = new Point(chunkCoords.x, chunkCoords.y);
+                callback(pos, data);
+            }
+        });
+    }
+
+    function loadChunkData(pos, data) {
+        pos.x /= CHUNK_X;
+        pos.y /= CHUNK_Y;
+        for(var i = 0; i < chunks[pos.x][pos.y].tiles.length; i++) {
+            for(var j = 0; j < chunks[pos.x][pos.y].tiles[i].length; j++) {
+                chunks[pos.x][pos.y].tiles[i][j].countyId = data.chunk[i][j][1];
+                console.log(data.chunk[i][j][1]);
+            }
+        }
     }
 
     kd.UP.down(function() {

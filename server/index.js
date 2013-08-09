@@ -8,5 +8,7 @@ handle["/start"] = requestHandlers.start;
 handle["/upload"] = requestHandlers.upload;
 handle["/show"] = requestHandlers.show;
 handle["/postLonLat"] = requestHandlers.postLonLat;
+handle["/getChunk"] = requestHandlers.getChunk;
+handle["/getCountyData"] = requestHandlers.getChunkData;
 
 server.start(router.route, handle);

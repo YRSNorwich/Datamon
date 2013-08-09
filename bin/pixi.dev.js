@@ -726,6 +726,9 @@ PIXI.Sprite = function(texture)
 
         // MILO: Gameposition for helping with camera/chunk collision
         this.gamePosition;
+        
+        // MILO: FOR STORING TILE ID, BECAUSE HACK
+        this.countyId;
 	
 	// thi next bit is here for the docs...
 	
