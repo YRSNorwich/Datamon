@@ -1,5 +1,5 @@
-var WIDTH = 600;
-var HEIGHT = 600;
+var WIDTH = 800;
+var HEIGHT = 500;
 
 var TILE_WIDTH = 512;
 var TILE_HEIGHT = 512;
@@ -24,13 +24,9 @@ var dudeTexRight2 = PIXI.Texture.fromImage("/imgs/mainDude/sideViewRight2.png");
 var dudeTexRaft = PIXI.Texture.fromImage("/imgs/mainDude/raft.png");
 var landTex = PIXI.Texture.fromImage("/imgs/terrain/grass.png");
 var townTex = PIXI.Texture.fromImage("/imgs/terrain/town.png");
-var waterTex = PIXI.Texture.fromImage("/imgs/water.png");
+var villageTex = PIXI.Texture.fromImage("/imgs/terrain/village.png");
+var waterTex = PIXI.Texture.fromImage("/imgs/terrain/water.png");
 var cityTex = PIXI.Texture.fromImage("/imgs/terrain/city.png");
-cityTex.frame = new PIXI.Rectangle(0,0,128,128);
-cityTex.baseTexture.width = 128;
-cityTex.baseTexture.height = 128;
-console.log(cityTex.baseTexture);
-
 var farmTex = PIXI.Texture.fromImage("/imgs/terrain/farm.png");
 
 function convert(file, callback)

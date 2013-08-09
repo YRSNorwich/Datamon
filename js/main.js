@@ -24,13 +24,11 @@ function main() {
     // create an new instance of a pixi stage
     var stage = new PIXI.Stage(0x0077FF);
 
-    var WIDTH = 800;
-    var HEIGHT = 500;
     var tiles;
     var chunks;
   //Really hacky code to get the minimap coords.
-var canvas = document.getElementById('minimap');
-canvas.addEventListener('click', function(e) {
+    var canvas = document.getElementById('minimap');
+    canvas.addEventListener('click', function(e) {
     var x;
     var y;
 
@@ -304,11 +302,11 @@ y -= canvas.offsetTop;
                  switch(data.chunk[i][j][0]) {
                      case 0:
                          //sea
-                         //chunks[pos.x][pos.y].tiles[i][j].setTexture();
+                         chunks[pos.x][pos.y].tiles[i][j].setTexture(waterTex);
                          break;
                      case 1:
                          //land
-                         //chunks[pos.x][pos.y].tiles[i][j]
+                         chunks[pos.x][pos.y].tiles[i][j].setTexture(landTex);
                          break;
                      case 2:
                          //farm
@@ -316,7 +314,7 @@ y -= canvas.offsetTop;
                          break;
                      case 3:
                          //village
-                         //chunks[pos.x][pos.y].tiles[i][j].setTexture(villageTex);
+                         chunks[pos.x][pos.y].tiles[i][j].setTexture(villageTex);
                          break;
                      case 4:
                          //town
@@ -376,6 +374,14 @@ y -= canvas.offsetTop;
     kd.SPACE.down(function() {
         dude.rotation += 0.1;
     });
+    
+    kd.Z.down(function() {
+        MOVE_SPEED = 50;
+    });
+    
+    kd.Z.up(function() {
+        MOVE_SPEED = 5;
+    });
 
 }
 
@@ -386,11 +392,8 @@ var moveIt = function () {
         'margin-left': -halfObjectWidth + "px",
         'margin-top': -halfObjectHeight + "px"
     });
-    //reset camera
-    HEIGHT = $('#canvainer').height();
-    WIDTH = $('#canvainer').width();
-    camera = new BoundingBox(dude.position.x, dude.position.y, WIDTH, HEIGHT);
 }; 
+
 window.setInterval(function(){
     moveIt();
 }, 0);

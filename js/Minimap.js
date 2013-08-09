@@ -9,7 +9,7 @@ function Minimap() {
     this.starty = 0;
     
     this.init = function() {
-        this.texture.src = "/res/minimap.png";
+        this.texture.src = "/res/dumped_map_image.png";
         
         this.texture.onload = function() {
             ctx.drawImage(this, 400, 600, 200, 200, 0, 0, 200, 200);
