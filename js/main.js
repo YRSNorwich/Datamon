@@ -393,6 +393,7 @@ function main() {
     kd.Z.up(function() {
         MOVE_SPEED = 5;
         dudeInCar = false;
+        dude.setTexture(dudeTexRear);
     });
 
 }
