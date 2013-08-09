@@ -1,4 +1,4 @@
-//TODO unfortunately cannot have two PIXI renderers...
+//TODO For some reason - 100 doesn't centre x. 
 function Minimap() {
     this.canvas = document.getElementById('minimap');
     var ctx = this.canvas.getContext('2d');
