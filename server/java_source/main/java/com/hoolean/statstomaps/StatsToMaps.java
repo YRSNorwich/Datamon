@@ -395,13 +395,21 @@ public class StatsToMaps {
 			Generation.generateCity(tileMap, point, populationRating);
 			if (populationRating == 0) {
 
-				for (int i = 0; i < 10; i++) {
+				for (int i = 0; i < 15; i++) {
 
 					Point randPoint = new Point(point.x
 							+ (Util.random.nextInt(60) - 30), point.y
 							+ Util.random.nextInt(60) - 30);
 					Generation.generateVillage(tileMap, randPoint);
 
+				}
+				for(int i = 0; i < 7; i++) {
+					
+					Point randPoint = new Point(point.x
+							+ (Util.random.nextInt(60) - 30), point.y
+							+ Util.random.nextInt(60) - 30);
+					Generation.generateTown(tileMap, randPoint);
+					
 				}
 				for (int i = 0; i < 10; i++) {
 
@@ -414,7 +422,7 @@ public class StatsToMaps {
 
 			} else if (populationRating == 1) {
 
-				for (int i = 0; i < 20; i++) {
+				for (int i = 0; i < 30; i++) {
 
 					Point randPoint = new Point(point.x
 							+ (Util.random.nextInt(60) - 30), point.y
@@ -434,7 +442,7 @@ public class StatsToMaps {
 
 			} else if (populationRating == 2) {
 
-				for (int i = 0; i < 10; i++) {
+				for (int i = 0; i < 20; i++) {
 
 					Point randPoint = new Point(point.x
 							+ (Util.random.nextInt(60) - 30), point.y
@@ -454,7 +462,7 @@ public class StatsToMaps {
 
 			} else if (populationRating == 3) {
 
-				for (int i = 0; i < 5; i++) {
+				for (int i = 0; i < 10; i++) {
 
 					Point randPoint = new Point(point.x
 							+ (Util.random.nextInt(60) - 30), point.y
@@ -463,7 +471,7 @@ public class StatsToMaps {
 
 				}
 
-				for (int i = 0; i < 12; i++) {
+				for (int i = 0; i < 3; i++) {
 
 					Point randPoint = new Point(point.x
 							+ (Util.random.nextInt(60) - 30), point.y
