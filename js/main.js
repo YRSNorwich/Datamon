@@ -36,6 +36,8 @@ function main() {
 
     var tiles;
     var chunks;
+    var rains;
+
     //Really hacky code to get the minimap coords.
     var canvas = document.getElementById('minimap');
     canvas.addEventListener('click', function(e) {
@@ -188,6 +190,23 @@ function main() {
                 if(chunks[i][j].draw) {
                     chunks[i][j].update();
                     chunks[i][j].drawWeather(stage, tempCamera);
+
+                    if(chunks[i][j].rain) {
+                        if( typeof rains != 'undefined') {
+                            console.log("DRAW");
+                            drawRain();
+                        } else {
+                            rains = get2DArray(1, 1); 
+                            for(var i = 0; i < rains.length; i++) {
+                                for(var j = 0; j < rains[i].length; j++) {
+                                    rains[i][j] = new PIXI.Sprite(rainTex1);
+                                    rains[i][j].position.x = WIDTH;
+                                    rains[i][j].position.y = -HEIGHT;
+                                    stage.addChild(rains[i][j]);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -348,6 +367,20 @@ function main() {
 
         stage.addChild(dude);
         
+    }
+
+    function drawRain() {
+        for(var i = 0; i < rains.length; i++) {
+            for(var j = 0; j < rains[i].length; j++) {
+                rains[i][j].position.x -= RAIN_VEL;
+                rains[i][j].position.y += RAIN_VEL / 2;
+
+                if(rains[i][j].position.x < 0 || rains[i][j].position.y > HEIGHT) {
+                    rains[i][j].position.x = WIDTH;
+                    rains[i][j].position.y = -HEIGHT;
+                }
+            }
+        }
     }
 
     var dudeInCar = false;

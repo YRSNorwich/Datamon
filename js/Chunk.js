@@ -8,6 +8,7 @@ function Chunk(x, y) {
     this.tiles = get2DArray(this.sizew, this.sizeh);
     this.tileMap = get2DArray(this.sizew, this.sizeh);
     this.draw = false;
+    this.rain = true;
     this.boundingBoxes = new Array();
     this.clouds = new Array();
 
@@ -51,9 +52,13 @@ function Chunk(x, y) {
 
     this.drawWeather = function(stage, camera) {
         for(var i = 0; i < this.clouds.length; i++) {
-            //if(collides(this.clouds[i], camera)) {
+            if(collides(this.clouds[i], camera)) {
                 stage.addChild(this.clouds[i]);
-            //}
+            }
+
+            if(this.cloudRating > 0) {
+                this.rain = true;
+            }
         }
     }
 
