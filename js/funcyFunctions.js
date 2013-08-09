@@ -10,6 +10,24 @@ var CHUNK_HEIGHT = CHUNK_Y*TILE_HEIGHT;
 
 var MOVE_SPEED = 5;
 
+// Load textures. Numbered ones are animation.
+var dudeTexRear = PIXI.Texture.fromImage("/imgs/mainDude/rearView.png");
+var dudeTexRear1 = PIXI.Texture.fromImage("/imgs/mainDude/rearView1.png");
+var dudeTexRear2 = PIXI.Texture.fromImage("/imgs/mainDude/rearView2.png");
+var dudeTexFront = PIXI.Texture.fromImage("/imgs/mainDude/frontView.png");
+var dudeTexFront1 = PIXI.Texture.fromImage("/imgs/mainDude/frontView1.png");
+var dudeTexFront2 = PIXI.Texture.fromImage("/imgs/mainDude/frontView2.png");
+var dudeTexLeft1 = PIXI.Texture.fromImage("/imgs/mainDude/sideViewLeft1.png");
+var dudeTexLeft2 = PIXI.Texture.fromImage("/imgs/mainDude/sideViewLeft2.png");
+var dudeTexRight1 = PIXI.Texture.fromImage("/imgs/mainDude/sideViewRight1.png");
+var dudeTexRight2 = PIXI.Texture.fromImage("/imgs/mainDude/sideViewRight2.png");
+var dudeTexRaft = PIXI.Texture.fromImage("/imgs/mainDude/raft.png");
+var landTex = PIXI.Texture.fromImage("/imgs/terrain/grass.png");
+var townTex = PIXI.Texture.fromImage("/imgs/terrain/town.png");
+var waterTex = PIXI.Texture.fromImage("/imgs/water.png");
+var cityTex = PIXI.Texture.fromImage("/imgs/terrain/city.png");
+var farmTex = PIXI.Texture.fromImage("/imgs/terrain/farm.png");
+
 function convert(file, callback)
 {
     var rawFile = new XMLHttpRequest();

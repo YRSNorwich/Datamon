@@ -729,6 +729,8 @@ PIXI.Sprite = function(texture)
         
         // MILO: FOR STORING TILE ID, BECAUSE HACK
         this.countyId;
+        this.county;
+        this.tileType;
 	
 	// thi next bit is here for the docs...
 	

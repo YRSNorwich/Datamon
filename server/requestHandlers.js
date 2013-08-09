@@ -25,6 +25,10 @@ function getCountyData(res, req) {
             return;
         }
         counties = JSON.parse(data);
+
+        res.writeHead(200, {'content-type': 'application/json'});
+
+        res.end(data);
     });
 
 }

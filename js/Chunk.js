@@ -10,8 +10,6 @@ function Chunk(x, y) {
     this.draw = false;
     this.boundingBoxes = new Array();
 
-    var landTex = PIXI.Texture.fromImage("/imgs/terrain/grass.png");
-    var waterTex = PIXI.Texture.fromImage("/imgs/water.png");
 
     this.loadTiles = function(array, blockpos) {
         for(var x = 0; x < this.sizew; x++) {
@@ -60,7 +58,7 @@ function Chunk(x, y) {
     this.unload = function(stage) {
         for(var i = 0; i < this.tiles.length; i++) {
             for(var j = 0; j < this.tiles[i].length; j++) {
-                //stage.removeChild(this.tiles[i][j]);
+                stage.removeChild(this.tiles[i][j]);
             }
         }
     }

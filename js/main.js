@@ -46,7 +46,7 @@ x -= canvas.offsetLeft;
 y -= canvas.offsetTop;
     
     var mapPos = new Point(dude.gamePosition.x / 64, dude.gamePosition.y / 64);
-    var dudePos = new Point(dude.gamePosition.x,dude.gamePosition.y)
+    var dudePos = new Point(dude.gamePosition.x, dude.gamePosition.y)
     var clickpos = new Point(x,y);
     //teleport(dude,minimap2game(mapPos,dudePos,clickpos));
 
@@ -68,18 +68,6 @@ y -= canvas.offsetTop;
     var dudeTexFront = PIXI.Texture.fromImage("/imgs/mainDude/frontView.png");
     var dude = new PIXI.Sprite(dudeTexFront);
 
-    // Load textures. Numbered ones are animation.
-    var dudeTexRear = PIXI.Texture.fromImage("/imgs/mainDude/rearView.png");
-    var dudeTexRear1 = PIXI.Texture.fromImage("/imgs/mainDude/rearView1.png");
-    var dudeTexRear2 = PIXI.Texture.fromImage("/imgs/mainDude/rearView2.png");
-    var dudeTexFront = PIXI.Texture.fromImage("/imgs/mainDude/frontView.png");
-    var dudeTexFront1 = PIXI.Texture.fromImage("/imgs/mainDude/frontView1.png");
-    var dudeTexFront2 = PIXI.Texture.fromImage("/imgs/mainDude/frontView2.png");
-    var dudeTexLeft1 = PIXI.Texture.fromImage("/imgs/mainDude/sideViewLeft1.png");
-    var dudeTexLeft2 = PIXI.Texture.fromImage("/imgs/mainDude/sideViewLeft2.png");
-    var dudeTexRight1 = PIXI.Texture.fromImage("/imgs/mainDude/sideViewRight1.png");
-    var dudeTexRight2 = PIXI.Texture.fromImage("/imgs/mainDude/sideViewRight2.png");
-    var dudeTexRaft = PIXI.Texture.fromImage("/imgs/mainDude/raft.png");
     
     // Add animations to sprite sets
     var dudeUpSet = [
@@ -113,7 +101,8 @@ y -= canvas.offsetTop;
     dude.anchor.y = 0.5;
 
     var camera = new BoundingBox(dude.position.x, dude.position.y, WIDTH, HEIGHT);
-    dude.gamePosition = new Point(TILE_WIDTH*currentLocation.x, TILE_HEIGHT*currentLocation.y);
+    //dude.gamePosition = new Point(TILE_WIDTH*currentLocation.x, TILE_HEIGHT*currentLocation.y);
+    dude.gamePosition = new Point(TILE_WIDTH*512, TILE_HEIGHT*919);
     
     //Centre dude!
     dude.position.x = WIDTH / 2;
@@ -312,7 +301,34 @@ y -= canvas.offsetTop;
         for(var i = 0; i < chunks[pos.x][pos.y].tiles.length; i++) {
             for(var j = 0; j < chunks[pos.x][pos.y].tiles[i].length; j++) {
                 chunks[pos.x][pos.y].tiles[i][j].countyId = data.chunk[i][j][1];
-                console.log(data.chunk[i][j][1]);
+                 switch(data.chunk[i][j][0]) {
+                     case 0:
+                         //sea
+                         //chunks[pos.x][pos.y].tiles[i][j].setTexture();
+                         break;
+                     case 1:
+                         //land
+                         //chunks[pos.x][pos.y].tiles[i][j]
+                         break;
+                     case 2:
+                         //farm
+                         chunks[pos.x][pos.y].tiles[i][j].setTexture(farmTex);
+                         break;
+                     case 3:
+                         //village
+                         //chunks[pos.x][pos.y].tiles[i][j].setTexture(villageTex);
+                         break;
+                     case 4:
+                         //town
+                         chunks[pos.x][pos.y].tiles[i][j].setTexture(townTex);
+                         break;
+                     case 5:
+                         //city
+                         chunks[pos.x][pos.y].tiles[i][j].setTexture(cityTex);
+                         break;
+                     default:
+                         break;
+                 }
             }
         }
     }
