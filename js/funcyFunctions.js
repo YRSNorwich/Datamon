@@ -43,7 +43,24 @@ function Point(x, y) {
     this.x = x;
     this.y = y;
 }
-
+function teleport(dudeguy,point1){
+        dudeguy.gamePosition.x = point1.x;
+        dudeguy.gamePosition.y = point1.y;
+      
+        
+}
+function minimap2game(coords,dudepos,clickPos){
+      //var mapPos = new Point(Math.floor(dude.gamePosition.x / 64), dude.gamePosition.y / 64);
+      var base = new Point((coords.x), (coords.y));
+     
+      var finalpos = new Point((((base.x)*64)/clickPos.x)+150,(((base.y)*64)/clickPos.y)+100);
+      //console.log(dudepos);
+      //console.log(base);
+      //console.log(clickPos);
+      //console.log(finalpos);
+      console.log(finalpos);
+      return finalpos;
+}
 function collides(a, b) {
     return a.gamePosition.x < b.gamePosition.x + b.width &&
 	   a.gamePosition.x + a.width > b.gamePosition.x &&
