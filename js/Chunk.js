@@ -10,8 +10,8 @@ function Chunk(x, y) {
     this.draw = false;
     this.boundingBoxes = new Array();
 
-    var nicTex = PIXI.Texture.fromImage("/imgs/nic.png");
-    var bunnyTex = PIXI.Texture.fromImage("/imgs/water.png");
+    var landTex = PIXI.Texture.fromImage("/imgs/terrain/grass.png");
+    var waterTex = PIXI.Texture.fromImage("/imgs/water.png");
 
     this.loadTiles = function(array, blockpos) {
         for(var x = 0; x < this.sizew; x++) {
@@ -26,15 +26,15 @@ function Chunk(x, y) {
         for(var i = 0; i < this.tiles.length; i++) {
             for(var j = 0; j < this.tiles[i].length; j++) {
                 if(this.tileMap[i][j] === 1) {
-                    this.tiles[i][j] = new PIXI.Sprite(nicTex);
+                    this.tiles[i][j] = new PIXI.Sprite(landTex);
                 } else {
-                    this.tiles[i][j] = new PIXI.Sprite(bunnyTex);
+                    this.tiles[i][j] = new PIXI.Sprite(waterTex);
                 }
                 
                 this.tiles[i][j].anchor.x = 0.5;
                 this.tiles[i][j].anchor.y = 0.5;
                 this.tiles[i][j].position.x = dude.position.x + i*TILE_WIDTH - (dude.gamePosition.x - this.gamePosition.x);
-                this.tiles[i][j].position.y = dude.position.y + j*TILE_HEIGHT - ((dude.gamePosition.y) - this.gamePosition.y);
+                this.tiles[i][j].position.y = dude.position.y + j*TILE_HEIGHT - (dude.gamePosition.y - this.gamePosition.y);
                 stage.addChild(this.tiles[i][j]);
             }
         }

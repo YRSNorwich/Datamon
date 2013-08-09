@@ -1,6 +1,7 @@
 $(document).ready(init);
 
 var currentLocation;
+var minimap;
 
 function init() {
     // Get Current location
@@ -8,6 +9,10 @@ function init() {
         // convert lon/lat into OS eastern northern coord
         position = OsGridRef.latLongToOsGrid(position.coords);
         currentLocation = new Point(Math.floor(position.easting / 1000), 1100 - Math.floor(position.northing / 1000));
+
+        // Get up minimap!
+        minimap = new Minimap();
+        minimap.init();
         main();
     });
 }
@@ -83,10 +88,10 @@ function main() {
 
     var camera = new BoundingBox(dude.position.x, dude.position.y, WIDTH, HEIGHT);
     dude.gamePosition = new Point(TILE_WIDTH*currentLocation.x, TILE_HEIGHT*currentLocation.y);
+    
     //Centre dude!
     dude.position.x = WIDTH / 2;
     dude.position.y = HEIGHT / 2;
-
     
     //reads a file and converts into array, then sets up the tiles
     convert("/res/britain.txt", function(myLevel) {
@@ -167,8 +172,13 @@ function main() {
 
         update();
 
-        // render the stage   
+        // render the main stage   
         renderer.render(stage);
+
+        // render the minimap stage
+        var mapPos = new Point(Math.floor(dude.gamePosition.x / 64), (dude.gamePosition.y / 64));
+        minimap.render(mapPos);
+        console.log(mapPos);
 
         // signal end of frame to timer.
         timer.tick();
