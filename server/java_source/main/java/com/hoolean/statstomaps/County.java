@@ -53,6 +53,10 @@ public class County implements Serializable {
 	 */
 	public double visibility;
 	/**
+	 * Intensity of rain; 0 means no rain
+	 */
+	public double precipIntensity;
+	/**
 	 * Population density of county
 	 */
 	public short populationDensity = 0;
