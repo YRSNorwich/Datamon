@@ -7,9 +7,11 @@ html, body {
     overflow-y:hidden;
     overflow-x:hidden;
     background:green;
-background-image:url('../imgs/bunny.png');
-background-repeat:repeat;
- -webkit-animation: slide 100s linear infinite;
+	/*background-image:url('../imgs/bunny.png');
+	background-repeat:repeat;
+	-webkit-animation: slide 100s linear infinite;*/
+	background-image:url('../imgs/stripe.png');
+	background-repeat:repeat;
 
 }
 @-webkit-keyframes slide {
@@ -21,12 +23,21 @@ background-repeat:repeat;
     }
 }
 h1{
-	//font-family: 'Squada One', cursive;
+	font-family: 'Squada One', cursive;
 	text-align: center;
 	color: white;
 
 	font-size: 50px;
 	text-shadow: -1px -2px rgba(0, 0, 0, 5);
+	
+	padding: 10px;
+}
+span#bordered {
+
+	background-color: green;
+	border:6px solid white;
+	border-radius: 5px;
+
 }
 #canvainer {    
     height:auto;
@@ -39,7 +50,8 @@ h1{
     
     overflow:auto;
  
-    border:6px solid #ccc;
+    border:6px solid white;
+    border-radius:  5px;
 }
 
 #minimap {
