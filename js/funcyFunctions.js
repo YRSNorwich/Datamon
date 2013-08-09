@@ -9,6 +9,7 @@ var CHUNK_WIDTH = CHUNK_X*TILE_WIDTH;
 var CHUNK_HEIGHT = CHUNK_Y*TILE_HEIGHT;
 
 var MOVE_SPEED = 5;
+var CLOUD_MAX_VEL = 10;
 
 // Load textures. Numbered ones are animation.
 var dudeTexRear = PIXI.Texture.fromImage("/imgs/mainDude/rearView.png");
@@ -29,6 +30,7 @@ var villageTex = PIXI.Texture.fromImage("/imgs/terrain/village.png");
 var waterTex = PIXI.Texture.fromImage("/imgs/terrain/water.png");
 var cityTex = PIXI.Texture.fromImage("/imgs/terrain/city.png");
 var farmTex = PIXI.Texture.fromImage("/imgs/terrain/farm.png");
+var cloudTex = PIXI.Texture.fromImage("/imgs/weather/clouds/cloud.png");
 
 function convert(file, callback)
 {

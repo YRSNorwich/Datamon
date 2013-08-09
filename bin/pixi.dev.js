@@ -731,6 +731,11 @@ PIXI.Sprite = function(texture)
         this.countyId;
         this.county;
         this.tileType;
+        this.cloudRating;
+        this.rainRating;
+
+        // MILO: used only for weather and stuff
+        this.velocity;
 	
 	// thi next bit is here for the docs...
 	
@@ -6581,7 +6586,7 @@ PIXI.BaseTexture = function(source)
 		{
 			
 			var scope = this;
-                        if(this.source.src.indexOf("terrain") != -1) {
+                        if(this.source.src.indexOf("terrain") != -1 || this.source.src.indexOf("weather") != -1 ) {
                             this.source.onload = function(){
                                 scope.hasLoaded = true;
                                 scope.width = 512;

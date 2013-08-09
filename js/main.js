@@ -163,7 +163,7 @@ function main() {
             }
         }
 
-        updateLevel();
+        //updateLevel();
 
         requestAnimFrame(draw);
     });
@@ -176,6 +176,7 @@ function main() {
             for(var j = 0; j < chunks[i].length; j++) {
                 if(!(chunks[i][j].draw) && collides(chunks[i][j], tempCamera)) {
                     chunks[i][j].draw = true;
+                    chunks[i][j].update();
                     chunks[i][j].drawTiles(stage, dude);
                     fetchChunkData(new Point(i*CHUNK_X, j*CHUNK_Y), loadChunkData);
                     //console.log("Just drew chunk " + "[" + i + ", " + j + "]");
@@ -183,9 +184,14 @@ function main() {
                     chunks[i][j].draw = false;
                     chunks[i][j].unload(stage);
                 }
+
+                if(chunks[i][j].draw) {
+                    chunks[i][j].update();
+                    chunks[i][j].drawWeather(stage, tempCamera);
+                }
             }
         }
-        stage.addChild(dude);
+        //stage.addChild(dude);
     }
 
     function draw() {
@@ -331,11 +337,17 @@ function main() {
                 // Get the county names from the county id using jQuery pagan magic.
                 $.map(countyData, function(value, key) { 
                     if(chunks[pos.x][pos.y].tiles[i][j].countyId === value.id) {
-                        chunks[pos.x][pos.y].tiles[i][j].county = value;
+                        chunks[pos.x][pos.y].tiles[i][j].county = key;
+                        chunks[pos.x][pos.y].tiles[i][j].cloudRating = value.cloudCover;
                     }
                 });
+                
             }
         }
+        chunks[pos.x][pos.y].loadTileData(data.chunk);
+
+        stage.addChild(dude);
+        
     }
 
     var dudeInCar = false;

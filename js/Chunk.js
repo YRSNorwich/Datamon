@@ -9,13 +9,20 @@ function Chunk(x, y) {
     this.tileMap = get2DArray(this.sizew, this.sizeh);
     this.draw = false;
     this.boundingBoxes = new Array();
-
+    this.clouds = new Array();
 
     this.loadTiles = function(array, blockpos) {
         for(var x = 0; x < this.sizew; x++) {
             for(var y = 0; y < this.sizeh; y++) {
                 this.tileMap[x][y] = array[x + blockpos.x][y + blockpos.y];
             }
+        }
+    }
+
+    this.update = function() {
+        for(var i = 0; i < this.clouds.length; i++) {
+            this.clouds[i].position.x += this.clouds[i].velocity.x;
+            this.clouds[i].position.y += this.clouds[i].velocity.y;
         }
     }
 
@@ -36,13 +43,45 @@ function Chunk(x, y) {
                 stage.addChild(this.tiles[i][j]);
             }
         }
-        //console.log("end: " +  this.gamePosition.x);
+        for(var i = 0; i < this.clouds.length; i++) {
+            //this.clouds[i].position.x = dude.position.x + this.clouds[i].gamePosition.x - (dude.gamePosition.x - this.gamePosition.x);
+            //this.clouds[i].position.y = dude.position.y + this.clouds[i].gamePosition.y - (dude.gamePosition.y - this.gamePosition.y);
+        }
+    }
+
+    this.drawWeather = function(stage, camera) {
+        for(var i = 0; i < this.clouds.length; i++) {
+            //if(collides(this.clouds[i], camera)) {
+                stage.addChild(this.clouds[i]);
+            //}
+        }
     }
 
     this.loadTileData = function(chunkData) {
         for(var x = 0; x < this.sizew; x++) {
             for(var y = 0; y < this.sizeh; y++) {
                 this.tiles[x][y].countyId = chunkData[x][y][1];
+            }
+        }
+        
+        for(var i = 0; i < this.tiles.length; i++) {
+            for(var j = 0; j < this.tiles[i].length; j++) {
+                var cloudProb = 100 / this.tiles[i][j].cloudRating;
+                var randomNumber=Math.floor(Math.random()*cloudProb);
+                // TODO first load of random numbers are NaN... From chunk 0,0?
+                if(randomNumber < 20) {
+                    var cloud = new PIXI.Sprite(cloudTex);
+                    cloud.position.x = this.tiles[i][j].position.x;
+                    cloud.position.y = this.tiles[i][j].position.y;
+                    cloud.gamePosition = new Point(0,0);
+                    cloud.gamePosition.x = this.gamePosition.x + i*TILE_WIDTH;
+                    cloud.gamePosition.y = this.gamePosition.y + j*TILE_HEIGHT;
+                    var xVel = Math.floor(Math.random()*CLOUD_MAX_VEL);
+                    var yVel = Math.floor(Math.random()*CLOUD_MAX_VEL);
+                    //cloud.velocity = new Point(xVel, yVel);
+                    cloud.velocity = new Point(0, 0);
+                    this.clouds.push(cloud);
+                }
             }
         }
     }
@@ -54,6 +93,11 @@ function Chunk(x, y) {
                 this.tiles[i][j].position.y += dy;
             }
         }
+        
+        for(var i = 0; i < this.clouds.length; i++) {
+                this.clouds[i].position.x += dx;
+                this.clouds[i].position.y += dy;
+        }
     }
 
     this.unload = function(stage) {
@@ -61,6 +105,10 @@ function Chunk(x, y) {
             for(var j = 0; j < this.tiles[i].length; j++) {
                 stage.removeChild(this.tiles[i][j]);
             }
+        }
+        
+        for(var i = 0; i < this.clouds.length; i++) {
+            //stage.removeChild(this.clouds[i]);
         }
     }
 }
