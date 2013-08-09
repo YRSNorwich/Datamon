@@ -176,6 +176,8 @@ function main() {
         requestAnimFrame(draw);
     });
 
+    var removedRain = false;
+
 
     function updateLevel() {
         // Make a new camera object with a slightly bigger view, to hack seeing a chunk appear
@@ -202,6 +204,7 @@ function main() {
                     if(chunks[i][j].rain) {
                         if( typeof rains != 'undefined') {
                             drawRain();
+                            removedRain = false;
                         } else {
                             rains = get2DArray(15, 10); 
                             for(var i = 0; i < rains.length; i++) {
@@ -211,6 +214,18 @@ function main() {
                                     rains[i][j].position.y = j*64;
                                     rains[i][j].animation = new Animation(rainFallSet, 0.2);
                                 }
+                            }
+                        }
+                    } else {
+                        if( typeof rains != 'undefined') {
+                            if(!removedRain) {
+                                //TODO for loop crashes app for some reason. No idea why, tiles seems to be an array which exists at this point.
+                                /*for(var i = 0; i < rains.length; i++) {
+                                    for(var j = 0; j < rains[i].length; j++) {
+                                        stage.removeChild(rains[i][j]);
+                                        removedRain = true;
+                                    }
+                                }*/
                             }
                         }
                     }
@@ -374,6 +389,7 @@ function main() {
                     if(chunks[pos.x][pos.y].tiles[i][j].countyId === value.id) {
                         chunks[pos.x][pos.y].tiles[i][j].county = key;
                         chunks[pos.x][pos.y].tiles[i][j].cloudRating = value.cloudCover;
+                        chunks[pos.x][pos.y].crimeRating = value.crimeIncidents;
                     }
                 });
                 

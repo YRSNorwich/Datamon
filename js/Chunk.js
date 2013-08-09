@@ -12,6 +12,7 @@ function Chunk(x, y) {
     this.rain = false;
     this.boundingBoxes = new Array();
     this.clouds = new Array();
+    this.crimeRating;
 
     this.loadTiles = function(array, blockpos) {
         for(var x = 0; x < this.sizew; x++) {
@@ -86,7 +87,7 @@ function Chunk(x, y) {
                     this.clouds.push(cloud);
                 }
 
-                if(this.tiles[i][j].cloudRating > 0.55) {
+                if(this.tiles[i][j].cloudRating > 0.6) {
                     this.rainNumber++;
                 }
 
@@ -121,5 +122,7 @@ function Chunk(x, y) {
         for(var i = 0; i < this.clouds.length; i++) {
             //stage.removeChild(this.clouds[i]);
         }
+
+        this.rain = false;
     }
 }
