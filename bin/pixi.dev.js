@@ -6607,11 +6607,19 @@ PIXI.BaseTexture = function(source)
 	}
 	else
 	{
+            if(this.source.src.indexOf("terrain") != -1) {
+		this.hasLoaded = true;
+		this.width = 512;
+		this.height = 512;
+			
+		PIXI.texturesToUpdate.push(this);
+            } else {
 		this.hasLoaded = true;
 		this.width = this.source.width;
 		this.height = this.source.height;
 			
 		PIXI.texturesToUpdate.push(this);
+            }
 	}
 	
 	this._powerOf2 = false;

@@ -3,8 +3,8 @@ function Chunk(x, y) {
     this.gamePosition = new Point (x, y);
     this.width = CHUNK_WIDTH;
     this.height = CHUNK_HEIGHT;
-    this.sizew = 14;
-    this.sizeh = 20;
+    this.sizew = CHUNK_X;
+    this.sizeh = CHUNK_Y;
     this.tiles = get2DArray(this.sizew, this.sizeh);
     this.tileMap = get2DArray(this.sizew, this.sizeh);
     this.draw = false;
@@ -27,9 +27,10 @@ function Chunk(x, y) {
                 } else {
                     this.tiles[i][j] = new PIXI.Sprite(waterTex);
                 }
-                
-                this.tiles[i][j].anchor.x = 0.5;
-                this.tiles[i][j].anchor.y = 0.5;
+               
+                // I think these cause trouble with rendering? 
+                //this.tiles[i][j].anchor.x = 0.5;
+                //this.tiles[i][j].anchor.y = 0.5;
                 this.tiles[i][j].position.x = dude.position.x + i*TILE_WIDTH - (dude.gamePosition.x - this.gamePosition.x);
                 this.tiles[i][j].position.y = dude.position.y + j*TILE_HEIGHT - (dude.gamePosition.y - this.gamePosition.y);
                 stage.addChild(this.tiles[i][j]);

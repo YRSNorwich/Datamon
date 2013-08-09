@@ -26,33 +26,33 @@ function main() {
 
     var tiles;
     var chunks;
-  //Really hacky code to get the minimap coords.
+    //Really hacky code to get the minimap coords.
     var canvas = document.getElementById('minimap');
     canvas.addEventListener('click', function(e) {
-    var x;
-    var y;
+        var x;
+        var y;
 
-if (e.pageX || e.pageY) { 
-  x = e.pageX;
-  y = e.pageY;
-}
-else { 
-  x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft; 
-  y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop; 
-} 
-x -= canvas.offsetLeft;
-y -= canvas.offsetTop;
-    
+        if (e.pageX || e.pageY) { 
+            x = e.pageX;
+            y = e.pageY;
+        }
+        else { 
+            x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft; 
+            y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop; 
+        } 
+    x -= canvas.offsetLeft;
+    y -= canvas.offsetTop;
+
     var mapPos = new Point(dude.gamePosition.x / TILE_WIDTH, dude.gamePosition.y / TILE_HEIGHT);
     var dudePos = new Point(dude.gamePosition.x, dude.gamePosition.y)
-    var clickpos = new Point(x,y);
+        var clickpos = new Point(x,y);
     //teleport(dude,minimap2game(mapPos,dudePos,clickpos));
 
-   //console.log("actual game pos:"+" "+mapPos.x+" "+mapPos.y);
+    //console.log("actual game pos:"+" "+mapPos.x+" "+mapPos.y);
     console.log("canvas has been clicked at:" + " " + x + " " + y);
 
-   
- }, false);
+
+    }, false);
     // create a renderer instance
     var renderer = PIXI.autoDetectRenderer(WIDTH, HEIGHT);
 
@@ -66,34 +66,34 @@ y -= canvas.offsetTop;
     var dudeTexFront = PIXI.Texture.fromImage("/imgs/mainDude/frontView.png");
     var dude = new PIXI.Sprite(dudeTexFront);
 
-    
+
     // Add animations to sprite sets
     var dudeUpSet = [
         dudeTexRear1,
         dudeTexRear2
-    ];
-    
+            ];
+
     var dudeDownSet = [
         dudeTexFront1,
         dudeTexFront2
-    ];
-    
+            ];
+
     var dudeLeftSet = [
         dudeTexLeft1,
         dudeTexLeft2
-    ];
-    
+            ];
+
     var dudeRightSet = [
         dudeTexRight1,
         dudeTexRight2
-    ];
+            ];
 
     // Load needed animations (spriteSet, duration)
     var dudeUpAnimation = new Animation(dudeUpSet, 0.2);
     var dudeDownAnimation = new Animation(dudeDownSet, 0.2);
     var dudeLeftAnimation = new Animation(dudeLeftSet, 0.2);
     var dudeRightAnimation = new Animation(dudeRightSet, 0.2);
-    
+
     // center the sprites anchor point
     dude.anchor.x = 0.5;
     dude.anchor.y = 0.5;
@@ -101,11 +101,11 @@ y -= canvas.offsetTop;
     var camera = new BoundingBox(dude.position.x, dude.position.y, WIDTH, HEIGHT);
     dude.gamePosition = new Point(TILE_WIDTH*currentLocation.x, TILE_HEIGHT*currentLocation.y);
     //dude.gamePosition = new Point(TILE_WIDTH*512, TILE_HEIGHT*919);
-    
+
     //Centre dude!
     dude.position.x = WIDTH / 2;
     dude.position.y = HEIGHT / 2;
-    
+
     //reads a file and converts into array, then sets up the tiles
     convert("/res/britain.txt", function(myLevel) {
         //split into array
@@ -154,14 +154,12 @@ y -= canvas.offsetTop;
         }
 
         updateLevel();
-    
+
         requestAnimFrame(draw);
     });
-  
+
 
     function updateLevel() {
-        console.log(camera);
-        console.log($('canvas').height());
         // Make a new camera object with a slightly bigger view, to hack seeing a chunk appear
         var tempCamera = new BoundingBox((camera.gamePosition.x - 50), (camera.gamePosition.y - 50), (camera.width + 100), (camera.height + 100));
         for(var i = 0; i < chunks.length; i++) {
@@ -199,7 +197,7 @@ y -= canvas.offsetTop;
         timer.tick();
 
     }
-     
+
 
     function update() {
         // Set boundries of screen position (100 pixels from edge)
@@ -222,9 +220,9 @@ y -= canvas.offsetTop;
         // Set the camera's position in the game world
         camera.gamePosition.x = dude.gamePosition.x - dude.position.x;
         camera.gamePosition.y = dude.gamePosition.y - dude.position.y;
-        
+
         updateLevel();
-        
+
         //go go gadget.
         //stage.removeChild(dude);
     }
@@ -274,24 +272,24 @@ y -= canvas.offsetTop;
     function populateChunk(chunk) {
         $.ajax({
             url: "/getCountyData",
-            data: {"id" : chunk},
-            dataType: "json",
-            success: function(data) {
-                console.log(data);
-            }
+        data: {"id" : chunk},
+        dataType: "json",
+        success: function(data) {
+            console.log(data);
+        }
         });
     }
 
     function fetchChunkData(chunkCoords, callback) {
         $.ajax({
             url: "/getChunk",
-            data: {"coord1" : chunkCoords.x,
-                   "coord2" : chunkCoords.y},
-            dataType: "json",
-            success: function(data) {
-                var pos = new Point(chunkCoords.x, chunkCoords.y);
-                callback(pos, data);
-            }
+        data: {"coord1" : chunkCoords.x,
+            "coord2" : chunkCoords.y},
+        dataType: "json",
+        success: function(data) {
+            var pos = new Point(chunkCoords.x, chunkCoords.y);
+            callback(pos, data);
+        }
         });
     }
 
@@ -301,34 +299,34 @@ y -= canvas.offsetTop;
         for(var i = 0; i < chunks[pos.x][pos.y].tiles.length; i++) {
             for(var j = 0; j < chunks[pos.x][pos.y].tiles[i].length; j++) {
                 chunks[pos.x][pos.y].tiles[i][j].countyId = data.chunk[i][j][1];
-                 switch(data.chunk[i][j][0]) {
-                     case 0:
-                         //sea
-                         chunks[pos.x][pos.y].tiles[i][j].setTexture(waterTex);
-                         break;
-                     case 1:
-                         //land
-                         chunks[pos.x][pos.y].tiles[i][j].setTexture(landTex);
-                         break;
-                     case 2:
-                         //farm
-                         chunks[pos.x][pos.y].tiles[i][j].setTexture(farmTex);
-                         break;
-                     case 3:
-                         //village
-                         chunks[pos.x][pos.y].tiles[i][j].setTexture(villageTex);
-                         break;
-                     case 4:
-                         //town
-                         chunks[pos.x][pos.y].tiles[i][j].setTexture(townTex);
-                         break;
-                     case 5:
-                         //city
-                         chunks[pos.x][pos.y].tiles[i][j].setTexture(cityTex);
-                         break;
-                     default:
-                         break;
-                 }
+                switch(data.chunk[i][j][0]) {
+                    case 0:
+                        //sea
+                        chunks[pos.x][pos.y].tiles[i][j].setTexture(waterTex);
+                        break;
+                    case 1:
+                        //land
+                        chunks[pos.x][pos.y].tiles[i][j].setTexture(landTex);
+                        break;
+                    case 2:
+                        //farm
+                        chunks[pos.x][pos.y].tiles[i][j].setTexture(farmTex);
+                        break;
+                    case 3:
+                        //village
+                        chunks[pos.x][pos.y].tiles[i][j].setTexture(villageTex);
+                        break;
+                    case 4:
+                        //town
+                        chunks[pos.x][pos.y].tiles[i][j].setTexture(townTex);
+                        break;
+                    case 5:
+                        //city
+                        chunks[pos.x][pos.y].tiles[i][j].setTexture(cityTex);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }
@@ -385,13 +383,13 @@ y -= canvas.offsetTop;
     kd.SPACE.down(function() {
         dude.rotation += 0.1;
     });
-    
+
     kd.Z.down(function() {
         MOVE_SPEED = 50;
         dude.setTexture(dudeTexCar);
         dudeInCar = true;
     });
-    
+
     kd.Z.up(function() {
         MOVE_SPEED = 5;
         dudeInCar = false;
