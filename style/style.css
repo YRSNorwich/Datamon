@@ -32,6 +32,26 @@ h1{
 	
 	padding: 10px;
 }
+
+div#stats {
+
+	background-color:green;
+	border:6px solid white;
+	border-radius: 5px;
+	color: white;
+	font-family: Ubuntu, Candara, sans-serif;
+	
+	width: 220px;
+	height: 440px;
+
+}
+
+canvas {
+
+	display: inline block;
+
+}
+
 span#bordered {
 
 	background-color: green;
