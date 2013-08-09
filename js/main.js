@@ -160,6 +160,8 @@ y -= canvas.offsetTop;
   
 
     function updateLevel() {
+        console.log(camera);
+        console.log($('canvas').height());
         // Make a new camera object with a slightly bigger view, to hack seeing a chunk appear
         var tempCamera = new BoundingBox((camera.gamePosition.x - 50), (camera.gamePosition.y - 50), (camera.width + 100), (camera.height + 100));
         for(var i = 0; i < chunks.length; i++) {
@@ -201,16 +203,16 @@ y -= canvas.offsetTop;
 
     function update() {
         // Set boundries of screen position (100 pixels from edge)
-        if(dude.position.x > 700) {
-            dude.position.x = 700;
+        if(dude.position.x > (WIDTH - 100)) {
+            dude.position.x = (WIDTH - 100);
             cameraMove("right");
         } else if (dude.position.x < 100) {
             dude.position.x = 100;
             cameraMove("left");
         }
 
-        if(dude.position.y > 400) {
-            dude.position.y = 400;
+        if(dude.position.y > (HEIGHT - 100)) {
+            dude.position.y = (HEIGHT - 100);
             cameraMove("up");
         } else if(dude.position.y < 100) {
             dude.position.y = 100;
@@ -331,8 +333,11 @@ y -= canvas.offsetTop;
         }
     }
 
+    var dudeInCar = false;
     kd.UP.down(function() {
-        animate(dude, dudeUpAnimation, timer.getSeconds());
+        if(!dudeInCar) {
+            animate(dude, dudeUpAnimation, timer.getSeconds());
+        }
         dude.position.y -= MOVE_SPEED;
         dude.gamePosition.y -= MOVE_SPEED;
     });
@@ -342,7 +347,9 @@ y -= canvas.offsetTop;
     });
 
     kd.DOWN.down(function() {
-        animate(dude, dudeDownAnimation, timer.getSeconds());
+        if(!dudeInCar) {
+            animate(dude, dudeDownAnimation, timer.getSeconds());
+        }
         dude.position.y += MOVE_SPEED;
         dude.gamePosition.y += MOVE_SPEED;
     });
@@ -352,7 +359,9 @@ y -= canvas.offsetTop;
     });
 
     kd.LEFT.down(function() {
-        animate(dude, dudeLeftAnimation, timer.getSeconds());
+        if(!dudeInCar) {
+            animate(dude, dudeLeftAnimation, timer.getSeconds());
+        }
         dude.position.x -= MOVE_SPEED;
         dude.gamePosition.x -= MOVE_SPEED;
     });
@@ -362,7 +371,9 @@ y -= canvas.offsetTop;
     });
 
     kd.RIGHT.down(function() {
-        animate(dude, dudeRightAnimation, timer.getSeconds());
+        if(!dudeInCar) {
+            animate(dude, dudeRightAnimation, timer.getSeconds());
+        }
         dude.position.x += MOVE_SPEED;
         dude.gamePosition.x += MOVE_SPEED;
     });
@@ -377,10 +388,13 @@ y -= canvas.offsetTop;
     
     kd.Z.down(function() {
         MOVE_SPEED = 50;
+        dude.setTexture(dudeTexCar);
+        dudeInCar = true;
     });
     
     kd.Z.up(function() {
         MOVE_SPEED = 5;
+        dudeInCar = false;
     });
 
 }

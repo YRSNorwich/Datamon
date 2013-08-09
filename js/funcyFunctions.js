@@ -22,6 +22,7 @@ var dudeTexLeft2 = PIXI.Texture.fromImage("/imgs/mainDude/sideViewLeft2.png");
 var dudeTexRight1 = PIXI.Texture.fromImage("/imgs/mainDude/sideViewRight1.png");
 var dudeTexRight2 = PIXI.Texture.fromImage("/imgs/mainDude/sideViewRight2.png");
 var dudeTexRaft = PIXI.Texture.fromImage("/imgs/mainDude/raft.png");
+var dudeTexCar = PIXI.Texture.fromImage("/imgs/mainDude/car1.png");
 var landTex = PIXI.Texture.fromImage("/imgs/terrain/grass.png");
 var townTex = PIXI.Texture.fromImage("/imgs/terrain/town.png");
 var villageTex = PIXI.Texture.fromImage("/imgs/terrain/village.png");
