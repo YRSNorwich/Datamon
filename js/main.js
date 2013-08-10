@@ -219,12 +219,13 @@ function main() {
                     } else {
                         if( typeof rains != 'undefined') {
                             if(!removedRain) {
-                                for(var i = 0; i < rains.length; i++) {
+                                //TODO for loop crashes app for some reason. No idea why, tiles seems to be an array which exists at this point.
+                                /*for(var i = 0; i < rains.length; i++) {
                                     for(var j = 0; j < rains[i].length; j++) {
                                         stage.removeChild(rains[i][j]);
                                         removedRain = true;
                                     }
-                                }
+                                }*/
                             }
                         }
                     }
