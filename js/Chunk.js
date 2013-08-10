@@ -65,9 +65,9 @@ function Chunk(x, y) {
     }
     this.loadNpcs = function(stage, camera){
         for (var i = 0; i < this.npcs.length; i++){
-if (collides(this.npcs[i],camera)){
-    stage.addChild(this.npcs[i]);
-}
+			if (collides(this.npcs[i],camera)){
+				stage.addChild(this.npcs[i]);
+			}
 }
     }
     this.loadTileData = function(chunkData) {
@@ -80,7 +80,7 @@ if (collides(this.npcs[i],camera)){
         for (var i = 0; i < this.tiles.length; i++) {
             for(var j = 0; j < this.tiles[i].length; j++){
 
-                var robberProbability = 1 / this.tiles[i][j].crimeRating;
+                var robberProbability = (1-(1 / this.tiles[i][j].crimeRating))/9;
                 // console.log(robberProbability);
                 // console.log(this.tiles[i][j].crimeRating);
 
