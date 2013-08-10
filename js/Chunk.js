@@ -28,7 +28,7 @@ function Chunk(x, y) {
             this.clouds[i].position.y += this.clouds[i].velocity.y;
         }
         for(var i = 0; i < this.npcs.length; i++) {
-        	this.npcs[i].rotation += 1;
+        	//this.npcs[i].rotation += 100;
         }
     }
 
