@@ -210,7 +210,7 @@ function main() {
                                     console.log("water");
                                     var tile = new BoundingBox(chunks[i][j].gamePosition.x + TILE_WIDTH*i, chunks[i][j].gamePosition.y + TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT);
                                     //TODO THIS ISN'T WORKING FOR SOME REASON ARGHHHHHHHHHHHHHHHHHHHHHHHHHH
-                                    dude.setTexture(dudeRaftTex);
+                                   // dude.setTexture(dudeRaftTex);
                                     if(collides(dude, tile)) {
                                         console.log("ON WATER");
                                     } 
