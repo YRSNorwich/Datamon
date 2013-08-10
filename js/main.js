@@ -204,6 +204,7 @@ function main() {
                     if(chunks[i][j].rain) {
                         if( typeof rains != 'undefined') {
                             drawRain();
+                            removedRain = false;
                         } else {
                             rains = get2DArray(15, 10); 
                             for(var i = 0; i < rains.length; i++) {
@@ -218,7 +219,6 @@ function main() {
                     } else {
                         if( typeof rains != 'undefined') {
                             if(!removedRain) {
-                                console.log("Romved");
                                 for(var i = 0; i < rains.length; i++) {
                                     for(var j = 0; j < rains[i].length; j++) {
                                         stage.removeChild(rains[i][j]);

@@ -86,7 +86,7 @@ function Chunk(x, y) {
                     this.clouds.push(cloud);
                 }
 
-                if(this.tiles[i][j].cloudRating > 0.55) {
+                if(this.tiles[i][j].cloudRating > 0.6) {
                     this.rainNumber++;
                 }
 
