@@ -270,7 +270,7 @@ function main() {
 
         // signal end of frame to timer.
         timer.tick();
-
+         updatestats();
     }
 
 
@@ -365,7 +365,14 @@ function main() {
         }
         });
     }
+    function updatestats(){
+       
+       var ref = new OsGridRef(Math.floor(dude.gamePosition.x / TILE_WIDTH),Math.floor(dude.gamePosition.y / TILE_HEIGHT));
+       var latLon = OsGridRef.osGridToLatLong(ref);
+        
+   $("#latlng").html((latLon.x.toString()) + (latLon.y.toString()));
 
+    }
     function loadChunkData(pos, data) {
         pos.x /= CHUNK_X;
         pos.y /= CHUNK_Y;
@@ -511,9 +518,19 @@ function main() {
     kd.SPACE.down(function() {
         dude.rotation += 0.1;
     });
-
+     kd.S.down(function() {
+        MOVE_SPEED = 500;
+        dude.setTexture(dudeTexStarship);
+        dudeInCar = true;
+    });
+      kd.S.up(function() {
+        MOVE_SPEED = 5;
+        dudeInCar = false;
+        dude.rotation = 0;
+        dude.setTexture(dudeTexRear);
+    });
     kd.Z.down(function() {
-        MOVE_SPEED = 50;
+        MOVE_SPEED = 17;
         dude.setTexture(dudeTexCar);
         dudeInCar = true;
     });

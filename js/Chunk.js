@@ -76,7 +76,8 @@ if (collides(this.npcs[i],camera)){
 
         for (var i = 0; i < this.tiles.length; i++) {
             for(var j = 0; j < this.tiles[i].length; j++){
-                var robberProbability = 50 / this.tiles[i][j].crimeRating;
+                var robberProbability = 1 / this.tiles[i][j].crimeRating;
+                console.log(robberProbability);
                 console.log(this.tiles[i][j].crimeRating);
                 var randomrobber = Math.floor(Math.random()*robberProbability);
                 var robber = new PIXI.Sprite(robberTex);
@@ -132,6 +133,11 @@ if (collides(this.npcs[i],camera)){
         for(var i = 0; i < this.clouds.length; i++) {
                 this.clouds[i].position.x += dx;
                 this.clouds[i].position.y += dy;
+        }
+
+        for(var i = 0; i < this.npcs.length; i++) {
+                this.npcs[i].position.x += dx;
+                this.npcs[i].position.y += dy;
         }
     }
 

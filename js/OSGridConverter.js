@@ -17,6 +17,10 @@
  * @param {Number} easting:  Easting in metres from OS false origin
  * @param {Number} northing: Northing in metres from OS false origin
  */
+ Number.prototype.toDeg = function() {
+  return this * 180 / Math.PI;
+
+ }
 function OsGridRef(easting, northing) {
   this.easting = parseInt(easting, 10);
   this.northing = parseInt(northing, 10);
@@ -124,7 +128,7 @@ OsGridRef.osGridToLatLong = function(gridref) {
   lat = lat - VII*dE2 + VIII*dE4 - IX*dE6;
   var lon = lon0 + X*dE - XI*dE3 + XII*dE5 - XIIA*dE7;
   
-  return new LatLon(lat.toDeg(), lon.toDeg());
+  return new Point(lat.toDeg(), lon.toDeg());
 }
 
 
