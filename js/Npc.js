@@ -5,6 +5,4 @@ function Npc(x, y, texfront) {
         this.anchor.y = 0.5;
         this.gamePosition = new Point(x, y);
 	var dudeTexFront = PIXI.Texture.fromImage(texfront);
-
-
 }
