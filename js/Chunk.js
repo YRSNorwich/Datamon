@@ -155,6 +155,11 @@ if (collides(this.npcs[i],camera)){
                 stage.removeChild(this.clouds[i]);
             }
         }
+        if(this.npcs > 0) {
+            for(var i = 0; i < this.npcs.length; i++) {
+                stage.removeChild(this.npcs[i]);
+            }
+        }
 
         this.rain = false;
     }

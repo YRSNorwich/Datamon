@@ -207,8 +207,10 @@ function main() {
                         for(var y = 0; y < chunks[i][j].tiles[x].length; y++) {
                                 if(chunks[i][j].tiles[x][y].tileType === 0) {
                                     //HACK SO TILES HAVE GAME POSITION
+                                    console.log("water");
                                     var tile = new BoundingBox(chunks[i][j].gamePosition.x + TILE_WIDTH*i, chunks[i][j].gamePosition.y + TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT);
                                     //TODO THIS ISN'T WORKING FOR SOME REASON ARGHHHHHHHHHHHHHHHHHHHHHHHHHH
+                                    dude.setTexture(dudeRaftTex);
                                     if(collides(dude, tile)) {
                                         console.log("ON WATER");
                                     } 
@@ -244,8 +246,9 @@ function main() {
                             }
                         }
                     }
-                    chunks[i][j].loadNpcs(stage, tempCamera);
+                    
                     chunks[i][j].drawWeather(stage, tempCamera);
+                    chunks[i][j].loadNpcs(stage, tempCamera);
 
                 }
             }
