@@ -121,5 +121,7 @@ function Chunk(x, y) {
         for(var i = 0; i < this.clouds.length; i++) {
             //stage.removeChild(this.clouds[i]);
         }
+
+        this.rain = false;
     }
 }
