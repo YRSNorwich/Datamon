@@ -249,9 +249,9 @@ function main() {
                             //rains = null;
                         }
                     }
-                    
-                    chunks[i][j].drawWeather(stage, tempCamera);
                     chunks[i][j].loadNpcs(stage, tempCamera);
+                    chunks[i][j].drawWeather(stage, tempCamera);
+                 
                 }
             }
         }
@@ -371,7 +371,7 @@ function main() {
     }
     function updatestats(){
        
-       var ref = new OsGridRef(Math.floor(dude.gamePosition.x / TILE_WIDTH),Math.floor(dude.gamePosition.y / TILE_HEIGHT));
+       var ref = new OsGridRef(dude.gamePosition.x / TILE_WIDTH,dude.gamePosition.y / TILE_HEIGHT);
        var latLon = OsGridRef.osGridToLatLong(ref);
         
        $("#latlng").html((latLon.x.toString()) + (latLon.y.toString()));
@@ -382,6 +382,7 @@ function main() {
        }
 
     }
+  
     function loadChunkData(pos, data) {
         pos.x /= CHUNK_X;
         pos.y /= CHUNK_Y;

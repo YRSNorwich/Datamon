@@ -27,7 +27,7 @@ function Chunk(x, y) {
             this.clouds[i].position.x += this.clouds[i].velocity.x;
             this.clouds[i].position.y += this.clouds[i].velocity.y;
         }
-    
+           
     }
 
     this.drawTiles = function(stage, dude) {
@@ -63,10 +63,10 @@ function Chunk(x, y) {
     }
     this.loadNpcs = function(stage, camera){
         for (var i = 0; i < this.npcs.length; i++){
-if (collides(this.npcs[i],camera)){
-    stage.addChild(this.npcs[i]);
-}
-}
+            if (collides(this.npcs[i],camera)){
+                stage.addChild(this.npcs[i]);
+            }
+        }   
     }
     this.loadTileData = function(chunkData) {
         for(var x = 0; x < this.sizew; x++) {
@@ -79,6 +79,7 @@ if (collides(this.npcs[i],camera)){
             for(var j = 0; j < this.tiles[i].length; j++){
 
                 var robberProbability = 1 / this.tiles[i][j].crimeRating;
+                 getAreaWealth(this.tiles[i][j].crimeRating);
                 // console.log(robberProbability);
                 // console.log(this.tiles[i][j].crimeRating);
 
@@ -165,3 +166,7 @@ if (collides(this.npcs[i],camera)){
         this.rain = false;
     }
 }
+  function getAreaWealth(data) {
+        var wealth = ((1-data)*100);
+        $("#wealth").html(wealth);
+    }
