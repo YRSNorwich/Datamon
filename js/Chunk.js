@@ -8,7 +8,8 @@ function Chunk(x, y) {
     this.tiles = get2DArray(this.sizew, this.sizeh);
     this.tileMap = get2DArray(this.sizew, this.sizeh);
     this.draw = false;
-    this.rain = true;
+    this.rainNumber = 0;
+    this.rain = false;
     this.boundingBoxes = new Array();
     this.clouds = new Array();
 
@@ -56,9 +57,6 @@ function Chunk(x, y) {
                 stage.addChild(this.clouds[i]);
             }
 
-            if(this.cloudRating > 0) {
-                this.rain = true;
-            }
         }
     }
 
@@ -86,6 +84,14 @@ function Chunk(x, y) {
                     //cloud.velocity = new Point(xVel, yVel);
                     cloud.velocity = new Point(0, 0);
                     this.clouds.push(cloud);
+                }
+
+                if(this.tiles[i][j].cloudRating > 0.55) {
+                    this.rainNumber++;
+                }
+
+                if(this.rainNumber > 30) {
+                    this.rain = true;
                 }
             }
         }

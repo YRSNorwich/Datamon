@@ -186,6 +186,9 @@ function main() {
                     chunks[i][j].draw = true;
                     chunks[i][j].update();
                     chunks[i][j].drawTiles(stage, dude);
+                    
+                    stage.addChild(dude);
+                    
                     fetchChunkData(new Point(i*CHUNK_X, j*CHUNK_Y), loadChunkData);
                     //console.log("Just drew chunk " + "[" + i + ", " + j + "]");
                 } else if ((chunks[i][j].draw) && !(collides(chunks[i][j], tempCamera))) {
@@ -195,11 +198,9 @@ function main() {
 
                 if(chunks[i][j].draw) {
                     chunks[i][j].update();
-                    chunks[i][j].drawWeather(stage, tempCamera);
 
                     if(chunks[i][j].rain) {
                         if( typeof rains != 'undefined') {
-                            stage.addChild(dude);
                             drawRain();
                         } else {
                             rains = get2DArray(15, 10); 
@@ -213,6 +214,8 @@ function main() {
                             }
                         }
                     }
+
+                    chunks[i][j].drawWeather(stage, tempCamera);
                 }
             }
         }
