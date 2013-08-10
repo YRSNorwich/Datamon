@@ -234,17 +234,19 @@ function main() {
                                     rains[i][j].position.x = i*64;
                                     rains[i][j].position.y = j*64;
                                     rains[i][j].animation = new Animation(rainFallSet, 0.2);
+                                    stage.addChild(rains[i][j]);
                                 }
                             }
                         }
                     } else {
-                        if( rains != null) {
+                        if(rains != null) {
                             //TODO for loop crashes app for some reason. No idea why, tiles seems to be an array which exists at this point.
-                            /*for(var i = 0; i < rains.length; i++) {
-                                for(var j = 0; j < rains[i].length; j++) {
-                                    stage.removeChild(rains[i][j]);
+                            for(var x = 0; x < rains.length; x++) {
+                                for(var y = 0; y < rains[x].length; y++) {
+                                    //stage.removeChild(rains[x][y]);
                                 }
-                            }*/
+                            }
+                            //rains = null;
                         }
                     }
                     
@@ -442,7 +444,6 @@ function main() {
         if(rains != null) {
             for(var i = 0; i < rains.length; i++) {
                 for(var j = 0; j < rains[i].length; j++) {
-                    stage.addChild(rains[i][j]);
                     //rains[i][j].position.x -= RAIN_VEL;
                     //rains[i][j].position.y += RAIN_VEL / 2;
 
