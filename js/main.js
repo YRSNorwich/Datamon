@@ -38,6 +38,8 @@ function main() {
     var chunks;
     var rains;
 
+    var county;
+
     //Really hacky code to get the minimap coords.
     var canvas = document.getElementById('minimap');
     canvas.addEventListener('click', function(e) {
@@ -205,14 +207,20 @@ function main() {
                     // Check if dude is on water
                     for(var x = 0; x < chunks[i][j].tiles.length; x++) {
                         for(var y = 0; y < chunks[i][j].tiles[x].length; y++) {
+                            var tile = new BoundingBox(chunks[i][j].gamePosition.x + TILE_WIDTH*x, chunks[i][j].gamePosition.y + TILE_HEIGHT*y, TILE_WIDTH, TILE_HEIGHT);
+                            if(collides(dude, tile)) {
                                 if(chunks[i][j].tiles[x][y].tileType === 0) {
                                     //HACK SO TILES HAVE GAME POSITION
+
                                     var tile = new BoundingBox(chunks[i][j].gamePosition.x + TILE_WIDTH*x, chunks[i][j].gamePosition.y + TILE_HEIGHT*y, TILE_WIDTH, TILE_HEIGHT);
-                                    dude.setTexture(dudeRaftTex);
+
                                     if(collides(dude, tile)) {
                                         dude.setTexture(dudeTexRaft);
                                     } 
                                 }
+                                county = chunks[i][j].tiles[x][y].county;
+                                console.log(county);
+                            }
                         }
                     }
 
@@ -370,6 +378,9 @@ function main() {
        var latLon = OsGridRef.osGridToLatLong(ref);
         
        $("#latlng").html((latLon.x.toString()) + (latLon.y.toString()));
+       if(typeof county != 'undefined') {
+           $("#county").html("County: " + county);
+       }
 
     }
     function loadChunkData(pos, data) {

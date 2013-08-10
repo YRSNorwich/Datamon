@@ -81,16 +81,16 @@ if (collides(this.npcs[i],camera)){
             for(var j = 0; j < this.tiles[i].length; j++){
 
                 var robberProbability = 1 / this.tiles[i][j].crimeRating;
-                console.log(robberProbability);
-                console.log(this.tiles[i][j].crimeRating);
+                // console.log(robberProbability);
+                // console.log(this.tiles[i][j].crimeRating);
 
                 var randomrobber = Math.floor(Math.random()*robberProbability);
                 var robber = new PIXI.Sprite(robberTex);
-                robber.position.x = this.tiles[i][j].position.x;
-                robber.position.y = this.tiles[i][j].position.y;
+                robber.position.x = this.tiles[i][j].position.x * Math.random(10);
+                robber.position.y = this.tiles[i][j].position.y * Math.random(10);
                 robber.gamePosition = new Point(0,0);
-                robber.gamePosition.x = this.gamePosition.x + j*TILE_WIDTH;
-                robber.gamePosition.y = this.gamePosition.y + i*TILE_HEIGHT;
+                robber.gamePosition.x = this.gamePosition.x + j*TILE_WIDTH * Math.random(10);
+                robber.gamePosition.y = this.gamePosition.y + i*TILE_HEIGHT * Math.random(10);
                 //var robberSpeedx = 
                 //var robberSpeedy =
                 this.npcs.push(robber);
