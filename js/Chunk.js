@@ -27,9 +27,7 @@ function Chunk(x, y) {
             this.clouds[i].position.x += this.clouds[i].velocity.x;
             this.clouds[i].position.y += this.clouds[i].velocity.y;
         }
-        for(var i = 0; i < this.npcs.length; i++) {
-        	//this.npcs[i].rotation += 100;
-        }
+    
     }
 
     this.drawTiles = function(stage, dude) {

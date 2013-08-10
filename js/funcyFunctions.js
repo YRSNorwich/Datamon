@@ -36,7 +36,7 @@ var rainTex1 = PIXI.Texture.fromImage("/imgs/weather/rain/rain1.png");
 var dudeTexStarship = PIXI.Texture.fromImage("/imgs/mainDude/starship.png");
 var rainTex2 = PIXI.Texture.fromImage("/imgs/weather/rain/rain2.png");
 var rainTex3 = PIXI.Texture.fromImage("/imgs/weather/rain/rain3.png");
-var robberTex = PIXI.Texture.fromImage("/imgs/mainDude/frontView.png");
+var robberTex = PIXI.Texture.fromImage("/imgs/robber.png");
 var dudeRaftTex = PIXI.Texture.fromImage("/imgs/mainDude/raft.png");
 
 function convert(file, callback)

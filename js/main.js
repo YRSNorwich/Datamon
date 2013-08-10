@@ -36,7 +36,7 @@ function main() {
 
     var tiles;
     var chunks;
-    var rains;
+    var rains = null;
 
     var county;
 
@@ -58,8 +58,8 @@ function main() {
     y -= canvas.offsetTop;
 
     var mapPos = new Point(dude.gamePosition.x / TILE_WIDTH, dude.gamePosition.y / TILE_HEIGHT);
-    var dudePos = new Point(dude.gamePosition.x, dude.gamePosition.y)
-        var clickpos = new Point(x,y);
+    var dudePos = new Point(dude.gamePosition.x, dude.gamePosition.y);
+    var clickpos = new Point(x,y);
     //teleport(dude,minimap2game(mapPos,dudePos,clickpos));
 
     //console.log("actual game pos:"+" "+mapPos.x+" "+mapPos.y);
@@ -219,15 +219,13 @@ function main() {
                                     } 
                                 }
                                 county = chunks[i][j].tiles[x][y].county;
-                                console.log(county);
                             }
                         }
                     }
 
                     if(chunks[i][j].rain) {
-                        if( typeof rains != 'undefined') {
+                        if(rains != null) {
                             drawRain();
-                            removedRain = false;
                         } else {
                             rains = get2DArray(15, 10); 
                             for(var i = 0; i < rains.length; i++) {
@@ -240,16 +238,13 @@ function main() {
                             }
                         }
                     } else {
-                        if( typeof rains != 'undefined') {
-                            if(!removedRain) {
-                                //TODO for loop crashes app for some reason. No idea why, tiles seems to be an array which exists at this point.
-                                /*for(var i = 0; i < rains.length; i++) {
-                                    for(var j = 0; j < rains[i].length; j++) {
-                                        stage.removeChild(rains[i][j]);
-                                        removedRain = true;
-                                    }
-                                }*/
-                            }
+                        if( rains != null) {
+                            //TODO for loop crashes app for some reason. No idea why, tiles seems to be an array which exists at this point.
+                            /*for(var i = 0; i < rains.length; i++) {
+                                for(var j = 0; j < rains[i].length; j++) {
+                                    stage.removeChild(rains[i][j]);
+                                }
+                            }*/
                         }
                     }
                     
@@ -282,7 +277,7 @@ function main() {
 
 
     function update() {
-        if(typeof rains != 'undefined') {
+        if(rains != null) {
             for(var i = 0; i < rains.length; i++) {
                 for(var j = 0; j < rains[i].length; j++) {
                     animate(rains[i][j], rains[i][j].animation, timer.getSeconds());
@@ -380,6 +375,8 @@ function main() {
        $("#latlng").html((latLon.x.toString()) + (latLon.y.toString()));
        if(typeof county != 'undefined') {
            $("#county").html("County: " + county);
+       } else {
+           $("#county").html("County: " + "Narnia");
        }
 
     }
@@ -442,22 +439,24 @@ function main() {
     }
 
     function drawRain() {
-        for(var i = 0; i < rains.length; i++) {
-            for(var j = 0; j < rains[i].length; j++) {
-                stage.addChild(rains[i][j]);
-                //rains[i][j].position.x -= RAIN_VEL;
-                //rains[i][j].position.y += RAIN_VEL / 2;
-
-            }
-        }
-        
-        var x = rains.length - 1;
-        var y = 0;//rains[x].length - 1;
-        if(rains[x][y].position.x < 0 || rains[x][y].position.y > HEIGHT) {
+        if(rains != null) {
             for(var i = 0; i < rains.length; i++) {
                 for(var j = 0; j < rains[i].length; j++) {
-                    rains[i][j].position.x = WIDTH + i*64;
-                    rains[i][j].position.y = -HEIGHT + j*64;
+                    stage.addChild(rains[i][j]);
+                    //rains[i][j].position.x -= RAIN_VEL;
+                    //rains[i][j].position.y += RAIN_VEL / 2;
+
+                }
+            }
+
+            var x = rains.length - 1;
+            var y = 0;//rains[x].length - 1;
+            if(rains[x][y].position.x < 0 || rains[x][y].position.y > HEIGHT) {
+                for(var i = 0; i < rains.length; i++) {
+                    for(var j = 0; j < rains[i].length; j++) {
+                        rains[i][j].position.x = WIDTH + i*64;
+                        rains[i][j].position.y = -HEIGHT + j*64;
+                    }
                 }
             }
         }
