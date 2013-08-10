@@ -389,6 +389,7 @@ function main() {
                     if(chunks[pos.x][pos.y].tiles[i][j].countyId === value.id) {
                         chunks[pos.x][pos.y].tiles[i][j].county = key;
                         chunks[pos.x][pos.y].tiles[i][j].cloudRating = value.cloudCover;
+                        chunks[pos.x][pos.y].crimeRating = value.crimeIncidents;
                     }
                 });
                 

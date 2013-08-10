@@ -12,6 +12,7 @@ function Chunk(x, y) {
     this.rain = false;
     this.boundingBoxes = new Array();
     this.clouds = new Array();
+    this.crimeRating;
 
     this.loadTiles = function(array, blockpos) {
         for(var x = 0; x < this.sizew; x++) {
