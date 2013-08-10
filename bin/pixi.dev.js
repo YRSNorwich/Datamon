@@ -736,6 +736,7 @@ PIXI.Sprite = function(texture)
 
         // MILO: used only for weather and stuff
         this.velocity;
+        this.animation;
 	
 	// thi next bit is here for the docs...
 	
@@ -6586,7 +6587,7 @@ PIXI.BaseTexture = function(source)
 		{
 			
 			var scope = this;
-                        if(this.source.src.indexOf("terrain") != -1 || this.source.src.indexOf("weather") != -1 ) {
+                        if(this.source.src.indexOf("terrain") != -1 || this.source.src.indexOf("cloud") != -1) {
                             this.source.onload = function(){
                                 scope.hasLoaded = true;
                                 scope.width = 512;
@@ -6596,18 +6597,28 @@ PIXI.BaseTexture = function(source)
                                 PIXI.texturesToUpdate.push(scope);
                                 scope.dispatchEvent( { type: 'loaded', content: scope } );
                             }
+                        } else if(this.source.src.indexOf("rain") != -1) {
+                            this.source.onload = function(){
+                                scope.hasLoaded = true;
+                                scope.width = 128;
+                                scope.height = 128;
+
+                                // add it to somewhere...
+                                PIXI.texturesToUpdate.push(scope);
+                                scope.dispatchEvent( { type: 'loaded', content: scope } );
+                            }
                         } else {
                             this.source.onload = function(){
                                 scope.hasLoaded = true;
-                                scope.width = scope.source.width;
-                                scope.height = scope.source.height;
+                                scope.width = 64;
+                                scope.height = 64;
 
                                 // add it to somewhere...
                                 PIXI.texturesToUpdate.push(scope);
                                 scope.dispatchEvent( { type: 'loaded', content: scope } );
                             }
                         }
-                        //	this.image.src = imageUrl;
+                        //this.image.src = imageUrl;
 		}
 	}
 	else

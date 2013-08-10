@@ -99,6 +99,12 @@ function main() {
         dudeTexRight1,
         dudeTexRight2
             ];
+    
+    var rainFallSet = [
+        rainTex1,
+        rainTex2,
+        rainTex3
+            ];
 
     // Load needed animations (spriteSet, duration)
     var dudeUpAnimation = new Animation(dudeUpSet, 0.2);
@@ -193,16 +199,16 @@ function main() {
 
                     if(chunks[i][j].rain) {
                         if( typeof rains != 'undefined') {
-                            console.log("DRAW");
+                            stage.addChild(dude);
                             drawRain();
                         } else {
-                            rains = get2DArray(1, 1); 
+                            rains = get2DArray(15, 10); 
                             for(var i = 0; i < rains.length; i++) {
                                 for(var j = 0; j < rains[i].length; j++) {
                                     rains[i][j] = new PIXI.Sprite(rainTex1);
-                                    rains[i][j].position.x = WIDTH;
-                                    rains[i][j].position.y = -HEIGHT;
-                                    stage.addChild(rains[i][j]);
+                                    rains[i][j].position.x = i*64;
+                                    rains[i][j].position.y = j*64;
+                                    rains[i][j].animation = new Animation(rainFallSet, 0.2);
                                 }
                             }
                         }
@@ -210,7 +216,6 @@ function main() {
                 }
             }
         }
-        //stage.addChild(dude);
     }
 
     function draw() {
@@ -235,6 +240,14 @@ function main() {
 
 
     function update() {
+        if(typeof rains != 'undefined') {
+            for(var i = 0; i < rains.length; i++) {
+                for(var j = 0; j < rains[i].length; j++) {
+                    animate(rains[i][j], rains[i][j].animation, timer.getSeconds());
+                }
+            }
+        }
+        
         // Set boundries of screen position (100 pixels from edge)
         if(dude.position.x > (WIDTH - 100)) {
             dude.position.x = (WIDTH - 100);
@@ -365,19 +378,28 @@ function main() {
         }
         chunks[pos.x][pos.y].loadTileData(data.chunk);
 
-        stage.addChild(dude);
+        //stage.addChild(dude);
         
     }
 
     function drawRain() {
         for(var i = 0; i < rains.length; i++) {
             for(var j = 0; j < rains[i].length; j++) {
-                rains[i][j].position.x -= RAIN_VEL;
-                rains[i][j].position.y += RAIN_VEL / 2;
+                stage.addChild(rains[i][j]);
+                //rains[i][j].position.x -= RAIN_VEL;
+                //rains[i][j].position.y += RAIN_VEL / 2;
 
-                if(rains[i][j].position.x < 0 || rains[i][j].position.y > HEIGHT) {
-                    rains[i][j].position.x = WIDTH;
-                    rains[i][j].position.y = -HEIGHT;
+            }
+        }
+        
+        var x = rains.length - 1;
+        var y = 0;//rains[x].length - 1;
+        if(rains[x][y].position.x < 0 || rains[x][y].position.y > HEIGHT) {
+            console.log("CALLED");
+            for(var i = 0; i < rains.length; i++) {
+                for(var j = 0; j < rains[i].length; j++) {
+                    rains[i][j].position.x = WIDTH + i*64;
+                    rains[i][j].position.y = -HEIGHT + j*64;
                 }
             }
         }
