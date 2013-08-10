@@ -62,11 +62,13 @@ function Chunk(x, y) {
         }
     }
     this.loadNpcs = function(stage, camera){
-        for (var i = 0; i < this.npcs.length; i++){
-            if (collides(this.npcs[i],camera)){
-                stage.addChild(this.npcs[i]);
-            }
-        }   
+
+		for (var i = 0; i < this.npcs.length; i++){
+			if (collides(this.npcs[i],camera)){
+				stage.addChild(this.npcs[i]);
+			}
+		}
+
     }
     this.loadTileData = function(chunkData) {
         for(var x = 0; x < this.sizew; x++) {
@@ -74,6 +76,7 @@ function Chunk(x, y) {
                 this.tiles[x][y].countyId = chunkData[x][y][1];
             }
         }
+
 
         for (var i = 0; i < this.tiles.length; i++) {
             for(var j = 0; j < this.tiles[i].length; j++){
@@ -94,35 +97,60 @@ function Chunk(x, y) {
                 //var robberSpeedy =
                 this.npcs.push(robber);
             }
+
+		if(this.npcs.length == 0) {
+			for (var i = 0; i < this.tiles.length; i++) {
+				for(var j = 0; j < this.tiles[i].length; j++){
+	
+					var robberProbability = (1.0-(1.0 / this.tiles[i][j].crimeRating))/9.0;
+					// console.log(robberProbability);
+					// console.log(this.tiles[i][j].crimeRating);
+	
+					var randomrobber = Math.floor(Math.random()*robberProbability);
+					var robber = new PIXI.Sprite(robberTex);
+					robber.position.x = this.tiles[i][j].position.x * Math.random(10);
+					robber.position.y = this.tiles[i][j].position.y * Math.random(10);
+					robber.gamePosition = new Point(0,0);
+					robber.gamePosition.x = this.gamePosition.x + j*TILE_WIDTH * Math.random(10);
+					robber.gamePosition.y = this.gamePosition.y + i*TILE_HEIGHT * Math.random(10);
+					//var robberSpeedx = 
+					//var robberSpeedy =
+					this.npcs.push(robber);
+				}
+			}
+
         }
 
-        for(var i = 0; i < this.tiles.length; i++) {
-            for(var j = 0; j < this.tiles[i].length; j++) {
-                var cloudProb = 100 / this.tiles[i][j].cloudRating;
-                var randomNumber=Math.floor(Math.random()*cloudProb);
-                // TODO first load of random numbers are NaN... From chunk 0,0?
-                if(randomNumber < 20) {
-                    var cloud = new PIXI.Sprite(cloudTex);
-                    cloud.position.x = this.tiles[i][j].position.x;
-                    cloud.position.y = this.tiles[i][j].position.y;
-                    cloud.gamePosition = new Point(0,0);
-                    cloud.gamePosition.x = this.gamePosition.x + i*TILE_WIDTH;
-                    cloud.gamePosition.y = this.gamePosition.y + j*TILE_HEIGHT;
-                    var xVel = Math.floor(Math.random()*CLOUD_MAX_VEL);
-                    var yVel = Math.floor(Math.random()*CLOUD_MAX_VEL);
-                    //cloud.velocity = new Point(xVel, yVel);
-                    cloud.velocity = new Point(0, 0);
-                    this.clouds.push(cloud);
-                }
-
-                if(this.tiles[i][j].cloudRating > 0.6) {
-                    this.rainNumber++;
-                }
-
-                if(this.rainNumber > 30) {
-                    this.rain = true;
-                }
-            }
+		if(this.clouds.length == 0) {
+			for(var i = 0; i < this.tiles.length; i++) {
+				for(var j = 0; j < this.tiles[i].length; j++) {
+					var cloudProb = 100 / this.tiles[i][j].cloudRating;
+					var randomNumber=Math.floor(Math.random()*cloudProb);
+					// TODO first load of random numbers are NaN... From chunk 0,0?
+					if(randomNumber < 20) {
+						var cloud = new PIXI.Sprite(cloudTex);
+						cloud.position.x = this.tiles[i][j].position.x;
+						cloud.position.y = this.tiles[i][j].position.y;
+						cloud.gamePosition = new Point(0,0);
+						cloud.gamePosition.x = this.gamePosition.x + i*TILE_WIDTH;
+						cloud.gamePosition.y = this.gamePosition.y + j*TILE_HEIGHT;
+						var xVel = Math.floor(Math.random()*CLOUD_MAX_VEL);
+						var yVel = Math.floor(Math.random()*CLOUD_MAX_VEL);
+						//cloud.velocity = new Point(xVel, yVel);
+						cloud.velocity = new Point(0, 0);
+						this.clouds.push(cloud);
+					}
+	
+					if(this.tiles[i][j].cloudRating > 0.6) {
+						this.rainNumber++;
+					}
+	
+					if(this.rainNumber > 30) {
+						this.rain = true;
+					}
+				}
+			}
+        
         }
     }
 
@@ -165,8 +193,12 @@ function Chunk(x, y) {
 
         this.rain = false;
     }
+
 }
   function getAreaWealth(data) {
         var wealth = ((1-data)*100);
         $("#wealth").html(wealth);
     }
+
+}
+
