@@ -207,10 +207,10 @@ function main() {
                         for(var y = 0; y < chunks[i][j].tiles[x].length; y++) {
                                 if(chunks[i][j].tiles[x][y].tileType === 0) {
                                     //HACK SO TILES HAVE GAME POSITION
-                                    var tile = new BoundingBox(chunks[i][j].gamePosition.x + TILE_WIDTH*i, chunks[i][j].gamePosition.y + TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT);
+                                    var tile = new BoundingBox(chunks[i][j].gamePosition.x + TILE_WIDTH*x, chunks[i][j].gamePosition.y + TILE_HEIGHT*y, TILE_WIDTH, TILE_HEIGHT);
                                     //TODO THIS ISN'T WORKING FOR SOME REASON ARGHHHHHHHHHHHHHHHHHHHHHHHHHH
                                     if(collides(dude, tile)) {
-                                        console.log("ON WATER");
+                                        dude.setTexture(dudeTexRaft);
                                     } 
                                 }
                         }
@@ -246,7 +246,6 @@ function main() {
                     }
                     chunks[i][j].loadNpcs(stage, tempCamera);
                     chunks[i][j].drawWeather(stage, tempCamera);
-
                 }
             }
         }
@@ -369,7 +368,7 @@ function main() {
        var ref = new OsGridRef(Math.floor(dude.gamePosition.x / TILE_WIDTH),Math.floor(dude.gamePosition.y / TILE_HEIGHT));
        var latLon = OsGridRef.osGridToLatLong(ref);
         
-   $("#latlng").html((latLon.x.toString()) + (latLon.y.toString()));
+       $("#latlng").html((latLon.x.toString()) + (latLon.y.toString()));
 
     }
     function loadChunkData(pos, data) {
