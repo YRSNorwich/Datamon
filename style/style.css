@@ -40,6 +40,8 @@ div#stats {
 	border-radius: 5px;
 	color: white;
 	font-family: Ubuntu, Candara, sans-serif;
+        margin-left: 10px;
+        padding-left: 10px;
 	
 	width: 220px;
 	height: 440px;
@@ -47,9 +49,7 @@ div#stats {
 }
 
 canvas {
-
 	display: inline block;
-
 }
 
 span#bordered {
@@ -76,5 +76,4 @@ span#bordered {
 
 #minimap {
     float: left;
-    margin-left: 10px;
 }
