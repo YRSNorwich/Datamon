@@ -211,7 +211,12 @@ function main() {
                             if(collides(dude, tile)) {
                                 if(chunks[i][j].tiles[x][y].tileType === 0) {
                                     //HACK SO TILES HAVE GAME POSITION
-                                    dude.setTexture(dudeTexRaft);
+
+                                    var tile = new BoundingBox(chunks[i][j].gamePosition.x + TILE_WIDTH*x, chunks[i][j].gamePosition.y + TILE_HEIGHT*y, TILE_WIDTH, TILE_HEIGHT);
+
+                                    if(collides(dude, tile)) {
+                                        dude.setTexture(dudeTexRaft);
+                                    } 
                                 }
                                 county = chunks[i][j].tiles[x][y].county;
                                 console.log(county);
