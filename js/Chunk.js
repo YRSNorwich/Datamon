@@ -13,7 +13,7 @@ function Chunk(x, y) {
     this.boundingBoxes = new Array();
     this.clouds = new Array();
     this.crimeRating;
-
+    this.npcs = new Array();
     this.loadTiles = function(array, blockpos) {
         for(var x = 0; x < this.sizew; x++) {
             for(var y = 0; y < this.sizeh; y++) {
@@ -60,14 +60,35 @@ function Chunk(x, y) {
 
         }
     }
-
+    this.loadNpcs = function(stage, camera){
+        for (var i = 0; i < this.npcs.length; i++){
+if (collides(this.npcs[i],camera)){
+    stage.addChild(this.npcs[i]);
+}
+}
+    }
     this.loadTileData = function(chunkData) {
         for(var x = 0; x < this.sizew; x++) {
             for(var y = 0; y < this.sizeh; y++) {
                 this.tiles[x][y].countyId = chunkData[x][y][1];
             }
         }
-        
+
+        for (var i = 0; i < this.tiles.length; i++) {
+            for(var i = 0; i < this.tiles[i].length; i++){
+                var robberProbability = 50 / this.tiles[i][j].crimeIncidents;
+                var randomrobber = Math.floor(Math.random()*robberProbability);
+                var robber = new PIXI.Sprite(robberTex);
+                robber.position.x = this.tiles[i][j].position.x;
+                robber.position.y = this.tiles[i][j].position.y;
+                robber.gamePosition = new Point(0,0);
+                robber.gamePosition.x = this.gamePosition.x + j*TILE_WIDTH;
+                robber.gamePosition.y = this.gamePosition.y + i*TILE_HEIGHT;
+                //var robberSpeedx = 
+                //var robberSpeedy =
+                this.npcs.push(robber);
+    }
+}
         for(var i = 0; i < this.tiles.length; i++) {
             for(var j = 0; j < this.tiles[i].length; j++) {
                 var cloudProb = 100 / this.tiles[i][j].cloudRating;

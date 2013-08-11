@@ -245,8 +245,9 @@ function main() {
                             }
                         }
                     }
-
+                    chunks[i][j].loadNpcs(stage, tempCamera);
                     chunks[i][j].drawWeather(stage, tempCamera);
+
                 }
             }
         }
@@ -418,7 +419,7 @@ function main() {
             }
         }
         chunks[pos.x][pos.y].loadTileData(data.chunk);
-
+        
         //stage.addChild(dude);
         
     }
