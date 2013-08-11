@@ -141,8 +141,10 @@ if (collides(this.npcs[i],camera)){
             }
         }
         
-        for(var i = 0; i < this.clouds.length; i++) {
-            //stage.removeChild(this.clouds[i]);
+        if(this.clouds > 0) {
+            for(var i = 0; i < this.clouds.length; i++) {
+                stage.removeChild(this.clouds[i]);
+            }
         }
 
         this.rain = false;
