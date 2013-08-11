@@ -188,6 +188,22 @@ function main() {
                     chunks[i][j].draw = true;
                     chunks[i][j].update();
                     chunks[i][j].drawTiles(stage, dude);
+
+                    // Check if dude is on water
+                    for(var x = 0; x < chunks[i][j].tiles.length; x++) {
+                        for(var y = 0; y < chunks[i][j].tiles[x].length; y++) {
+                                if(chunks[i][j].tiles[x][y].tileType === 0) {
+                                    //HACK SO TILES HAVE GAME POSITION
+                                    var tile = new PIXI.Sprite(villageTex);
+                                    tile.gamePosition.x = chunks[i][j].gamePosition.x + TILE_WIDTH*i;
+                                    tile.gamePosition.y = chunks[i][j].gamePosition.y + TILE_HEIGHT*j;
+                                    console.log("got here");
+                                    if(collides(dude, tile)) {
+                                        console.log("ON WATER");
+                                    }
+                                }
+                        }
+                    }
                     
                     stage.addChild(dude);
                     
@@ -359,26 +375,32 @@ function main() {
                     case 0:
                         //sea
                         chunks[pos.x][pos.y].tiles[i][j].setTexture(waterTex);
+                        chunks[pos.x][pos.y].tiles[i][j].tileType = 0;
                         break;
                     case 1:
                         //land
                         chunks[pos.x][pos.y].tiles[i][j].setTexture(landTex);
+                        chunks[pos.x][pos.y].tiles[i][j].tileType = 1;
                         break;
                     case 2:
                         //farm
                         chunks[pos.x][pos.y].tiles[i][j].setTexture(farmTex);
+                        chunks[pos.x][pos.y].tiles[i][j].tileType = 2;
                         break;
                     case 3:
                         //village
                         chunks[pos.x][pos.y].tiles[i][j].setTexture(villageTex);
+                        chunks[pos.x][pos.y].tiles[i][j].tileType = 3;
                         break;
                     case 4:
                         //town
                         chunks[pos.x][pos.y].tiles[i][j].setTexture(townTex);
+                        chunks[pos.x][pos.y].tiles[i][j].tileType = 4;
                         break;
                     case 5:
                         //city
                         chunks[pos.x][pos.y].tiles[i][j].setTexture(cityTex);
+                        chunks[pos.x][pos.y].tiles[i][j].tileType = 5;
                         break;
                     default:
                         break;
@@ -389,7 +411,7 @@ function main() {
                     if(chunks[pos.x][pos.y].tiles[i][j].countyId === value.id) {
                         chunks[pos.x][pos.y].tiles[i][j].county = key;
                         chunks[pos.x][pos.y].tiles[i][j].cloudRating = value.cloudCover;
-                        chunks[pos.x][pos.y].crimeRating = value.crimeIncidents;
+                        chunks[pos.x][pos.y].tiles[i][j].crimeRating = value.crimeIncidents;
                     }
                 });
                 

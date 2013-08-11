@@ -733,6 +733,7 @@ PIXI.Sprite = function(texture)
         this.tileType;
         this.cloudRating;
         this.rainRating;
+        this.crimeRating;
 
         // MILO: used only for weather and stuff
         this.velocity;
