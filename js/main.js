@@ -224,7 +224,7 @@ function main() {
                     }
 
                     if(chunks[i][j].rain) {
-                        if( typeof rains != 'undefined') {
+                        if(rains != null) {
                             drawRain();
                         } else {
                             rains = get2DArray(15, 10); 
