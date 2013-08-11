@@ -219,7 +219,6 @@ function main() {
                                     } 
                                 }
                                 county = chunks[i][j].tiles[x][y].county;
-                                console.log(county);
                             }
                         }
                     }
@@ -246,7 +245,6 @@ function main() {
                                     stage.removeChild(rains[i][j]);
                                 }
                             }*/
-                            rains = null;
                         }
                     }
                     
@@ -441,22 +439,24 @@ function main() {
     }
 
     function drawRain() {
-        for(var i = 0; i < rains.length; i++) {
-            for(var j = 0; j < rains[i].length; j++) {
-                stage.addChild(rains[i][j]);
-                //rains[i][j].position.x -= RAIN_VEL;
-                //rains[i][j].position.y += RAIN_VEL / 2;
-
-            }
-        }
-        
-        var x = rains.length - 1;
-        var y = 0;//rains[x].length - 1;
-        if(rains[x][y].position.x < 0 || rains[x][y].position.y > HEIGHT) {
+        if(rains != null) {
             for(var i = 0; i < rains.length; i++) {
                 for(var j = 0; j < rains[i].length; j++) {
-                    rains[i][j].position.x = WIDTH + i*64;
-                    rains[i][j].position.y = -HEIGHT + j*64;
+                    stage.addChild(rains[i][j]);
+                    //rains[i][j].position.x -= RAIN_VEL;
+                    //rains[i][j].position.y += RAIN_VEL / 2;
+
+                }
+            }
+
+            var x = rains.length - 1;
+            var y = 0;//rains[x].length - 1;
+            if(rains[x][y].position.x < 0 || rains[x][y].position.y > HEIGHT) {
+                for(var i = 0; i < rains.length; i++) {
+                    for(var j = 0; j < rains[i].length; j++) {
+                        rains[i][j].position.x = WIDTH + i*64;
+                        rains[i][j].position.y = -HEIGHT + j*64;
+                    }
                 }
             }
         }
