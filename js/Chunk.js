@@ -77,7 +77,6 @@ if (collides(this.npcs[i],camera)){
         for (var i = 0; i < this.tiles.length; i++) {
             for(var j = 0; j < this.tiles[i].length; j++){
                 var robberProbability = 50 / this.tiles[i][j].crimeRating;
-                console.log(this.tiles[i][j].crimeRating);
                 var randomrobber = Math.floor(Math.random()*robberProbability);
                 var robber = new PIXI.Sprite(robberTex);
                 robber.position.x = this.tiles[i][j].position.x;

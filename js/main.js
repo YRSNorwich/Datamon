@@ -189,21 +189,6 @@ function main() {
                     chunks[i][j].update();
                     chunks[i][j].drawTiles(stage, dude);
 
-                    // Check if dude is on water
-                    for(var x = 0; x < chunks[i][j].tiles.length; x++) {
-                        for(var y = 0; y < chunks[i][j].tiles[x].length; y++) {
-                                if(chunks[i][j].tiles[x][y].tileType === 0) {
-                                    //HACK SO TILES HAVE GAME POSITION
-                                    var tile = new PIXI.Sprite(villageTex);
-                                    tile.gamePosition.x = chunks[i][j].gamePosition.x + TILE_WIDTH*i;
-                                    tile.gamePosition.y = chunks[i][j].gamePosition.y + TILE_HEIGHT*j;
-                                    console.log(tile.gamePosition);
-                                    if(collides(dude, tile)) {
-                                        console.log("ON WATER");
-                                    }
-                                }
-                        }
-                    }
                     
                     stage.addChild(dude);
                     
@@ -216,6 +201,20 @@ function main() {
 
                 if(chunks[i][j].draw) {
                     chunks[i][j].update();
+                    
+                    // Check if dude is on water
+                    for(var x = 0; x < chunks[i][j].tiles.length; x++) {
+                        for(var y = 0; y < chunks[i][j].tiles[x].length; y++) {
+                                if(chunks[i][j].tiles[x][y].tileType === 0) {
+                                    //HACK SO TILES HAVE GAME POSITION
+                                    var tile = new BoundingBox(chunks[i][j].gamePosition.x + TILE_WIDTH*i, chunks[i][j].gamePosition.y + TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT);
+                                    //TODO THIS ISN'T WORKING FOR SOME REASON ARGHHHHHHHHHHHHHHHHHHHHHHHHHH
+                                    if(collides(dude, tile)) {
+                                        console.log("ON WATER");
+                                    } 
+                                }
+                        }
+                    }
 
                     if(chunks[i][j].rain) {
                         if( typeof rains != 'undefined') {
@@ -437,7 +436,6 @@ function main() {
         var x = rains.length - 1;
         var y = 0;//rains[x].length - 1;
         if(rains[x][y].position.x < 0 || rains[x][y].position.y > HEIGHT) {
-            console.log("CALLED");
             for(var i = 0; i < rains.length; i++) {
                 for(var j = 0; j < rains[i].length; j++) {
                     rains[i][j].position.x = WIDTH + i*64;
