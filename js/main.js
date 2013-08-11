@@ -197,7 +197,7 @@ function main() {
                                     var tile = new PIXI.Sprite(villageTex);
                                     tile.gamePosition.x = chunks[i][j].gamePosition.x + TILE_WIDTH*i;
                                     tile.gamePosition.y = chunks[i][j].gamePosition.y + TILE_HEIGHT*j;
-                                    console.log("got here");
+                                    console.log(tile.gamePosition);
                                     if(collides(dude, tile)) {
                                         console.log("ON WATER");
                                     }
