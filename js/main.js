@@ -36,7 +36,7 @@ function main() {
 
     var tiles;
     var chunks;
-    var rains;
+    var rains = null;
 
     var county;
 
@@ -58,8 +58,8 @@ function main() {
     y -= canvas.offsetTop;
 
     var mapPos = new Point(dude.gamePosition.x / TILE_WIDTH, dude.gamePosition.y / TILE_HEIGHT);
-    var dudePos = new Point(dude.gamePosition.x, dude.gamePosition.y)
-        var clickpos = new Point(x,y);
+    var dudePos = new Point(dude.gamePosition.x, dude.gamePosition.y);
+    var clickpos = new Point(x,y);
     //teleport(dude,minimap2game(mapPos,dudePos,clickpos));
 
     //console.log("actual game pos:"+" "+mapPos.x+" "+mapPos.y);
@@ -227,7 +227,6 @@ function main() {
                     if(chunks[i][j].rain) {
                         if( typeof rains != 'undefined') {
                             drawRain();
-                            removedRain = false;
                         } else {
                             rains = get2DArray(15, 10); 
                             for(var i = 0; i < rains.length; i++) {
@@ -240,16 +239,14 @@ function main() {
                             }
                         }
                     } else {
-                        if( typeof rains != 'undefined') {
-                            if(!removedRain) {
-                                //TODO for loop crashes app for some reason. No idea why, tiles seems to be an array which exists at this point.
-                                /*for(var i = 0; i < rains.length; i++) {
-                                    for(var j = 0; j < rains[i].length; j++) {
-                                        stage.removeChild(rains[i][j]);
-                                        removedRain = true;
-                                    }
-                                }*/
-                            }
+                        if( rains != null) {
+                            //TODO for loop crashes app for some reason. No idea why, tiles seems to be an array which exists at this point.
+                            /*for(var i = 0; i < rains.length; i++) {
+                                for(var j = 0; j < rains[i].length; j++) {
+                                    stage.removeChild(rains[i][j]);
+                                }
+                            }*/
+                            rains = null;
                         }
                     }
                     
@@ -282,7 +279,7 @@ function main() {
 
 
     function update() {
-        if(typeof rains != 'undefined') {
+        if(rains != null) {
             for(var i = 0; i < rains.length; i++) {
                 for(var j = 0; j < rains[i].length; j++) {
                     animate(rains[i][j], rains[i][j].animation, timer.getSeconds());
@@ -380,6 +377,8 @@ function main() {
        $("#latlng").html((latLon.x.toString()) + (latLon.y.toString()));
        if(typeof county != 'undefined') {
            $("#county").html("County: " + county);
+       } else {
+           $("#county").html("County: " + "Narnia");
        }
 
     }
