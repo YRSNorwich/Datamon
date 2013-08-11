@@ -1,4 +1,4 @@
-* Add NPCs with AI based on crime data
+* Add AI for NPCs
 * Fix 'river' glitch ~ That, Harry, is a FEATURE!
 * Add click->teleport to minimap
 * Add minimap zoom options, so the whole of Britain can be shown if neccessary and can be switched to/from the current view

@@ -32,7 +32,7 @@ function main() {
     timer.tick();
 
     // create an new instance of a pixi stage
-    var stage = new PIXI.Stage(0x0077FF);
+    var stage = new PIXI.Stage(0x059E00);
 
     var tiles;
     var chunks;
