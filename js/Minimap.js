@@ -69,7 +69,8 @@ function Minimap() {
 		ctx.fillStyle = "#000000";
 		ctx.fillRect((this.canvas.width/2)-4, (this.canvas.height/2)-1, 8, 2);
 		ctx.fillRect((this.canvas.width/2)-1, (this.canvas.height/2)-4, 2, 8);
- 
+ 		this.sx = sx;
+ 		this.sy = sy;
     }
  
 }

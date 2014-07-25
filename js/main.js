@@ -62,9 +62,36 @@ function main() {
     var mapPos = new Point(dude.gamePosition.x / TILE_WIDTH, dude.gamePosition.y / TILE_HEIGHT);
     var dudePos = new Point(dude.gamePosition.x, dude.gamePosition.y);
     var clickpos = new Point(x,y);
-    //teleport(dude,minimap2game(mapPos,dudePos,clickpos));
 
-    //console.log("actual game pos:"+" "+mapPos.x+" "+mapPos.y);
+
+    var minimap_real = [686/*w*/, 1100/*h*/]
+    var minimap_scaled = [minimap_real[0]*TILE_WIDTH, minimap_real[1]*TILE_HEIGHT];
+    console.log(dude.gamePosition);
+
+    dude.gamePosition = new Point( ( ( (minimap.sx) + x ) * TILE_WIDTH ) ,  ( ( (minimap.sy) + (y) ) * TILE_HEIGHT ) );
+    console.log(dude.gamePosition);
+   console.log(((minimap.sx+x))*550, ((minimap.sy+y))*686);
+   // console.log(minimap_scaled);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     console.log("canvas has been clicked at:" + " " + x + " " + y);
 
 
@@ -174,7 +201,7 @@ function main() {
                 chunks[i][j].loadTiles(level, pos);
             }
         }
-
+        console.log(mapWidth, mapHeight);
         //updateLevel();
 
         requestAnimFrame(draw);
